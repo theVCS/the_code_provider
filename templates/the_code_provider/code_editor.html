@@ -27,19 +27,15 @@
   <body>
     
     <div id="editor" class="mb-4">
-        #include<stdio.h>
-        int main()
-        {
-            printf("hello world");
-        }
+        print("prince is a good boy")
     </div>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="{% static 'js/jquery-3.5.1.slim.min.js' %}"></script>
-    <script src="{% static 'js/popper.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'js/ace.js' %}"></script>
+    <script src="{% static 'js/bootstrap/jquery-3.5.1.slim.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap/popper.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/editor/ace.js' %}"></script>
     <script>
         var editor = ace.edit("editor");
         editor.setReadOnly(true);
