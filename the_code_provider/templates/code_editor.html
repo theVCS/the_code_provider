@@ -1,0 +1,52 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'styles/bootstrap.min.css' %}">
+
+    <title>{{title}}</title>
+
+    <style>
+        #editor {
+            position: relative;
+            top: 0px;
+            left: 0px;
+            height: 35rem;
+            width: 100%;
+            font-size: 1rem;
+            margin-bottom: 2rem;
+        }
+    </style>
+    
+  </head>
+  <body>
+    
+    <div id="editor" class="mb-4">
+        #include<stdio.h>
+        int main()
+        {
+            printf("hello world");
+        }
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="{% static 'js/jquery-3.5.1.slim.min.js' %}"></script>
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/ace.js' %}"></script>
+    <script>
+        var editor = ace.edit("editor");
+        editor.setReadOnly(true);
+        editor.autoIndent(false);
+        editor.setTheme("ace/theme/dracula");
+        const nmode = "ace/mode/c_cpp";
+        editor.session.setMode(nmode);
+    </script>
+  </body>
+</html>
