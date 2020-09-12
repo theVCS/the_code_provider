@@ -6,14 +6,37 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
+        <style>
+            body {
+                  /* The image used */
+                  background-image: url('{% static 'images/login.jpg' %}');
+
+                  /* Full height */
+                  height: 100%;
+
+                  /* Center and scale the image nicely */
+                  background-position: center;
+                  background-repeat: no-repeat;
+                  background-size: cover;
+                }
+        </style>
         <title>SignUp</title>
     </head>
     <body>
+         <nav class="navbar navbar-expand navbar-light bg-light">
+          <a class="navbar-brand" href="#">CP lover</a>
+          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-item nav-link active" href="{%url 'home' %}">Home</a>
+                <a class="nav-item nav-link active" href="{% url 'accounts:login'%}">Login</a>
+            </div>
+          </div>
+        </nav>
         <div class="container " id="form_container">
             <div class="row ">
                 <div class="col-sm"></div>
                 <div class="col-sm-8">
-                    <form method="post" action="{% url 'accounts:signup' %}" class="d-flex-row justify-content-center ">
+                    <form method="post" action="{% url 'accounts:signup' %}" class="d-flex-row justify-content-center text-black">
                         {%csrf_token%}
                         {{form|crispy}}
                         <input type="submit" class="btn btn-primary" value="SignUp">
