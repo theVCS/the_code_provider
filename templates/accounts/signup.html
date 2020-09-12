@@ -1,0 +1,26 @@
+{%load static%}
+{% load crispy_forms_tags %}
+
+<link rel="stylesheet" type="text/css" href="{%static 'styles/bootstrap/bootstrap.min.css'%}">
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>SignUp</title>
+    </head>
+    <body>
+        <div class="container " id="form_container">
+            <div class="row ">
+                <div class="col-sm"></div>
+                <div class="col-sm-8">
+                    <form method="post" action="{% url 'accounts:signup' %}" class="d-flex-row justify-content-center ">
+                        {%csrf_token%}
+                        {{form|crispy}}
+                        <input type="submit" class="btn btn-primary" value="SignUp">
+                    </form>
+                </div>
+                <div class="col-sm"></div>
+            </div>
+        </div>
+    </body>
+</html>
