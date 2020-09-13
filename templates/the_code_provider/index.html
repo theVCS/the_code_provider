@@ -1,202 +1,35 @@
+{% extends 'the_code_provider/basic.html' %}
+
+<!-- loaded static -->
 {% load static %}
-<!doctype html>
-<html lang="en">
 
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+{% block title %}{{title}}{% endblock %}
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="{% static 'styles/bootstrap/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'styles/dashboard/style.css' %}">
-    <link rel="icon" href="{% static 'icons/favicon.svg' %}">
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+{% block css %}{% endblock %}
 
-    <title>{{title}}</title>
-</head>
+{% block body%}
+<h3 class="text-center" style="color: rgb(94, 138, 219); margin: 50px 0;">WEBSITES WITH US</h3>
 
-<body>
-
-    <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-        <span>
-            <div class="navbar-brand col-md-3 col-lg-2 mr-0 px-3">
-                <img src="{% static 'icons/menu.svg' %}" alt="menu" style="height: 1rem; margin: 0 5px;" id="menu">
-                <a href="#"> <img src="{% static 'images/logo.png' %}" alt="CPLover" style="height: 1.7rem;"> </a>
-            </div>
-        </span>
-        <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse"
-            data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search"
-            style="margin: 0 15px;">
-    </nav>
-
-    <div class="container-fluid">
-        <div class="row" id="dashboard">
-            <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-                <div class="sidebar-sticky pt-3">
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link active" href="#">
-                                Dashboard <span class="sr-only">(current)</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                Orders
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                Products
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                Customers
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                Reports
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                Integrations
-                            </a>
-                        </li>
-                    </ul>
-
-                    <h6
-                        class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-                        <span>Saved reports</span>
-                        <a class="d-flex align-items-center text-muted" href="#" aria-label="Add a new report">
-                        </a>
-                    </h6>
-                    <ul class="nav flex-column mb-2">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                Current month
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                Last quarter
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                Social engagement
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{%url 'accounts:login' %}">
-                                Login
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{%url 'accounts:signup' %}">
-                                SignUp
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-
+<div class="card-deck">
+    <div class="col-md-3 my-5">
+        <div class="card" style="border: none;">
+            <a href="javascript:void(0);"><img src="{% static 'images/codeforces.png' %}" class="card-img-top" alt="..."
+                    style="height: 16rem"></a>
         </div>
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4" id="content_container">
-            <h3 class="text-center" style="color: rgb(94, 138, 219); margin: 50px 0;">WEBSITES WITH US</h3>
-
-            <div class="card-deck">
-                <div class="col-md-3 my-5">
-                    <div class="card" style="border: none;">
-                        <a href="javascript:void(0);"><img src="{% static 'images/codeforces.png' %}"
-                                class="card-img-top" alt="..." style="height: 16rem"></a>
-                    </div>
-                </div>
-                <div class="col-md-3 my-5">
-                    <div class="card" style="border: none;">
-                        <a href="javascript:void(0);"><img src="{% static 'images/leetcode.png' %}" class="card-img-top"
-                                alt="..." style="height: 16rem"></a>
-                    </div>
-                </div>
-                <div class="col-md-3 my-5">
-                    <div class="card" style="border: none;">
-                        <a href="javascript:void(0);"><img src="{% static 'images/codechef.png' %}" class="card-img-top"
-                                alt="..." style="height: 16rem"></a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- footer -->
-            <!-- Site footer -->
-            <footer class="site-footer my-5">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-sm-12 col-md-6">
-                            <h6>About</h6>
-                            <p class="text-justify"> <i>CODE WANTS TO BE SIMPLE </i> is an initiative to
-                                help the upcoming programmers with the code. Scanfcode focuses on providing the most
-                                efficient code or snippets as the code wants to be simple. We will help programmers
-                                build up concepts in different programming languages that include C, C++, Java, HTML,
-                                CSS, Bootstrap, JavaScript, PHP, Android, SQL and Algorithm.</p>
-                        </div>
-
-                        <div class="col-xs-6 col-md-3">
-                            <h6>Categories</h6>
-                            <ul class="footer-links">
-                                <li><a href="#">C</a></li>
-                                <li><a href="#">UI Design</a></li>
-                                <li><a href="#">PHP</a></li>
-                                <li><a href="#">Java</a></li>
-                                <li><a href="#">Android</a></li>
-                                <li><a href="#">Templates</a></li>
-                            </ul>
-                        </div>
-
-                        <div class="col-xs-6 col-md-3">
-                            <h6>Quick Links</h6>
-                            <ul class="footer-links">
-                                <li><a href="#">About Us</a></li>
-                                <li><a href="#">Contact Us</a></li>
-                                <li><a href="#">Contribute</a></li>
-                                <li><a href="#">Privacy Policy</a></li>
-                                <li><a href="#">Sitemap</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <hr>
-                </div>
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-8 col-sm-6 col-xs-12">
-                            <p class="copyright-text">Copyright &copy; 2020 All Rights Reserved developed by Prince And Udit.
-                            </p>
-                        </div>
-
-                        <div class="col-md-4 col-sm-6 col-xs-12">
-                            <ul class="social-icons">
-                                <li><a class="facebook" href="#"><i class="fa fa-facebook"></i></a></li>
-                                <li><a class="twitter" href="#"><i class="fa fa-twitter"></i></a></li>
-                                <li><a class="dribbble" href="#"><i class="fa fa-dribbble"></i></a></li>
-                                <li><a class="linkedin" href="#"><i class="fa fa-linkedin"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </footer>
-        </main>
     </div>
+    <div class="col-md-3 my-5">
+        <div class="card" style="border: none;">
+            <a href="javascript:void(0);"><img src="{% static 'images/leetcode.png' %}" class="card-img-top" alt="..."
+                    style="height: 16rem"></a>
+        </div>
+    </div>
+    <div class="col-md-3 my-5">
+        <div class="card" style="border: none;">
+            <a href="javascript:void(0);"><img src="{% static 'images/codechef.png' %}" class="card-img-top" alt="..."
+                    style="height: 16rem"></a>
+        </div>
+    </div>
+</div>
+{% endblock %}
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="{% static 'js/bootstrap/jquery-3.5.1.slim.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap/popper.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap/bootstrap.min.js' %}"></script>
-    <script src="{% static 'js/dashboard/script.js' %}"></script>
-</body>
-
-</html>
+{% block script %}{% endblock %}

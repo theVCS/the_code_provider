@@ -1,49 +1,47 @@
-{%load static%}
+{% extends 'accounts/basic.html' %}
+
+<!-- loaded static -->
+{% load static %}
+
+<!-- loding crisp forms -->
 {% load crispy_forms_tags %}
 
-<link rel="stylesheet" type="text/css" href="{%static 'styles/bootstrap/bootstrap.min.css'%}">
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <style>
-            body {
-                  /* The image used */
-                  background-image: url('{% static 'images/login.jpg' %}');
+{% block title %}{{title}}{% endblock %}
 
-                  /* Full height */
-                  height: 100%;
+{% block css %}
 
-                  /* Center and scale the image nicely */
-                  background-position: center;
-                  background-repeat: no-repeat;
-                  background-size: cover;
-                }
-        </style>
-        <title>SignUp</title>
-    </head>
-    <body>
-         <nav class="navbar navbar-expand navbar-light bg-light">
-          <a class="navbar-brand" href="#">CP lover</a>
-          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav">
-                <a class="nav-item nav-link active" href="{%url 'home' %}">Home</a>
-                <a class="nav-item nav-link active" href="{% url 'accounts:login'%}">Login</a>
-            </div>
-          </div>
-        </nav>
-        <div class="container " id="form_container">
-            <div class="row ">
-                <div class="col-sm"></div>
-                <div class="col-sm-8">
-                    <form method="post" action="{% url 'accounts:signup' %}" class="d-flex-row justify-content-center text-black">
-                        {%csrf_token%}
-                        {{form|crispy}}
-                        <input type="submit" class="btn btn-primary" value="SignUp">
-                    </form>
-                </div>
-                <div class="col-sm"></div>
-            </div>
+<style>
+    #form_container{
+        margin-top: 50px;
+    }
+
+    #form{
+        border: 2px solid aliceblue;
+        border-radius: 10px;
+        background-color: aliceblue;
+        padding: 20px;
+    }
+</style>
+
+{% endblock %}
+
+{% block body%}
+<div class="container " id="form_container">
+    <div>
+        <h3 class="text-center" style="color: rgb(120, 209, 231); margin-bottom: 50px;">Already Have An Account <a href="/accounts/login/">Login</a></h3>
+    </div>
+    <div class="row ">
+        <div class="col-sm"></div>
+        <div class="col-sm-8" id="form">
+            <form method="post" action="{% url 'accounts:signup' %}" class="d-flex-row justify-content-center text-black">
+                {%csrf_token%}
+                {{form|crispy}}
+                <input type="submit" class="btn btn-primary" value="SignUp">
+            </form>
         </div>
-    </body>
-</html>
+        <div class="col-sm"></div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}{% endblock %}

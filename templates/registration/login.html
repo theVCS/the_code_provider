@@ -1,56 +1,84 @@
-{%load static%}
+{% extends 'accounts/basic.html' %}
+
+<!-- loaded static -->
+{% load static %}
+
+<!-- loding crisp forms -->
 {% load crispy_forms_tags %}
-<link rel="stylesheet" type="text/css" href="{%static 'styles/bootstrap/bootstrap.min.css'%}">
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <style>
-        body {
-              /* The image used */
-              background-image: url('{% static 'images/login.jpg' %}');
 
-              /* Full height */
-              height: 100%;
+{% block title %}{{title}}{% endblock %}
 
-              /* Center and scale the image nicely */
-              background-position: center;
-              background-repeat: no-repeat;
-              background-size: cover;
-            }
-    </style>
+{% block css %}
 
-    <title>Login Page</title>
-</head>
-<body>
-    <nav class="navbar navbar-expand navbar-light bg-light">
-      <a class="navbar-brand" href="#">CP lover</a>
-      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav">
-            <a class="nav-item nav-link active" href="{%url 'home'%}">Home</a>
-            <a class="nav-item nav-link active" href="{% url 'accounts:signup'%}">SignUp</a>
-        </div>
-      </div>
-    </nav>
-    <div class="container my-5" id="form_container">
-        <div class="row ">
-            <div class="col-sm"></div>
-            <div class="col-sm-8">
-                <form method="post" action="{% url 'accounts:login' %}" class="d-flex-row justify-content-center ">
-                    {%csrf_token%}
-                    {{form|crispy}}
-                    <input type="submit" class="btn btn-primary" value="LogIn">
-                </form>
-            </div>
-            <div class="col-sm"></div>
-        </div>
-        <div class="row">
-            <div class="col-sm"></div>
-            <div class="col-sm-8">
-                <a href="{%url 'accounts:signup'%}">Not a User? Sign Up</a>
-            </div>
-            <div class="col-sm"></div>
-        </div>
+<style>
+    #form_container {
+        margin-top: 50px;
+    }
+
+    #form {
+        border: 2px solid aliceblue;
+        border-radius: 10px;
+        background-color: aliceblue;
+        padding: 20px;
+    }
+
+    #visibility:hover {
+        cursor: pointer;
+    }
+</style>
+
+{% endblock %}
+
+{% block body%}
+<div class="container my-5" id="form_container">
+    <div>
+        <h3 class="text-center" style="color: rgb(120, 209, 231); margin-bottom: 50px;">New User <a
+                href="/accounts/signup/">Signup</a></h3>
     </div>
-</body>
-</html>
+    <div class="row ">
+        <div class="col-sm"></div>
+        <div class="col-sm-8" id="form">
+            <form method="post" action="{% url 'accounts:login' %}" class="d-flex-row justify-content-center ">
+                {%csrf_token%}
+                <div id="div_id_username" class="form-group"> <label for="id_username" class=" requiredField">
+                        Username<span class="asteriskField">*</span> </label>
+                    <div class=""> <input type="text" name="username" autofocus="" autocapitalize="none"
+                            autocomplete="username" maxlength="150" class="textinput textInput form-control" required=""
+                            id="id_username"> </div>
+                </div>
+                <div id="div_id_password" class="form-group"> <label for="id_password" class=" requiredField">
+                        Password<span class="asteriskField">*</span> </label>
+                    <div class="">
+                        <input type="password" name="password" autocomplete="current-password"
+                            class="textinput textInput form-control col-md-10 col-sm-10 col-lg-10" required=""
+                            id="id_password" style="display: inline;">
+                        <img src="{% static 'icons/visibility.svg' %}" alt="" style="height: 3rem; margin-left: 3%;"
+                            id="visibility" onclick="change_visibility(this);">
+                    </div>
+                </div>
+
+                <input type="submit" class="btn btn-primary" value="LogIn">
+            </form>
+        </div>
+        <div class="col-sm"></div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+
+<script>
+    function change_visibility(icon) {
+        let pass = document.getElementById('id_password');
+
+        if (icon.src == 'http://localhost:8000/static/icons/visibility.svg') {
+            icon.src = 'http://localhost:8000/static/icons/invisibility.svg';
+            pass.type = 'text';
+        } else {
+            icon.src = 'http://localhost:8000/static/icons/visibility.svg';
+            pass.type = 'password';
+        }
+    }
+</script>
+
+{% endblock %}

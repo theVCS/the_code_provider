@@ -20,6 +20,6 @@ def signup(request):
                 user = authenticate(username=username, password=password)
                 login(request, user)
                 return HttpResponseRedirect(reverse('editor:home'))
-            return render(request, 'accounts/signup.html', {'form': form})
+            return render(request, 'accounts/signup.html', {'form': form, 'title': 'SignUp'})
         form = UserCreationForm()
-        return render(request, 'accounts/signup.html', {'form': form})
+        return render(request, 'accounts/signup.html', {'form': form, 'title': 'SignUp'})

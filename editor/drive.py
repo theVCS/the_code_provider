@@ -26,5 +26,3 @@ def upload(file_name, data):
     file1 = drive.CreateFile({'title': file_name})
     file1.SetContentString(data)
     file1.Upload()
-
-
