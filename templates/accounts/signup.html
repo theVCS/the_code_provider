@@ -35,7 +35,8 @@
         <div class="col-sm-8" id="form">
             <form method="post" action="{% url 'accounts:signup' %}" class="d-flex-row justify-content-center text-black">
                 {%csrf_token%}
-                {{form|crispy}}
+                {{profile_form|crispy}}
+                {{user_form|crispy}}
                 <input type="submit" class="btn btn-primary" value="SignUp">
             </form>
         </div>
