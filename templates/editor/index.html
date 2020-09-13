@@ -1,51 +1,95 @@
+{% extends 'editor/basic.html' %}
+
+<!-- loaded static -->
 {% load static %}
-<!doctype html>
-<html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="{% static 'styles/bootstrap/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'styles/dashboard/style.css' %}">
-    <link rel="icon" href="{% static 'icons/favicon.svg' %}">
 
-    <title>{{title}}</title>
+{% block title %}{{title}}{% endblock %}
 
-    <style>
-        #editor {
-            position: relative;
-            top: 0px;
-            left: 0px;
-            height: 35rem;
-            width: 100%;
-            font-size: 1rem;
-            margin-bottom: 2rem;
-        }
-    </style>
-    
-  </head>
-  <body>
-    
-    <div id="editor" class="mb-4">
-        print("prince is a good boy")
-    </div>
+{% block css %}
+<style>
+  #editor {
+    top: 20px;
+    left: 0px;
+    height: 35rem;
+    width: 100%;
+    font-size: 1rem;
+    margin-bottom: 2rem;
+  }
+</style>
+{% endblock %}
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="{% static 'js/bootstrap/jquery-3.5.1.slim.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap/popper.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap/bootstrap.min.js' %}"></script>
-    <script src="{% static 'js/editor/ace.js' %}"></script>
-    <script src="{% static 'js/dashboard/script.js' %}"></script>
-    <script>
-        var editor = ace.edit("editor");
-        editor.setReadOnly(false);
-        editor.autoIndent(false);
-        editor.setTheme("ace/theme/dracula");
-        const nmode = "ace/mode/python";
-        editor.session.setMode(nmode);
-    </script>
-  </body>
-</html>
+{% block body%}
+<div id="editor" class="mb-4"></div>
+<button type="button" class="btn btn-lg" style="background-color: rgba(6, 83, 146, 0.555); color: white;" id="submit">Submit</button>
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'js/editor/ace.js' %}"></script>
+<script src="{% static 'js/editor/ext-language_tools.js' %}"></script>
+<script>
+  $(document).ready(function () {
+
+    var editor = ace.edit("editor");
+    editor.setReadOnly(false);
+    editor.autoIndent(false);
+    editor.setTheme("ace/theme/dracula");
+    const nmode = "ace/mode/c_cpp";
+    editor.session.setMode(nmode);
+
+
+    // submission of code to the server using ajax request
+    $('#submit').click(function (event) {
+
+      // got code from the editor
+      let code = document.getElementById("editor").innerText;
+      console.log(code)
+
+      // variable to make ajax request
+      var request;
+
+      // prevents the default behaviour of submitting the form
+      event.preventDefault();
+
+      // Abort any pending request
+      if (request) {
+        request.abort();
+      }
+
+      // Fire off the request to /search
+      var token = '{{csrf_token}}';
+
+      request = $.ajax({
+        headers: { "X-CSRFToken": token },
+        url: "/code_editor/submit/",
+        type: "post",
+        data : {
+          "code": code,
+          "file_name": "udit.c",
+        },
+      });
+
+      // Callback handler that will be called on success
+      request.done(function (response, textStatus, jqXHR) {
+        // rendering another page
+        $("html").html(response)
+      });
+
+      // Callback handler that will be called on failure
+      request.fail(function (jqXHR, textStatus, errorThrown) {
+        // Log the error to the console
+        console.error(
+          "The following error occurred: " +
+          textStatus, errorThrown
+        );
+      });
+
+      // Callback handler that will be called regardless
+      // if the request failed or succeeded
+      request.always(function () {
+        // Reenable the inputs
+        $("#search_query").prop("disabled", false);
+      });
+    })
+  })
+</script>
+{% endblock %}

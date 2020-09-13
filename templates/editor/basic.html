@@ -1,3 +1,5 @@
+<!-- this template will be used for template inheritance -->
+
 {% load static %}
 <!doctype html>
 <html lang="en">
@@ -11,9 +13,13 @@
     <link rel="stylesheet" href="{% static 'styles/bootstrap/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'styles/dashboard/style.css' %}">
     <link rel="icon" href="{% static 'icons/favicon.svg' %}">
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link media="all" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <title>{{title}}</title>
+    <!-- here css will come -->
+    {% block css %}{% endblock %}
+
+    <!-- here heading will come -->
+    <title>{% block title %}{% endblock %}</title>
 </head>
 
 <body>
@@ -108,32 +114,13 @@
 
         </div>
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4" id="content_container">
-            <h3 class="text-center" style="color: rgb(94, 138, 219); margin: 50px 0;">WEBSITES WITH US</h3>
 
-            <div class="card-deck">
-                <div class="col-md-3 my-5">
-                    <div class="card" style="border: none;">
-                        <a href="javascript:void(0);"><img src="{% static 'images/codeforces.png' %}"
-                                class="card-img-top" alt="..." style="height: 16rem"></a>
-                    </div>
-                </div>
-                <div class="col-md-3 my-5">
-                    <div class="card" style="border: none;">
-                        <a href="javascript:void(0);"><img src="{% static 'images/leetcode.png' %}" class="card-img-top"
-                                alt="..." style="height: 16rem"></a>
-                    </div>
-                </div>
-                <div class="col-md-3 my-5">
-                    <div class="card" style="border: none;">
-                        <a href="javascript:void(0);"><img src="{% static 'images/codechef.png' %}" class="card-img-top"
-                                alt="..." style="height: 16rem"></a>
-                    </div>
-                </div>
-            </div>
-
+            <!-- here body will come -->
+            {% block body %}{% endblock %}
+            
             <!-- footer -->
             <!-- Site footer -->
-            <footer class="site-footer my-5">
+            <footer class="site-footer" style="margin-top: 100px;">
                 <div class="container">
                     <div class="row">
                         <div class="col-sm-12 col-md-6">
@@ -173,7 +160,8 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-8 col-sm-6 col-xs-12">
-                            <p class="copyright-text">Copyright &copy; 2020 All Rights Reserved developed by Prince And Udit.
+                            <p class="copyright-text">Copyright &copy; 2020 All Rights Reserved developed by Prince And
+                                Udit.
                             </p>
                         </div>
 
@@ -193,10 +181,14 @@
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
+    <!-- here script will come -->
     <script src="{% static 'js/bootstrap/jquery-3.5.1.slim.min.js' %}"></script>
     <script src="{% static 'js/bootstrap/popper.min.js' %}"></script>
     <script src="{% static 'js/bootstrap/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap/jquery.min.js' %}"></script>
     <script src="{% static 'js/dashboard/script.js' %}"></script>
+    {% block script %} {% endblock %}
 </body>
 
 </html>

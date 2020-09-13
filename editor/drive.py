@@ -7,6 +7,7 @@ gauth = GoogleAuth()
 gauth.LoadCredentialsFile("user_secrets.txt")
 
 
+# connecting to the google drive
 if gauth.credentials is None:
     # Authenticating user if there was no credential file and then saving in file user_secrets
     gauth.LocalWebserverAuth()
@@ -18,9 +19,12 @@ else:
     # Initialize the saved credentials
     gauth.Authorize()
 
-drive = GoogleDrive(gauth)
-file1 = drive.CreateFile({'title': 'Hello.txt'})
-file1.SetContentString('Hello')
-file1.Upload()
+
+# this will upload a file to drive with file_name as file_name and content as data
+def upload(file_name, data):
+    drive = GoogleDrive(gauth)
+    file1 = drive.CreateFile({'title': file_name})
+    file1.SetContentString(data)
+    file1.Upload()
 
 
