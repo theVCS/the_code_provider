@@ -9,4 +9,5 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('', views.home, name="home"),
     path('code_editor/', include('editor.urls'), name="code_editor"),
+    path('profile/', include('profiles.urls')),
 ]

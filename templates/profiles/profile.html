@@ -1,0 +1,25 @@
+{% extends 'accounts/basic.html' %}
+
+<!-- loaded static -->
+{% load static %}
+
+<!-- loding crisp forms -->
+{% load crispy_forms_tags %}
+
+{% block title %}{{title}}{% endblock %}
+
+{% block body%}
+ <div class="container">
+        <div class="row">
+            <div class="col">
+                <ul class="list-group">
+                    <li class="list-group-item">Name: {{profile.name}}</li>
+                    <li class="list-group-item">Username: {{profile.user.username}}</li>
+                    <li class="list-group-item">Email Id: {{profile.email_id}}</li>
+                </ul>
+            </div>
+        </div>
+ </div>
+{% endblock %}
+
+{% block script %}{% endblock %}
