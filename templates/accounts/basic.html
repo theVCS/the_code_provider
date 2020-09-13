@@ -98,16 +98,24 @@
                                 Coding Section
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{%url 'accounts:login' %}">
-                                Login
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{%url 'accounts:signup' %}">
-                                SignUp
-                            </a>
-                        </li>
+                        {%if not user.is_authenticated%}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{%url 'accounts:login' %}">
+                                    Login
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{%url 'accounts:signup' %}">
+                                    SignUp
+                                </a>
+                            </li>
+                        {%else%}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{%url 'accounts:logout' %}">
+                                    Logout
+                                </a>
+                            </li>
+                        {%endif%}
                     </ul>
                 </div>
             </nav>

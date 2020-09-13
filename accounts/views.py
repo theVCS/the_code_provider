@@ -9,7 +9,7 @@ from django.urls import reverse
 
 def signup(request):
     if request.user.is_authenticated:
-        return HttpResponseRedirect(reverse('code_provider:home'))
+        return HttpResponseRedirect(reverse('home'))
     else:
         if request.method == 'POST':
             form = UserCreationForm(request.POST)
