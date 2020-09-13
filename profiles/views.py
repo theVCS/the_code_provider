@@ -9,5 +9,6 @@ from .models import Profile
 def profile_view(request, username):
     user = User.objects.get(username=username)
     profile = Profile.objects.get(user=user)
-    context = {'profile': profile, 'title': 'Profile'}
+    friends_list = profile.friends.all()
+    context = {'profile': profile, 'title': 'Profile', friends_list: 'friends_list'}
     return render(request, 'profiles/profile.html', context)
