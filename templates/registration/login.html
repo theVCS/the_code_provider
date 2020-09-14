@@ -3,7 +3,7 @@
 <!-- loaded static -->
 {% load static %}
 
-<!-- loding crisp forms -->
+<!-- loading crisp forms -->
 {% load crispy_forms_tags %}
 
 {% block title %}Login{% endblock %}
@@ -40,24 +40,8 @@
         <div class="col-sm-8" id="form">
             <form method="post" action="{% url 'accounts:login' %}" class="d-flex-row justify-content-center ">
                 {%csrf_token%}
-                <div id="div_id_username" class="form-group"> <label for="id_username" class=" requiredField">
-                        Username<span class="asteriskField">*</span> </label>
-                    <div class=""> <input type="text" name="username" autofocus="" autocapitalize="none"
-                            autocomplete="username" maxlength="150" class="textinput textInput form-control" required=""
-                            id="id_username"> </div>
-                </div>
-                <div id="div_id_password" class="form-group"> <label for="id_password" class=" requiredField">
-                        Password<span class="asteriskField">*</span> </label>
-                    <div class="">
-                        <input type="password" name="password" autocomplete="current-password"
-                            class="textinput textInput form-control col-md-10 col-sm-10 col-lg-10" required=""
-                            id="id_password" style="display: inline;">
-                        <img src="{% static 'icons/visibility.svg' %}" alt="" style="height: 3rem; margin-left: 3%;"
-                            id="visibility" onclick="change_visibility(this);">
-                    </div>
-                </div>
-
-                <input type="submit" class="btn btn-primary" value="LogIn">
+                {{form|crispy}}
+                <input type="submit" class="btn btn-primary" value="Login">
             </form>
         </div>
         <div class="col-sm"></div>
