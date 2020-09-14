@@ -2,8 +2,8 @@
 
 <!-- loaded static -->
 {% load static %}
-
-<!-- loding crisp forms -->
+{%load profile_extra %}
+<!-- loading crisp forms -->
 {% load crispy_forms_tags %}
 
 {% block title %}{{title}}{% endblock %}
@@ -162,7 +162,7 @@
                             <div class="col-md-12 col-sm-12 user-detail-section2 pull-right">
                             <div class="border"></div>
                             <p>Friends</p>
-                            <span>0</span>
+                            <span>{{friends_count}}</span>
                         </div>
                         </div>
                     </div>
@@ -176,10 +176,17 @@
                                     <p>Username: {{profile_user.username}}</p>
                                 </div>
                                 <div class="col-md-4 col-sm-6 col-xs-6 profile-header-section1 text-right pull-right">
-                                    <form method="post" action="{%url 'profiles:send_friend_request' profile_user.username%}">
-                                        {%csrf_token%}
-                                        <input type="submit" class="btn btn-info req-btn" value="Add Friend">
-                                    </form>
+                                    {% is_pending_request_exists user profile_user as pre %}
+                                    {%if pre == "True" %}
+                                        <button type="submit" class="btn btn-info req-btn">Pending Friend Request</button>
+                                    {%elif user not in friends_list %}
+                                        <form method="post" action="{%url 'profiles:send_friend_request' profile_user.username%}">
+                                            {%csrf_token%}
+                                            <input type="submit" class="btn btn-info req-btn" value="Add Friend">
+                                        </form>
+                                    {%elif user in friends_list %}
+                                        <button type="submit" class="btn btn-info req-btn">Friend</button>
+                                    {%endif%}
                                 </div>
                             </div>
                         </div>
@@ -203,6 +210,11 @@
                                             <a href="#"><i class="fa fa-paperclip" aria-hidden="true"></i></a>
                                             <p>Resume</p>
                                         </div>
+                                    </div>
+                                    <div class="row">
+                                        {%for friend in friends_list%}
+                                            <a href="{%url 'profiles:profile' friend.username%}">{{friend.username}}</a>
+                                        {%endfor%}
                                     </div>
                                 </div>
                                 <div class="col-md-4 img-main-rightPart">
