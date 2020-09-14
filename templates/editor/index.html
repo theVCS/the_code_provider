@@ -20,7 +20,31 @@
 
 {% block body%}
 
-<div id="show_ques"></div>
+<div id="show_ques" style="margin: 50px 0; border: 2px solid aliceblue; padding: 20px; border-radius: 10px; background-color: aliceblue; display: none;">
+
+  <!-- question heading -->
+  <h3 id="title" class="text-center"></h3>
+
+  <!-- question statement -->
+  <blockquote class="blockquote text-center">
+    <p class="mt-5" id="statement"></p>
+  </blockquote>
+
+  <!-- input constraints -->
+  <p class="h5 mt-5">INPUT</p>
+  <p class="lead mb-5" id="input_const"></p>
+
+  <!-- output constraints -->
+  <p class="h5">OUTPUT</p>
+  <p class="lead mb-5" id="output"></p>
+  
+  <!-- examples -->
+  <p class="lead mb-5" id="examples"></p>
+  
+  <!-- notes -->
+  <p class="h5">Notes</p>
+  <p class="lead mb-5" id="notes"></p>
+</div>
 
 <div id="editor" class="mb-4"></div>
 <button type="button" class="btn btn-lg" style="background-color: rgba(6, 83, 146, 0.555); color: white;"
@@ -55,7 +79,7 @@
         request.abort();
       }
 
-      // Fire off the request to /search
+      // got csrf token
       var token = '{{csrf_token}}';
 
       request = $.ajax({
@@ -98,67 +122,110 @@
   $('#search').keydown(function (event) {
 
     if (event.keyCode === 13) {
+
+      // got csrf token
+      var token = '{{csrf_token}}';
+
+      // getting url from the searhing panel
       const url = $(this).val();
 
       // variable to make ajax request
       var request;
 
-
-
       request = $.ajax({
         headers: {
           "X-CSRFToken": token
         },
-        url: "/code_editor/submit/",
+        url: "/code_editor/fetch_question/",
         type: "post",
         data: {
-          "code": code,
-          "file_name": "udit.c",
+          "url": url,
         },
+      });
+
+      // Callback handler that will be called on success
+      request.done(function (response, textStatus, jqXHR) {
+        // rendering another page
+        response = JSON.parse(response)
+
+        // make display of #show_ques block
+        document.getElementById('show_ques').style.display = "block"
+
+        // checking if any variabkle is empty
+
+
+        if (response['title'] != "") {
+          $("#title").html(response['title'])
+        }
+        else{
+          $("#title").html("No Title")
+
+        }
+
+
+        if (response['statement'] != "") 
+        {
+          $("#statement").html(response['statement'])
+        }
+        else
+        {
+          $("#statement").html("No Statement Provided")
+        }
+        
+        
+        if (response['input_const'] != "") 
+        {
+          $("#input_const").html(response['input_const'])
+        }
+        else
+        {
+          $("#input_const").html("No Input Constraints")
+        }
+        
+        
+        if (response['output'] != "") 
+        {
+          $("#output").html(response['output'])
+        }
+        else
+        {
+          $("#output").html("No Output Statement Provided")
+        }
+        
+        
+        if (response['examples'] != "") 
+        {
+          $("#examples").html(response['examples'])
+        }
+        else
+        {
+          $("#examples").html("No Output Statement Provided")
+        }
+        
+        
+        if (response['notes'] != "") 
+        {
+          $("#notes").html(response['notes'])
+        }
+        else
+        {
+          $("#notes").html("No Output Statement Provided")
+        }
+      });
+
+      // Callback handler that will be called on failure
+      request.fail(function (jqXHR, textStatus, errorThrown) {
+        // Log the error to the console
+        console.error(
+          "The following error occurred: " +
+          textStatus, errorThrown
+        );
       });
     }
 
-    // // Abort any pending request
-    // if (request) {
-    //   request.abort();
-    // }
 
-    // // Fire off the request to /search
-    // var token = '{{csrf_token}}';
 
-    // request = $.ajax({
-    //   headers: {
-    //     "X-CSRFToken": token
-    //   },
-    //   url: "/code_editor/submit/",
-    //   type: "post",
-    //   data: {
-    //     "code": code,
-    //     "file_name": "udit.c",
-    //   },
-    // });
 
-    // // Callback handler that will be called on success
-    // request.done(function (response, textStatus, jqXHR) {
-    //   // rendering another page
-    //   $("html").html(response)
-    // });
-
-    // // Callback handler that will be called on failure
-    // request.fail(function (jqXHR, textStatus, errorThrown) {
-    //   // Log the error to the console
-    //   console.error(
-    //     "The following error occurred: " +
-    //     textStatus, errorThrown
-    //   );
-    // });
-
-    // // Callback handler that will be called regardless
-    // // if the request failed or succeeded
-    // request.always(function () {
-    //   // Reenable the inputs
-    //   $("#search_query").prop("disabled", false);
-    // });
   })
 </script>
 {% endblock %}

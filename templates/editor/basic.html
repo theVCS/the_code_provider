@@ -13,7 +13,8 @@
     <link rel="stylesheet" href="{% static 'styles/bootstrap/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'styles/dashboard/style.css' %}">
     <link rel="icon" href="{% static 'icons/favicon.svg' %}">
-    <link media="all" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link media="all" rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <!-- here css will come -->
     {% block css %}{% endblock %}
@@ -62,27 +63,27 @@
                     </ul>
                     <ul class="nav flex-column mb-2">
                         {%if not user.is_authenticated%}
-                            <li class="nav-item">
-                                <a class="nav-link" href="{%url 'accounts:login' %}">
-                                    Login
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{%url 'accounts:signup' %}">
-                                    SignUp
-                                </a>
-                            </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{%url 'accounts:login' %}">
+                                Login
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{%url 'accounts:signup' %}">
+                                SignUp
+                            </a>
+                        </li>
                         {%else%}
-                            <li class="nav-item">
-                                <a class="nav-link" href="{%url 'profiles:profile' user.username%}">
-                                    Profile
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{%url 'accounts:logout' %}">
-                                    Logout
-                                </a>
-                            </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{%url 'profiles:profile' user.username%}">
+                                Profile
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{%url 'accounts:logout' %}">
+                                Logout
+                            </a>
+                        </li>
                         {%endif%}
                     </ul>
                 </div>
@@ -93,7 +94,7 @@
 
             <!-- here body will come -->
             {% block body %}{% endblock %}
-            
+
             <!-- footer -->
             <!-- Site footer -->
             <!-- footer -->
@@ -138,17 +139,21 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-8 col-sm-6 col-xs-12">
-                            <p class="copyright-text">Copyright &copy; 2020 All Rights Reserved developed by <a href="javascript:void(0);">Prince</a> And
+                            <p class="copyright-text">Copyright &copy; 2020 All Rights Reserved developed by <a
+                                    href="javascript:void(0);">Prince</a> And
                                 <a href="javascript:void(0);">Udit</a>.
                             </p>
                         </div>
 
                         <div class="col-md-4 col-sm-6 col-xs-12">
                             <ul class="social-icons">
-                                <li><a class="facebook" href="javascript:void(0);"><i class="fa fa-facebook"></i></a></li>
+                                <li><a class="facebook" href="javascript:void(0);"><i class="fa fa-facebook"></i></a>
+                                </li>
                                 <li><a class="twitter" href="javascript:void(0);"><i class="fa fa-twitter"></i></a></li>
-                                <li><a class="dribbble" href="javascript:void(0);"><i class="fa fa-dribbble"></i></a></li>
-                                <li><a class="linkedin" href="javascript:void(0);"><i class="fa fa-linkedin"></i></a></li>
+                                <li><a class="dribbble" href="javascript:void(0);"><i class="fa fa-dribbble"></i></a>
+                                </li>
+                                <li><a class="linkedin" href="javascript:void(0);"><i class="fa fa-linkedin"></i></a>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -166,6 +171,8 @@
     <script src="{% static 'js/bootstrap/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/bootstrap/jquery.min.js' %}"></script>
     <script src="{% static 'js/dashboard/script.js' %}"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     {% block script %} {% endblock %}
 </body>
 
