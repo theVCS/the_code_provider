@@ -173,10 +173,13 @@
                             <div class="row">
                                 <div class="col-md-8 col-sm-6 col-xs-6 profile-header-section1 pull-left">
                                     <h1>{{profile.name}}</h1>
-                                    <p>Username: {{user.username}}</p>
+                                    <p>Username: {{profile_user.username}}</p>
                                 </div>
                                 <div class="col-md-4 col-sm-6 col-xs-6 profile-header-section1 text-right pull-right">
-                                    <button class="btn btn-info req-btn"> Add Friend</button>
+                                    <form method="post" action="{%url 'profiles:send_friend_request' profile_user.username%}">
+                                        {%csrf_token%}
+                                        <input type="submit" class="btn btn-info req-btn" value="Add Friend">
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -206,16 +209,28 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="row image-right-part">
-                                                <div class="col-md-6 pull-left image-right-detail">
-                                                    <p>Today's Codes</p>
-                                                </div>
+                                                {% if user.username == profile_user.username %}
+                                                    <div class="col-md-6 pull-left image-right-detail">
+                                                        <p>Friend Requests</p>
+                                                    </div>
+                                                {%else%}
+                                                    <div class="col-md-6 pull-left image-right-detail">
+                                                        <p>Today's Codes</p>
+                                                    </div>
+                                                {%endif%}
                                                 <div class="col-md-6 pull-right image-right-detail text-right">
                                                     <span><a href="#">more</a></span>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-md-12 image-right-detail-section2">
-                                            <p>Nothing</p>
+                                            {% if user.username == profile_user.username %}
+                                                {%for pending_friend_request in pending_friend_requests%}
+                                                <p>{{pending_friend_request.request_by.username}}</p>
+                                                {% endfor %}
+                                            {% else %}
+                                                <p>Nothing</p>
+                                            {%endif%}
                                             <span></span>
                                         </div>
                                     </div>
