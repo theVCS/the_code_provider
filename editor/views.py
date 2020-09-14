@@ -2,14 +2,15 @@ from django.shortcuts import render
 from django.http import HttpResponse
 import json
 from . import drive
-from pydrive.auth import GoogleAuth
-from pydrive.drive import GoogleDrive
 
 
 def home(request):
     context = {
         "title": "coding section"
     }
+
+    # site = request.GET.get("site")
+
     return render(request, "editor/index.html", context)
 
 

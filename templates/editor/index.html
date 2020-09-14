@@ -19,8 +19,12 @@
 {% endblock %}
 
 {% block body%}
+
+<div id="show_ques"></div>
+
 <div id="editor" class="mb-4"></div>
-<button type="button" class="btn btn-lg" style="background-color: rgba(6, 83, 146, 0.555); color: white;" id="submit">Submit</button>
+<button type="button" class="btn btn-lg" style="background-color: rgba(6, 83, 146, 0.555); color: white;"
+  id="submit">Submit</button>
 {% endblock %}
 
 {% block script %}
@@ -42,13 +46,9 @@
 
       // got code from the editor
       let code = document.getElementById("editor").innerText;
-      console.log(code)
 
       // variable to make ajax request
       var request;
-
-      // prevents the default behaviour of submitting the form
-      event.preventDefault();
 
       // Abort any pending request
       if (request) {
@@ -59,10 +59,12 @@
       var token = '{{csrf_token}}';
 
       request = $.ajax({
-        headers: { "X-CSRFToken": token },
+        headers: {
+          "X-CSRFToken": token
+        },
         url: "/code_editor/submit/",
         type: "post",
-        data : {
+        data: {
           "code": code,
           "file_name": "udit.c",
         },
@@ -90,6 +92,73 @@
         $("#search_query").prop("disabled", false);
       });
     })
+  })
+
+  // searching an url of codeforces etc.
+  $('#search').keydown(function (event) {
+
+    if (event.keyCode === 13) {
+      const url = $(this).val();
+
+      // variable to make ajax request
+      var request;
+
+
+
+      request = $.ajax({
+        headers: {
+          "X-CSRFToken": token
+        },
+        url: "/code_editor/submit/",
+        type: "post",
+        data: {
+          "code": code,
+          "file_name": "udit.c",
+        },
+      });
+    }
+
+    // // Abort any pending request
+    // if (request) {
+    //   request.abort();
+    // }
+
+    // // Fire off the request to /search
+    // var token = '{{csrf_token}}';
+
+    // request = $.ajax({
+    //   headers: {
+    //     "X-CSRFToken": token
+    //   },
+    //   url: "/code_editor/submit/",
+    //   type: "post",
+    //   data: {
+    //     "code": code,
+    //     "file_name": "udit.c",
+    //   },
+    // });
+
+    // // Callback handler that will be called on success
+    // request.done(function (response, textStatus, jqXHR) {
+    //   // rendering another page
+    //   $("html").html(response)
+    // });
+
+    // // Callback handler that will be called on failure
+    // request.fail(function (jqXHR, textStatus, errorThrown) {
+    //   // Log the error to the console
+    //   console.error(
+    //     "The following error occurred: " +
+    //     textStatus, errorThrown
+    //   );
+    // });
+
+    // // Callback handler that will be called regardless
+    // // if the request failed or succeeded
+    // request.always(function () {
+    //   // Reenable the inputs
+    //   $("#search_query").prop("disabled", false);
+    // });
   })
 </script>
 {% endblock %}
