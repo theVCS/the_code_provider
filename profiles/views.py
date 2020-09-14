@@ -25,3 +25,11 @@ def send_friend_request_view(request, friend_username):
     friend_request = FriendRequest.create(request_by=request_by, request_to=request_to)
     friend_request.save()
     return HttpResponseRedirect(reverse('profiles:profile', kwargs={'username': friend_username}))
+
+
+def accept_friend_request_view(request, friend_request_id):
+    friend_request = FriendRequest.objects.get(pk=friend_request_id)
+    request_to_profile = Profile.objects.get(user=friend_request.request_to)
+    request_to_profile.friends.add(friend_request.request_by)
+    friend_request.delete()
+    return HttpResponseRedirect(reverse('profiles:profile', kwargs={'username': request.user.username}))

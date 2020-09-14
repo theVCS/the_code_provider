@@ -226,7 +226,9 @@
                                         <div class="col-md-12 image-right-detail-section2">
                                             {% if user.username == profile_user.username %}
                                                 {%for pending_friend_request in pending_friend_requests%}
-                                                <p>{{pending_friend_request.request_by.username}}</p>
+                                                <a href="{% url 'profiles:accept_friend_request' pending_friend_request.pk %}">
+                                                    {{pending_friend_request.request_by.username}}
+                                                </a>
                                                 {% endfor %}
                                             {% else %}
                                                 <p>Nothing</p>
