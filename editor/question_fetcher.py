@@ -16,7 +16,6 @@ def codeforces(url):
     # title of the problem
     try:
         title = soup.find('div', attrs={'class', 'title'}).text
-        title = title.replace('$', '')
     except Exception as e:
         title = ""
 
@@ -24,7 +23,6 @@ def codeforces(url):
     try:
         statement = soup.find('div', attrs={'class', 'problem-statement'}).find('p').parent()
         statement = reduce(lambda x, y: str(x) + str(y), statement)
-        statement = statement.replace('$', '')
     except Exception as e:
         statement = ""
 
@@ -32,7 +30,6 @@ def codeforces(url):
     try:
         input_const = soup.find('div', attrs={'class': 'input-specification'}).findAll('p')
         input_const = reduce(lambda x, y: str(x) + str(y), input_const)
-        input_const = input_const.replace('$', '')
     except Exception as e:
         input_const = ""
 
@@ -40,21 +37,18 @@ def codeforces(url):
     try:
         output = soup.find('div', attrs={'class': 'output-specification'})
         output = reduce(lambda x, y: str(x) + str(y), output)
-        output = output.replace('$', '')
     except Exception as e:
         output = ""
 
     # examples statement
     try:
         examples = soup.find('div', attrs={'class': 'sample-tests'})
-        examples = examples.replace('$', '')
     except Exception as e:
         examples = ""
 
     # notes
     try:
         notes = soup.find('div', 'note')
-        notes = notes.replace('$', '')
     except Exception as e:
         notes = ""
 
