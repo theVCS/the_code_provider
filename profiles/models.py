@@ -9,6 +9,8 @@ class Profile(models.Model):
     name = models.CharField(max_length=30, verbose_name='Name')
     email_id = models.EmailField(blank=True, verbose_name='Email ID')
     friends = models.ManyToManyField(User, related_name='friends_list')
+    followers = models.ManyToManyField(User, related_name='followers')
+    following = models.ManyToManyField(User, related_name='following')
 
     def __str__(self):
         return self.name

@@ -145,20 +145,34 @@
                             <img src="{% static 'images/male_avatar.png' %}">
                         </div>
                         <div class="col-md-12 col-sm-12 col-xs-12 user-detail-section1 text-center">
-                            <button class="btn btn-defult follow ">
-                                <i class="fa fa-user-o" aria-hidden="true"></i>FOLLOW
-                            </button>
+                            {%if profile_user == user %}
+                                <button type="submit" class="btn btn-defult follow">
+                                    <i class="fa fa-user-o" aria-hidden="true"></i>You
+                                </button>
+                            {% elif user not in followers_list %}
+                                <form method="post" action="{%url 'profiles:follow_user' profile_user.username%}">
+                                    {%csrf_token%}
+                                    <i class="fa fa-user-o" aria-hidden="true"></i>
+                                    <input type="submit" class="btn btn-defult follow" value="Follow">
+                                </form>
+                            {%else%}
+                                <form method="post" action="#">
+                                    {%csrf_token%}
+                                    <i class="fa fa-user-o" aria-hidden="true"></i>
+                                    <input type="submit" class="btn btn-defult follow" value="Following">
+                                </form>
+                            {%endif%}
                         </div>
                         <div class="row user-detail-row">
                             <div class="col-md-12 col-sm-12 user-detail-section2 pull-left">
                             <div class="border"></div>
                                 <p>FOLLOWERS</p>
-                                <span>0</span>
+                                <span>{{profile_user.following.count}}</span>
                             </div>
                             <div class="col-md-12 col-sm-12 user-detail-section2 pull-right">
                                 <div class="border"></div>
                                 <p>FOLLOWING</p>
-                                <span>0</span>
+                                <span>{{profile_user.followers.count}}</span>
                             </div>
                             <div class="col-md-12 col-sm-12 user-detail-section2 pull-right">
                             <div class="border"></div>
