@@ -52,10 +52,13 @@
 {% endblock %}
 
 {% block script %}
+<!-- <script async="" src="https://assets.codeforces.com/mathjax/MathJax.js?config=TeX-AMS_HTML-full" type="text/javascript"></script> -->
 <script src="{% static 'js/editor/ace.js' %}"></script>
 <script src="{% static 'js/editor/ext-language_tools.js' %}"></script>
 <script>
   $(document).ready(function () {
+
+    let math_not_loaded = 0;
 
     var editor = ace.edit("editor");
     editor.setReadOnly(false);
@@ -123,6 +126,9 @@
 
     if (event.keyCode === 13) {
 
+      // preventing the default behaviuor of the object
+      event.preventDefault();
+
       // got csrf token
       var token = '{{csrf_token}}';
 
@@ -156,61 +162,46 @@
 
         if (response['title'] != "") {
           $("#title").html(response['title'])
-        }
-        else{
+        } else {
           $("#title").html("No Title")
 
         }
 
 
-        if (response['statement'] != "") 
-        {
+        if (response['statement'] != "") {
           $("#statement").html(response['statement'])
-        }
-        else
-        {
+        } else {
           $("#statement").html("No Statement Provided")
         }
-        
-        
-        if (response['input_const'] != "") 
-        {
+
+
+        if (response['input_const'] != "") {
           $("#input_const").html(response['input_const'])
-        }
-        else
-        {
+        } else {
           $("#input_const").html("No Input Constraints")
         }
-        
-        
-        if (response['output'] != "") 
-        {
+
+
+        if (response['output'] != "") {
           $("#output").html(response['output'])
-        }
-        else
-        {
+        } else {
           $("#output").html("No Output Statement Provided")
         }
-        
-        
-        if (response['examples'] != "") 
-        {
+
+
+        if (response['examples'] != "") {
           $("#examples").html(response['examples'])
-        }
-        else
-        {
+        } else {
           $("#examples").html("No Examples Provided")
         }
-        
-        
-        if (response['notes'] != "") 
-        {
+
+
+        if (response['notes'] != "") {
           $("#notes").html(response['notes'])
-        }
-        else
-        {
+        } else {
           $("#notes").html("No Notes Given")
         }
+        load_math();
       });
 
       // Callback handler that will be called on failure
@@ -223,9 +214,12 @@
       });
     }
 
-
-
-
+    // loading the math script
+    function load_math() {
+      src = 'https://assets.codeforces.com/mathjax/MathJax.js?config=TeX-AMS_HTML-full';
+      $('script[src="' + src + '"]').remove();
+      $('<script>').attr('src', src).appendTo('head');
+    }
   })
 </script>
 {% endblock %}

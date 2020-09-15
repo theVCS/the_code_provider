@@ -7,8 +7,6 @@ from functools import reduce
 def codeforces(url):
     # Connect to the URL
     response = requests.get(url)
-    print("prince")
-    print(response)
 
     # Parse HTML and save to BeautifulSoup object¶
     soup = BeautifulSoup(response.text, "html.parser")
@@ -61,3 +59,7 @@ def codeforces(url):
         'notes': str(notes),
     }
     return json.dumps(params)
+
+
+if __name__ == '__main__':
+    print("hello world")
