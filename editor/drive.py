@@ -23,6 +23,11 @@ else:
 # this will upload a file to drive with file_name as file_name and content as data
 def upload(file_name, data):
     drive = GoogleDrive(gauth)
-    file1 = drive.CreateFile({'title': file_name, 'parents': [{'id': '1dIPZn_MhHrBi-1YkhZuXKUSiawr3wEqC'}]})
-    file1.SetContentString(data)
-    file1.Upload()
+    file = drive.CreateFile({'title': file_name, 'parents': [{'id': '1dIPZn_MhHrBi-1YkhZuXKUSiawr3wEqC'}]})
+    file.SetContentString(data)
+    file.Upload()
+    return file['id']
+
+
+if __name__ == '__main__':
+    print(upload("prince.c", "prince is a good boy"))
