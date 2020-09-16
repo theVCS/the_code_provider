@@ -1,11 +1,17 @@
 from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
 
+# id container ---- this dictionary will contain all the folder ids
+file_locator = {
+    "codeforces": {
+        "c": "15N0wYUmgzYWMCnSCUFn3GBbywDVaJqyJ"
+    }
+}
+
 # this object here will help us in connection to google drive
 gauth = GoogleAuth()
 # loaded pre-exiting credentials file
 gauth.LoadCredentialsFile("user_secrets.txt")
-
 
 # connecting to the google drive
 if gauth.credentials is None:
@@ -20,23 +26,27 @@ else:
     gauth.Authorize()
 
 
-# this will upload a file to drive with file_name as file_name and content as data
-def upload(file_name, data):
+def upload(file_name, data, website, language):
+    """this will upload a file to drive with file_name as title and content as data and return the file_name"""
     drive = GoogleDrive(gauth)
-    file = drive.CreateFile({'title': file_name, 'parents': [{'id': '1dIPZn_MhHrBi-1YkhZuXKUSiawr3wEqC'}]})
+    file = drive.CreateFile({'title': file_name, 'parents': [{'id': file_locator[website][language]}]})
     file.SetContentString(data)
+
+    # in-built function used to upload data to the drive
     file.Upload()
-    return file['id']
+    return file['title']
 
 
-def get_content(website, language, file_id):
+def get_content(website, language, file_name):
+    """this function will return the data inside the files which have title like file_name"""
     drive = GoogleDrive(gauth)
-    file_list = drive.ListFile({'q': "'1dIPZn_MhHrBi-1YkhZuXKUSiawr3wEqC' in parents  and trashed=false"}).GetList()
+    file_list = drive.ListFile({'q': "'" + file_locator[website][language] + f"' in parents and title contains '{file_name}' and trashed=false"}).GetList()
     for file in file_list:
-        print('title: %s, id: %s' % (file['title'], file['id']))
+        print(file.GetContentString())
 
 
 if __name__ == '__main__':
+    # print(upload("file_name", "data", "codeforces", "c"))
     # print(upload("prince.c", "prince is a good boy"))
-    get_content("prince", "prince", "prince")
+    get_content("codeforces", "c", "prince")
 
