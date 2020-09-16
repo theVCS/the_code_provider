@@ -20,7 +20,8 @@
 
 {% block body%}
 
-<div id="show_ques" style="margin: 50px 0; border: 2px solid aliceblue; padding: 20px; border-radius: 10px; background-color: aliceblue; display: none;">
+<div id="show_ques"
+  style="margin: 50px 0; border: 2px solid aliceblue; padding: 20px; border-radius: 10px; background-color: aliceblue; display: none;">
 
   <!-- question heading -->
   <h3 id="title" class="text-center"></h3>
@@ -37,18 +38,109 @@
   <!-- output constraints -->
   <p class="h5">OUTPUT</p>
   <p class="lead mb-5" id="output"></p>
-  
+
   <!-- examples -->
   <p class="lead mb-5" id="examples"></p>
-  
+
   <!-- notes -->
   <p class="h5">Notes</p>
   <p class="lead mb-5" id="notes"></p>
 </div>
 
+<div class="container">
+  <div class="row my-3">
+
+    <div class="col-md-8 mx-auto">
+      <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+        <div class="btn-group" role="group">
+          <button id="btnGroupDrop1" type="button" class="btn btn-warning dropdown-toggle text-white"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            c
+          </button>
+          <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+            <a class="dropdown-item" href="javascript:void(0);">c</a>
+            <a class="dropdown-item" href="javascript:void(0);">cpp</a>
+            <a class="dropdown-item" href="javascript:void(0);">python</a>
+            <a class="dropdown-item" href="javascript:void(0);">java</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4 mx-auto">
+      <fieldset class="form-group" style="display: inline-block;">
+        <div class="row">
+          <div class="col-sm-10">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="me" checked>
+              <label class="form-check-label" for="gridRadios1">
+                Me
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="private">
+              <label class="form-check-label" for="gridRadios2">
+                Private
+              </label>
+            </div>
+            <div class="form-check disabled">
+              <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios3" value="public">
+              <label class="form-check-label" for="gridRadios3">
+                Public
+              </label>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+  </div>
+</div>
+
 <div id="editor" class="mb-4"></div>
-<button type="button" class="btn btn-lg" style="background-color: rgba(6, 83, 146, 0.555); color: white;"
-  id="submit">Submit</button>
+<button type="button" class="btn btn-lg btn-primary" style="color: white;" id="submit">Upload</button>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#warnmodal" id="warnmodalbtn" style="display: none;">
+  Launch demo modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="warnmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-danger" id="exampleModalLabel">Warning</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h4>Please Write Some Code</h4>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#successuploadmodal" id="successupload" style="display: none;">
+  Launch demo modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="successuploadmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-success" id="exampleModalLabel">Success</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h4>Your Code has Been Submitted Successfully</h4>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
 
 {% block script %}
@@ -58,7 +150,7 @@
 <script>
   $(document).ready(function () {
 
-    let math_not_loaded = 0;
+    window.preference = "me";
 
     var editor = ace.edit("editor");
     editor.setReadOnly(false);
@@ -72,52 +164,60 @@
     $('#submit').click(function (event) {
 
       // got code from the editor
-      let code = document.getElementById("editor").innerText;
+      let code = editor.getSession().getValue();
 
-      // variable to make ajax request
-      var request;
+      if (code == "") {
+        $("#warnmodalbtn").click();
+      } else {
+        // variable to make ajax request
+        var request;
 
-      // Abort any pending request
-      if (request) {
-        request.abort();
+        // Abort any pending request
+        if (request) {
+          request.abort();
+        }
+
+        // got csrf token
+        var token = '{{csrf_token}}';
+
+        request = $.ajax({
+          headers: {
+            "X-CSRFToken": token
+          },
+          url: "/code_editor/submit/",
+          type: "post",
+          data: {
+            "username": "{{user.username}}",
+            "code": code,
+            "file_name": "question.c",
+            "website": "codeforces",
+            "filter": window.preference,
+            "language": $("#btnGroupDrop1").html(),
+          },
+        });
+
+        // Callback handler that will be called on success
+        request.done(function (response, textStatus, jqXHR) {
+          // rendering another page
+          $("#successupload").click();
+        });
+
+        // Callback handler that will be called on failure
+        request.fail(function (jqXHR, textStatus, errorThrown) {
+          // Log the error to the console
+          console.error(
+            "The following error occurred: " +
+            textStatus, errorThrown
+          );
+        });
+
+        // Callback handler that will be called regardless
+        // if the request failed or succeeded
+        request.always(function () {
+          // Reenable the inputs
+          $("#search_query").prop("disabled", false);
+        });
       }
-
-      // got csrf token
-      var token = '{{csrf_token}}';
-
-      request = $.ajax({
-        headers: {
-          "X-CSRFToken": token
-        },
-        url: "/code_editor/submit/",
-        type: "post",
-        data: {
-          "code": code,
-          "file_name": "udit.c",
-        },
-      });
-
-      // Callback handler that will be called on success
-      request.done(function (response, textStatus, jqXHR) {
-        // rendering another page
-        $("html").html(response)
-      });
-
-      // Callback handler that will be called on failure
-      request.fail(function (jqXHR, textStatus, errorThrown) {
-        // Log the error to the console
-        console.error(
-          "The following error occurred: " +
-          textStatus, errorThrown
-        );
-      });
-
-      // Callback handler that will be called regardless
-      // if the request failed or succeeded
-      request.always(function () {
-        // Reenable the inputs
-        $("#search_query").prop("disabled", false);
-      });
     })
   })
 
@@ -220,6 +320,15 @@
       $('script[src="' + src + '"]').remove();
       $('<script>').attr('src', src).appendTo('head');
     }
+
+  })
+
+  $(".form-check-input").click(function (event) {
+    window.preference = $(this).val()
+  })
+
+  $(".dropdown-item").click(function (event) {
+    $("#btnGroupDrop1").html($(this).html())
   })
 </script>
 {% endblock %}

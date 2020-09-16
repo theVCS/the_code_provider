@@ -4,7 +4,10 @@ from pydrive.drive import GoogleDrive
 # id container ---- this dictionary will contain all the folder ids
 file_locator = {
     "codeforces": {
-        "c": "15N0wYUmgzYWMCnSCUFn3GBbywDVaJqyJ"
+        "c": "15N0wYUmgzYWMCnSCUFn3GBbywDVaJqyJ",
+        "cpp": "1vZogqyO5yI5sDpLJpgOakT5Ur0kx01Ko",
+        "python": "16ZfrzwMgZ_3poKQWAaDtQklVIHjw_-4b",
+        "java": "1r3RnNGZArF5UQV2Obp3gGUrK9-XtFv9j",
     }
 }
 

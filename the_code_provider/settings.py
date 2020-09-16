@@ -33,7 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'profiles.apps.ProfilesConfig',
     'accounts.apps.AccountsConfig',
-    'editor.apps.CoderConfig',
+    'editor.apps.EditorConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
