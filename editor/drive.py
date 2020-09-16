@@ -29,5 +29,14 @@ def upload(file_name, data):
     return file['id']
 
 
+def get_content(website, language, file_id):
+    drive = GoogleDrive(gauth)
+    file_list = drive.ListFile({'q': "'1dIPZn_MhHrBi-1YkhZuXKUSiawr3wEqC' in parents  and trashed=false"}).GetList()
+    for file in file_list:
+        print('title: %s, id: %s' % (file['title'], file['id']))
+
+
 if __name__ == '__main__':
-    print(upload("prince.c", "prince is a good boy"))
+    # print(upload("prince.c", "prince is a good boy"))
+    get_content("prince", "prince", "prince")
+
