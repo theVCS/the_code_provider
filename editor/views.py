@@ -22,7 +22,7 @@ def submit(request):
     language = language.strip()
     coder = Coder(user_name=username, website=website, code_title=file_name, preference=preference)
     coder.save()
-    drive.upload(file_name, code, website, language)
+    # drive.upload(file_name, code, website, language)
     return HttpResponse(json.dumps(code))
 
 
