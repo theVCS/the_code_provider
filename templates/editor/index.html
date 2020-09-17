@@ -50,54 +50,68 @@
 <div class="container">
   <div class="row my-3">
 
-    <div class="col-md-8 mx-auto">
-      <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-        <div class="btn-group" role="group">
-          <button id="btnGroupDrop1" type="button" class="btn btn-warning dropdown-toggle text-white"
-            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            c
-          </button>
-          <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-            <a class="dropdown-item" href="javascript:void(0);" lang="c_cpp">c</a>
-            <a class="dropdown-item" href="javascript:void(0);" lang="c_cpp">cpp</a>
-            <a class="dropdown-item" href="javascript:void(0);" lang="python">python</a>
-            <a class="dropdown-item" href="javascript:void(0);" lang="java">java</a>
+    <div class="alert alert-info col-md-6 text-center" role="alert" style="visibility: hidden;">
+      A simple info alert—check it out!
+    </div>
+
+    <div class="col-md-6 row">
+
+      <div class="col-md-8"></div>
+
+      <div class="col-md-2">
+        <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+          <div class="btn-group" role="group">
+            <button id="btnGroupDrop1" type="button" class="btn btn-warning dropdown-toggle text-white"
+              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              c
+            </button>
+            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+              <a class="dropdown-item" href="javascript:void(0);" lang="c_cpp">c</a>
+              <a class="dropdown-item" href="javascript:void(0);" lang="c_cpp">cpp</a>
+              <a class="dropdown-item" href="javascript:void(0);" lang="python">python</a>
+              <a class="dropdown-item" href="javascript:void(0);" lang="java">java</a>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="col-md-4 mx-auto">
-      <fieldset class="form-group" style="display: inline-block;">
-        <div class="row">
-          <div class="col-sm-10">
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="me" checked>
-              <label class="form-check-label" for="gridRadios1">
-                Me
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="private">
-              <label class="form-check-label" for="gridRadios2">
-                Private
-              </label>
-            </div>
-            <div class="form-check disabled">
-              <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios3" value="public">
-              <label class="form-check-label" for="gridRadios3">
-                Public
-              </label>
+
+      <div class="col-md-2">
+        <fieldset class="form-group" style="display: inline-block;">
+          <div class="row">
+            <div class="col-sm-10">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="me" checked>
+                <label class="form-check-label" for="gridRadios1">
+                  Me
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="private">
+                <label class="form-check-label" for="gridRadios2">
+                  Private
+                </label>
+              </div>
+              <div class="form-check disabled">
+                <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios3" value="public">
+                <label class="form-check-label" for="gridRadios3">
+                  Public
+                </label>
+              </div>
             </div>
           </div>
-        </div>
-      </fieldset>
+        </fieldset>
+      </div>
     </div>
   </div>
 </div>
 
 <div id="editor" class="mb-4"></div>
+{%if not user.is_authenticated%}
+<button type="button" class="btn btn-lg btn-primary" style="color: white;" id="share">Share</button>
+{%else%}
 <button type="button" class="btn btn-lg btn-primary" style="color: white;" id="submit">Upload</button>
+{%endif%}
 
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#warnmodal" id="warnmodalbtn"
@@ -164,7 +178,7 @@
 
 
     // submission of code to the server using ajax request
-    $('#submit').click(function (event) {
+    $('#share').click(function (event) {
 
       // got code from the editor
       let code = editor.getSession().getValue();
@@ -183,24 +197,26 @@
         // got csrf token
         var token = '{{csrf_token}}';
 
+        $(this).html(`<div class="spinner-border text-light" role="status">
+  <span class="sr-only">Loading...</span>
+</div>`)
+        $(this).prop('disabled', true);
+
         request = $.ajax({
           headers: {
             "X-CSRFToken": token
           },
-          url: "/code_editor/submit/",
+          url: "/code_editor/share/",
           type: "post",
           data: {
-            "username": "{{user.username}}",
             "code": code,
-            "file_name": "question.c",
-            "website": "codeforces",
-            "filter": window.preference,
             "language": $("#btnGroupDrop1").html(),
           },
         });
 
         // Callback handler that will be called on success
         request.done(function (response, textStatus, jqXHR) {
+          localStorage.setItem("id", JSON.parse(response)['file_name'])
           // rendering another page
           $("#successupload").click();
         });
@@ -218,10 +234,139 @@
         // if the request failed or succeeded
         request.always(function () {
           // Reenable the inputs
-          $("#search_query").prop("disabled", false);
+          $("#share").html("Share");
+          $("#share").prop('disabled', false);
+          $('.alert').css("visibility", "visible")
+          $('.alert').html(document.location.host + "/shared/?id=" + localStorage.getItem("id") + "<br>share this link with your friends to let them see your code")
         });
       }
     })
+  })
+
+  $('#submit').click(function (event) {
+
+    // got code from the editor
+    let code = editor.getSession().getValue();
+
+    if (code == "") {
+      $("#warnmodalbtn").click();
+    } else {
+      // variable to make ajax request
+      var request;
+
+      // Abort any pending request
+      if (request) {
+        request.abort();
+      }
+
+      // got csrf token
+      var token = '{{csrf_token}}';
+
+      $(this).html(`<div class="spinner-border text-light" role="status">
+  <span class="sr-only">Loading...</span>
+</div>`)
+      $(this).prop('disabled', true);
+
+      request = $.ajax({
+        headers: {
+          "X-CSRFToken": token
+        },
+        url: "/code_editor/submit/",
+        type: "post",
+        data: {
+          "username": "{{user.username}}",
+          "code": code,
+          "file_name": "question.c",
+          "website": "codeforces",
+          "filter": window.preference,
+          "language": $("#btnGroupDrop1").html(),
+        },
+      });
+
+      // Callback handler that will be called on success
+      request.done(function (response, textStatus, jqXHR) {
+        // rendering another page
+        $("#successupload").click();
+      });
+
+      // Callback handler that will be called on failure
+      request.fail(function (jqXHR, textStatus, errorThrown) {
+        // Log the error to the console
+        console.error(
+          "The following error occurred: " +
+          textStatus, errorThrown
+        );
+      });
+
+      // Callback handler that will be called regardless
+      // if the request failed or succeeded
+      request.always(function () {
+        // Reenable the inputs
+        $("#submit").html("Upload");
+        $("#submit").prop('disabled', false);
+      });
+    }
+  })
+
+
+  // submission of code to the server using ajax request
+  $('#submit').click(function (event) {
+
+    // got code from the editor
+    let code = editor.getSession().getValue();
+
+    if (code == "") {
+      $("#warnmodalbtn").click();
+    } else {
+      // variable to make ajax request
+      var request;
+
+      // Abort any pending request
+      if (request) {
+        request.abort();
+      }
+
+      // got csrf token
+      var token = '{{csrf_token}}';
+
+      request = $.ajax({
+        headers: {
+          "X-CSRFToken": token
+        },
+        url: "/code_editor/submit/",
+        type: "post",
+        data: {
+          "username": "{{user.username}}",
+          "code": code,
+          "file_name": "question.c",
+          "website": "codeforces",
+          "filter": window.preference,
+          "language": $("#btnGroupDrop1").html(),
+        },
+      });
+
+      // Callback handler that will be called on success
+      request.done(function (response, textStatus, jqXHR) {
+        // rendering another page
+        $("#successupload").click();
+      });
+
+      // Callback handler that will be called on failure
+      request.fail(function (jqXHR, textStatus, errorThrown) {
+        // Log the error to the console
+        console.error(
+          "The following error occurred: " +
+          textStatus, errorThrown
+        );
+      });
+
+      // Callback handler that will be called regardless
+      // if the request failed or succeeded
+      request.always(function () {
+        // Reenable the inputs
+        $("#search_query").prop("disabled", false);
+      });
+    }
   })
 
   // searching an url of codeforces etc.
@@ -337,3 +482,8 @@
   })
 </script>
 {% endblock %}
+
+
+<!-- i need to work on the language selector for sharing -->
+<!-- i have to make css file loaded when new url of the question is Given -->
+<!-- i have to make some changes in the model to use the unique id  -->

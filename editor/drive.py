@@ -8,7 +8,8 @@ file_locator = {
         "cpp": "1vZogqyO5yI5sDpLJpgOakT5Ur0kx01Ko",
         "python": "16ZfrzwMgZ_3poKQWAaDtQklVIHjw_-4b",
         "java": "1r3RnNGZArF5UQV2Obp3gGUrK9-XtFv9j",
-    }
+    },
+    "sharing": "1V8za1ulCVItrgH38sEW69yLsI65gebTQ"
 }
 
 # this object here will help us in connection to google drive
@@ -46,6 +47,25 @@ def get_content(website, language, file_name):
     file_list = drive.ListFile({'q': "'" + file_locator[website][language] + f"' in parents and title contains '{file_name}' and trashed=false"}).GetList()
     for file in file_list:
         print(file.GetContentString())
+
+
+def sharing_code(data, language, file_name):
+    """this will upload a file to drive with file_name as title and content as data and return the file_name"""
+    drive = GoogleDrive(gauth)
+    file = drive.CreateFile({'title': file_name, 'parents': [{'id': file_locator["sharing"]}]})
+    file.SetContentString(data)
+
+    # in-built function used to upload data to the drive
+    file.Upload()
+    return file['title']
+
+
+def show_shared(id):
+    """this function will show the content inside the shared code"""
+    drive = GoogleDrive(gauth)
+    file = drive.ListFile({'q': "'" + file_locator["sharing"] + f"' in parents and title = '{id}' and trashed=false"}).GetList()
+    print(file[0].GetContentString())
+    return file[0].GetContentString()
 
 
 if __name__ == '__main__':

@@ -3,6 +3,7 @@ from django.http import HttpResponse
 import json
 from . import drive, question_fetcher
 from .models import Coder
+import uuid
 
 
 def home(request):
@@ -30,3 +31,17 @@ def fetch_question(request):
     url = request.POST.get("url")
     data = question_fetcher.codeforces(url)
     return HttpResponse(data)
+
+
+def share(request):
+    data = request.POST.get("code")
+    file_name = uuid.uuid1().hex
+    language = request.POST.get("language")
+    drive.sharing_code(data, language, file_name)
+    return HttpResponse(json.dumps({'file_name': file_name}))
+
+
+def show(request):
+    id = request.GET.get("id")
+    code = drive.show_shared(id)
+    return HttpResponse(json.dumps({'code': code}))
