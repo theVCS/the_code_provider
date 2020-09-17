@@ -9,7 +9,7 @@ class Coder(models.Model):
     website = models.CharField(max_length=30)
     code_title = models.CharField(max_length=30)
     preference = models.CharField(max_length=7)
-    date = models.DateTimeField(default=datetime.now()z, blank=True)
+    date = models.DateTimeField(default=datetime.now(), blank=True)
 
     def __str__(self):
         return self.code_title

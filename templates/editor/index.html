@@ -58,10 +58,10 @@
             c
           </button>
           <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-            <a class="dropdown-item" href="javascript:void(0);">c</a>
-            <a class="dropdown-item" href="javascript:void(0);">cpp</a>
-            <a class="dropdown-item" href="javascript:void(0);">python</a>
-            <a class="dropdown-item" href="javascript:void(0);">java</a>
+            <a class="dropdown-item" href="javascript:void(0);" lang="c_cpp">c</a>
+            <a class="dropdown-item" href="javascript:void(0);" lang="c_cpp">cpp</a>
+            <a class="dropdown-item" href="javascript:void(0);" lang="python">python</a>
+            <a class="dropdown-item" href="javascript:void(0);" lang="java">java</a>
           </div>
         </div>
       </div>
@@ -100,7 +100,8 @@
 <button type="button" class="btn btn-lg btn-primary" style="color: white;" id="submit">Upload</button>
 
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#warnmodal" id="warnmodalbtn" style="display: none;">
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#warnmodal" id="warnmodalbtn"
+  style="display: none;">
   Launch demo modal
 </button>
 
@@ -121,7 +122,8 @@
   </div>
 </div>
 
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#successuploadmodal" id="successupload" style="display: none;">
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#successuploadmodal" id="successupload"
+  style="display: none;">
   Launch demo modal
 </button>
 
@@ -148,15 +150,16 @@
 <script src="{% static 'js/editor/ace.js' %}"></script>
 <script src="{% static 'js/editor/ext-language_tools.js' %}"></script>
 <script>
+  var editor = ace.edit("editor");
   $(document).ready(function () {
 
     window.preference = "me";
 
-    var editor = ace.edit("editor");
     editor.setReadOnly(false);
     editor.autoIndent(false);
     editor.setTheme("ace/theme/dracula");
-    const nmode = "ace/mode/c_cpp";
+    let nmode = "ace/mode/c_cpp";
+    editor.session.setMode(nmode);
     editor.session.setMode(nmode);
 
 
@@ -329,6 +332,8 @@
 
   $(".dropdown-item").click(function (event) {
     $("#btnGroupDrop1").html($(this).html())
+    nmode = "ace/mode/" + $(this).attr('lang');
+    editor.session.setMode(nmode);
   })
 </script>
 {% endblock %}
