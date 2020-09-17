@@ -212,11 +212,15 @@
                                 <div class="col-md-8  profile-tag-section text-center">
                                     <div class="row">
                                         <div class="col-md-3 col-sm-3 profile-tag">
-                                            <a href="#"><i class="fa fa-calendar-check-o" aria-hidden="true"></i></a>
+                                            <a href="#userinfo" role="button" aria-expanded="true" data-toggle="collapse" aria-controls="userinfo">
+                                                <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+                                            </a>
                                             <p>Info</p>
                                         </div>
                                          <div class="col-md-3 col-sm-3 profile-tag">
-                                            <a href="#"><i class="fa fa-address-book" aria-hidden="true"></i></a>
+                                            <a href="#friendlist" role="button" aria-expanded="false" data-toggle="collapse" aria-controls="friendlist">
+                                                <i class="fa fa-address-book" aria-hidden="true"></i>
+                                            </a>
                                             <p>Friends List</p>
                                         </div>
                                         <div class="col-md-3 col-sm-3 profile-tag">
@@ -229,13 +233,20 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        {%for friend in friends_list%}
-                                        <ul>
-                                            <li>
-                                                <a href="{%url 'profiles:profile' friend.username%}">{{friend.username}}</a>
-                                            </li>
-                                        </ul>
-                                        {%endfor%}
+                                        <div class="collapse show" id="userinfo">
+                                            <ul>
+                                                <li>{{profile.email_id}}</li>
+                                            </ul>
+                                        </div>
+                                        <div class="collapse" id="friendlist">
+                                            {%for friend in friends_list%}
+                                            <ul>
+                                                <li>
+                                                    <a href="{%url 'profiles:profile' friend.username%}">{{friend.username}}</a>
+                                                </li>
+                                            </ul>
+                                            {%endfor%}
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-4 img-main-rightPart">
