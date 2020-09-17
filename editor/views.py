@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 import json
 from . import drive, question_fetcher
-from .models import Coder
+from .models import Code
 import uuid
 
 
@@ -14,17 +14,16 @@ def home(request):
 
 
 def submit(request):
-    username = request.POST.get("username")
-    code = request.POST.get("code")
-    file_name = request.POST.get("file_name")
+    code_text = request.POST.get("code")
+    # file_name = request.POST.get("file_name")
     website = request.POST.get("website")
-    preference = request.POST.get("filter")
+    sharing_option = request.POST.get("filter")
     language = request.POST.get("language")
     language = language.strip()
-    coder = Coder(user_name=username, website=website, code_title=file_name, preference=preference)
-    coder.save()
+    code = Code.create(unique_code_id="a", user=request.user, website=website, language=language,
+                       sharing_option=sharing_option)
     # drive.upload(file_name, code, website, language)
-    return HttpResponse(json.dumps(code))
+    return HttpResponse(json.dumps(code_text))
 
 
 def fetch_question(request):
