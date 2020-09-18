@@ -8,7 +8,6 @@ from .models import Code
 import uuid
 from django.apps import apps
 
-
 Profile = apps.get_model('profiles', 'Profile')
 
 
@@ -17,7 +16,7 @@ def random_string_generator(size=6, chars=string.ascii_lowercase + string.digits
 
 
 def home(request):
-    if request.user == "":
+    if request.user.is_authenticated:
         profile = Profile.objects.get(user=request.user)
         friends_list = profile.friends.all()
         context = {

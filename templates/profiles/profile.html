@@ -260,11 +260,11 @@
                       <p>Friends List</p>
                     </div>
                     <div class="col-md-3 col-sm-3 profile-tag" class="info_shower">
-                      <a href="#"><i class="fa fa-paperclip" aria-hidden="true"></i></a>
+                      <a id="#codes" class="info_shower"><i class="fa fa-paperclip" aria-hidden="true"></i></a>
                       <p>Codes</p>
                     </div>
                     <div class="col-md-3 col-sm-3 profile-tag" class="info_shower">
-                      <a href="#"><i class="fa fa-paperclip" aria-hidden="true"></i></a>
+                      <a id="#resume" class="info_shower"><i class="fa fa-paperclip" aria-hidden="true"></i></a>
                       <p>Resume</p>
                     </div>
                   </div>
@@ -282,6 +282,18 @@
                         </li>
                       </ul>
                       {%endfor%}
+                    </div>
+                    <div class="collapse" id="codes">
+                      {%for code in public_codes%}
+                      <ul>
+                        <li>
+                          <a href="#">Code Date:{{code.date}} Sharing Code: {{code.unique_code_id}} </a>
+                        </li>
+                      </ul>
+                      {%endfor%}
+                    </div>
+                    <div class="collapse" id="resume">
+                      Resume
                     </div>
                   </div>
                 </div>
