@@ -7,7 +7,7 @@ from datetime import datetime
 
 
 class Code(models.Model):
-    unique_code_id = models.CharField(max_length=6)
+    unique_code_id = models.CharField(max_length=6, unique=True)
     user = models.ForeignKey(User, related_name='user', on_delete=models.CASCADE)
     website = models.CharField(max_length=30)
     language = models.CharField(max_length=10)

@@ -1,9 +1,15 @@
+import random
+import string
 from django.shortcuts import render
 from django.http import HttpResponse
 import json
 from . import drive, question_fetcher
 from .models import Code
 import uuid
+
+
+def random_string_generator(size=6, chars=string.ascii_lowercase + string.digits + string.ascii_uppercase):
+    return ''.join(random.choice(chars) for _ in range(size))
 
 
 def home(request):
@@ -20,7 +26,10 @@ def submit(request):
     sharing_option = request.POST.get("filter")
     language = request.POST.get("language")
     language = language.strip()
-    code = Code.create(unique_code_id="a", user=request.user, website=website, language=language,
+    unique_code_id = random_string_generator()
+    while Code.objects.filter(unique_code_id=unique_code_id).count() > 0:
+        unique_code_id = random_string_generator()
+    code = Code.create(unique_code_id=unique_code_id, user=request.user, website=website, language=language,
                        sharing_option=sharing_option)
     # drive.upload(file_name, code, website, language)
     return HttpResponse(json.dumps(code_text))
