@@ -11,284 +11,341 @@
 
 {% block css %}
 <style>
-    body{
-      background-color: #f1f1f1;
-    }
-    .border{
-      border-bottom:1px solid #F1F1F1;
-      margin-bottom:10px;
-    }
-    .main-section{
-      margin-top: 100px;
-    }
-    .image-section{
-      padding: 0px;
-    }
-    .image-section img{
-      width: 100%;
-      height:250px;
-      position: relative;
-    }
-    .user-image{
-      position: absolute;
-      margin-top:-50px;
-    }
-    .user-left-part{
-      margin: 0px;
-    }
-    .user-image img{
-      width:100px;
-      height:100px;
-    }
-    .user-profil-part{
-      padding-bottom:30px;
-      background-color:#FAFAFA;
-    }
-    .follow{
-      width:50%;
-      margin-top:70px;
-      font-size:12px;
-      border:1px solid #DDDDDD;
-      background-color: #fff;
-      font-weight: 600;
-    }
-    .user-detail-row{
-      margin:0px;
-    }
-    .user-detail-section2 p{
-      font-size:12px;
-      padding: 0px;
-      margin: 0px;
-    }
-    .user-detail-section2{
-      margin-top:10px;
-    }
-    .user-detail-section2 span{
-      color:#7CBBC3;
-      font-size: 20px;
-    }
-    .user-detail-section2 small{
-      font-size:12px;
-      color:#D3A86A;
-    }
-    .profile-right-section{
-      padding: 20px 0px 10px 15px;
-      background-color: #FFFFFF;
-    }
-    .profile-right-section-row{
-      margin: 0px;
-    }
-    .profile-header-section1 h1{
-      font-size: 25px;
-      margin: 0px;
-    }
-    .profile-header-section1 p{
-      color:#878787;
-    }
-    .req-btn{
-      height:30px;
-      font-size:12px;
-    }
-    .profile-tag{
-      padding: 10px;
-      border:1px solid #F6F6F6;
-    }
-    .profile-tag p{
-      font-size: 12px;
-      color:#ADADAD;
-    }
-    .profile-tag i{
-      color:#ADADAD;
-      font-size: 20px;
-    }
-    .image-right-part{
-      background-color: #FCFCFC;
-      margin: 0px;
-      padding: 5px;
-    }
-    .img-main-rightPart{
-      background-color: #FCFCFC;
-    }
-    .image-right-detail{
-      padding: 0px;
-    }
-    .image-right-detail p{
-      font-size: 12px;
-    }
-    .image-right-detail a:hover{
-      text-decoration: none;
-    }
-    .image-right img{
-      width: 100%;
-    }
-    .image-right-detail-section2{
-      margin: 0px;
-    }
-    .image-right-detail-section2 p{
-      color:#38ACDF;
-      margin:0px;
-    }
-    .image-right-detail-section2 span{
-      color:#7F7F7F;
-    }
+  body {
+    background-color: #f1f1f1;
+  }
+
+  .border {
+    border-bottom: 1px solid #F1F1F1;
+    margin-bottom: 10px;
+  }
+
+  .main-section {
+    margin-top: 100px;
+  }
+
+  .image-section {
+    padding: 0px;
+  }
+
+  .image-section img {
+    width: 100%;
+    height: 250px;
+    position: relative;
+  }
+
+  .user-image {
+    position: absolute;
+    margin-top: -50px;
+  }
+
+  .user-left-part {
+    margin: 0px;
+  }
+
+  .user-image img {
+    width: 100px;
+    height: 100px;
+  }
+
+  .user-profil-part {
+    padding-bottom: 30px;
+    background-color: #FAFAFA;
+  }
+
+  .follow {
+    width: 50%;
+    margin-top: 70px;
+    font-size: 12px;
+    border: 1px solid #DDDDDD;
+    background-color: #fff;
+    font-weight: 600;
+  }
+
+  .user-detail-row {
+    margin: 0px;
+  }
+
+  .user-detail-section2 p {
+    font-size: 12px;
+    padding: 0px;
+    margin: 0px;
+  }
+
+  .user-detail-section2 {
+    margin-top: 10px;
+  }
+
+  .user-detail-section2 span {
+    color: #7CBBC3;
+    font-size: 20px;
+  }
+
+  .user-detail-section2 small {
+    font-size: 12px;
+    color: #D3A86A;
+  }
+
+  .profile-right-section {
+    padding: 20px 0px 10px 15px;
+    background-color: #FFFFFF;
+  }
+
+  .profile-right-section-row {
+    margin: 0px;
+  }
+
+  .profile-header-section1 h1 {
+    font-size: 25px;
+    margin: 0px;
+  }
+
+  .profile-header-section1 p {
+    color: #878787;
+  }
+
+  .req-btn {
+    height: 30px;
+    font-size: 12px;
+  }
+
+  .profile-tag {
+    padding: 10px;
+    border: 1px solid #F6F6F6;
+  }
+
+  .profile-tag p {
+    font-size: 12px;
+    color: #ADADAD;
+  }
+
+  .profile-tag i {
+    color: #ADADAD;
+    font-size: 20px;
+  }
+
+  .image-right-part {
+    background-color: #FCFCFC;
+    margin: 0px;
+    padding: 5px;
+  }
+
+  .img-main-rightPart {
+    background-color: #FCFCFC;
+  }
+
+  .image-right-detail {
+    padding: 0px;
+  }
+
+  .image-right-detail p {
+    font-size: 12px;
+  }
+
+  .image-right-detail a:hover {
+    text-decoration: none;
+  }
+
+  .image-right img {
+    width: 100%;
+  }
+
+  .image-right-detail-section2 {
+    margin: 0px;
+  }
+
+  .image-right-detail-section2 p {
+    color: #38ACDF;
+    margin: 0px;
+  }
+
+  .image-right-detail-section2 span {
+    color: #7F7F7F;
+  }
+  
+  a:hover{
+    cursor: pointer;
+  }
 </style>
 {% endblock %}
 
 {% block body%}
- <body>
-    <div class="container main-section">
-        <div class="row">
-            <div class="row user-left-part">
-                <div class="col-md-3 col-sm-3 col-xs-12 user-profil-part pull-left">
-                    <div class="row ">
-                        <div class="col-md-12 col-md-12-sm-12 col-xs-12 user-image text-center">
-                            <img src="{% static 'images/male_avatar.png' %}">
-                        </div>
-                        <div class="col-md-12 col-sm-12 col-xs-12 user-detail-section1 text-center">
-                            {%if profile_user == user %}
-                                <button type="submit" class="btn btn-defult follow">
-                                    <i class="fa fa-user-o" aria-hidden="true"></i>You
-                                </button>
-                            {% elif user not in followers_list %}
-                                <form method="post" action="{%url 'profiles:follow_user' profile_user.username%}">
-                                    {%csrf_token%}
-                                    <i class="fa fa-user-o" aria-hidden="true"></i>
-                                    <input type="submit" class="btn btn-defult follow" value="Follow">
-                                </form>
-                            {%else%}
-                                <form method="post" action="#">
-                                    {%csrf_token%}
-                                    <i class="fa fa-user-o" aria-hidden="true"></i>
-                                    <input type="submit" class="btn btn-defult follow" value="Following">
-                                </form>
-                            {%endif%}
-                        </div>
-                        <div class="row user-detail-row">
-                            <div class="col-md-12 col-sm-12 user-detail-section2 pull-left">
-                            <div class="border"></div>
-                                <p>FOLLOWERS</p>
-                                <span>{{profile_user.following.count}}</span>
-                            </div>
-                            <div class="col-md-12 col-sm-12 user-detail-section2 pull-right">
-                                <div class="border"></div>
-                                <p>FOLLOWING</p>
-                                <span>{{profile_user.followers.count}}</span>
-                            </div>
-                            <div class="col-md-12 col-sm-12 user-detail-section2 pull-right">
-                            <div class="border"></div>
-                            <p>Friends</p>
-                            <span>{{friends_count}}</span>
-                        </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-9 col-sm-9 col-xs-12 pull-right profile-right-section">
-                    <div class="row profile-right-section-row">
-                        <div class="col-md-12 profile-header">
-                            <div class="row">
-                                <div class="col-md-8 col-sm-6 col-xs-6 profile-header-section1 pull-left">
-                                    <h1>{{profile.name}}</h1>
-                                    <p>Username: {{profile_user.username}}</p>
-                                </div>
-                                <div class="col-md-4 col-sm-6 col-xs-6 profile-header-section1 text-right pull-right">
-                                        {% is_pending_request_exists user profile_user as pre %}
-                                        {%if profile_user == user %}
-                                            <button type="submit" class="btn btn-info req-btn">Your Profile</button>
-                                        {%elif pre == "True" %}
-                                            <button type="submit" class="btn btn-info req-btn">Pending Friend Request</button>
-                                        {%elif user not in friends_list %}
-                                            <form method="post" action="{%url 'profiles:send_friend_request' profile_user.username%}">
-                                                {%csrf_token%}
-                                                <input type="submit" class="btn btn-info req-btn" value="Add Friend">
-                                            </form>
-                                        {%elif user in friends_list %}
-                                            <button type="submit" class="btn btn-info req-btn">Friend</button>
-                                        {%endif%}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="row">
-                                <div class="col-md-8  profile-tag-section text-center">
-                                    <div class="row">
-                                        <div class="col-md-3 col-sm-3 profile-tag">
-                                            <a href="#userinfo" role="button" aria-expanded="true" data-toggle="collapse" aria-controls="userinfo">
-                                                <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-                                            </a>
-                                            <p>Info</p>
-                                        </div>
-                                         <div class="col-md-3 col-sm-3 profile-tag">
-                                            <a href="#friendlist" role="button" aria-expanded="false" data-toggle="collapse" aria-controls="friendlist">
-                                                <i class="fa fa-address-book" aria-hidden="true"></i>
-                                            </a>
-                                            <p>Friends List</p>
-                                        </div>
-                                        <div class="col-md-3 col-sm-3 profile-tag">
-                                            <a href="#"><i class="fa fa-paperclip" aria-hidden="true"></i></a>
-                                            <p>Codes</p>
-                                        </div>
-                                        <div class="col-md-3 col-sm-3 profile-tag">
-                                            <a href="#"><i class="fa fa-paperclip" aria-hidden="true"></i></a>
-                                            <p>Resume</p>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="collapse show" id="userinfo">
-                                            <ul>
-                                                <li>{{profile.email_id}}</li>
-                                            </ul>
-                                        </div>
-                                        <div class="collapse" id="friendlist">
-                                            {%for friend in friends_list%}
-                                            <ul>
-                                                <li>
-                                                    <a href="{%url 'profiles:profile' friend.username%}">{{friend.username}}</a>
-                                                </li>
-                                            </ul>
-                                            {%endfor%}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 img-main-rightPart">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="row image-right-part">
-                                                {% if user.username == profile_user.username %}
-                                                    <div class="col-md-6 pull-left image-right-detail">
-                                                        <p>Friend Requests</p>
-                                                    </div>
-                                                {%else%}
-                                                    <div class="col-md-6 pull-left image-right-detail">
-                                                        <p>Today's Codes</p>
-                                                    </div>
-                                                {%endif%}
-                                                <div class="col-md-6 pull-right image-right-detail text-right">
-                                                    <span><a href="#">more</a></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12 image-right-detail-section2">
-                                            {% if user.username == profile_user.username %}
-                                                {%for pending_friend_request in pending_friend_requests%}
-                                                <a href="{% url 'profiles:accept_friend_request' pending_friend_request.pk %}">
-                                                    {{pending_friend_request.request_by.username}}
-                                                </a>
-                                                {% endfor %}
-                                            {% else %}
-                                                <p>Nothing</p>
-                                            {%endif%}
-                                            <span></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
+<body>
+  <div class="container main-section">
+    <div class="row">
+      <div class="row user-left-part">
+        <div class="col-md-3 col-sm-3 col-xs-12 user-profil-part pull-left">
+          <div class="row ">
+            <div class="col-md-12 col-md-12-sm-12 col-xs-12 user-image text-center">
+              <img src="{% static 'images/male_avatar.png' %}">
             </div>
+            <div class="col-md-12 col-sm-12 col-xs-12 user-detail-section1 text-center">
+              {%if profile_user == user %}
+              <button type="submit" class="btn btn-defult follow">
+                <i class="fa fa-user-o" aria-hidden="true"></i>You
+              </button>
+              {% elif user not in followers_list %}
+              <form method="post" action="{%url 'profiles:follow_user' profile_user.username%}">
+                {%csrf_token%}
+                <i class="fa fa-user-o" aria-hidden="true"></i>
+                <input type="submit" class="btn btn-defult follow" value="Follow">
+              </form>
+              {%else%}
+              <form method="post" action="#">
+                {%csrf_token%}
+                <i class="fa fa-user-o" aria-hidden="true"></i>
+                <input type="submit" class="btn btn-defult follow" value="Following">
+              </form>
+              {%endif%}
+            </div>
+            <div class="row user-detail-row">
+              <div class="col-md-12 col-sm-12 user-detail-section2 pull-left">
+                <div class="border"></div>
+                <p>FOLLOWERS</p>
+                <span>{{profile_user.following.count}}</span>
+              </div>
+              <div class="col-md-12 col-sm-12 user-detail-section2 pull-right">
+                <div class="border"></div>
+                <p>FOLLOWING</p>
+                <span>{{profile_user.followers.count}}</span>
+              </div>
+              <div class="col-md-12 col-sm-12 user-detail-section2 pull-right">
+                <div class="border"></div>
+                <p>Friends</p>
+                <span>{{friends_count}}</span>
+              </div>
+            </div>
+          </div>
         </div>
+        <div class="col-md-9 col-sm-9 col-xs-12 pull-right profile-right-section">
+          <div class="row profile-right-section-row">
+            <div class="col-md-12 profile-header">
+              <div class="row">
+                <div class="col-md-8 col-sm-6 col-xs-6 profile-header-section1 pull-left">
+                  <h1>{{profile.name}}</h1>
+                  <p>Username: {{profile_user.username}}</p>
+                </div>
+                <div class="col-md-4 col-sm-6 col-xs-6 profile-header-section1 text-right pull-right">
+                  {% is_pending_request_exists user profile_user as pre %}
+                  {%if profile_user == user %}
+                  <button type="submit" class="btn btn-info req-btn">Your Profile</button>
+                  {%elif pre == "True" %}
+                  <button type="submit" class="btn btn-info req-btn">Pending Friend Request</button>
+                  {%elif user not in friends_list %}
+                  <form method="post" action="{%url 'profiles:send_friend_request' profile_user.username%}">
+                    {%csrf_token%}
+                    <input type="submit" class="btn btn-info req-btn" value="Add Friend">
+                  </form>
+                  {%elif user in friends_list %}
+                  <button type="submit" class="btn btn-info req-btn">Friend</button>
+                  {%endif%}
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="row">
+                <div class="col-md-8  profile-tag-section text-center">
+                  <div class="row">
+                    <div class="col-md-3 col-sm-3 profile-tag">
+                      <a id="#userinfo" class="info_shower">
+                        <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+                      </a>
+                      <p>Info</p>
+                    </div>
+                    <div class="col-md-3 col-sm-3 profile-tag">
+                      <a id="#friendlist" class="info_shower">
+                        <i class="fa fa-address-book" aria-hidden="true"></i>
+                      </a>
+                      <p>Friends List</p>
+                    </div>
+                    <div class="col-md-3 col-sm-3 profile-tag" class="info_shower">
+                      <a href="#"><i class="fa fa-paperclip" aria-hidden="true"></i></a>
+                      <p>Codes</p>
+                    </div>
+                    <div class="col-md-3 col-sm-3 profile-tag" class="info_shower">
+                      <a href="#"><i class="fa fa-paperclip" aria-hidden="true"></i></a>
+                      <p>Resume</p>
+                    </div>
+                  </div>
+                  <div class="row" id="display_info">
+                    <div class="show" id="userinfo">
+                      <ul>
+                        <li>{{profile.email_id}}</li>
+                      </ul>
+                    </div>
+                    <div class="collapse" id="friendlist">
+                      {%for friend in friends_list%}
+                      <ul>
+                        <li>
+                          <a href="{%url 'profiles:profile' friend.username%}">{{friend.username}}</a>
+                        </li>
+                      </ul>
+                      {%endfor%}
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 img-main-rightPart">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="row image-right-part">
+                        {% if user.username == profile_user.username %}
+                        <div class="col-md-6 pull-left image-right-detail">
+                          <p>Friend Requests</p>
+                        </div>
+                        {%else%}
+                        <div class="col-md-6 pull-left image-right-detail">
+                          <p>Today's Codes</p>
+                        </div>
+                        {%endif%}
+                        <div class="col-md-6 pull-right image-right-detail text-right">
+                          <span><a href="#">more</a></span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-12 image-right-detail-section2">
+                      {% if user.username == profile_user.username %}
+                      {%for pending_friend_request in pending_friend_requests%}
+                      <a href="{% url 'profiles:accept_friend_request' pending_friend_request.pk %}">
+                        {{pending_friend_request.request_by.username}}
+                      </a>
+                      {% endfor %}
+                      {% else %}
+                      <p>Nothing</p>
+                      {%endif%}
+                      <span></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </body>
 {% endblock %}
 
-{% block script %}{% endblock %}
+{% block script %}
+<script>
+  $(".info_shower").click(function (event) {
+  const id = $(this).attr("id").slice(1, );
+  const children = $("#display_info").children();
+  let id_list = []
+
+  children.each(function(index , child){
+    id_list.push(child["id"])
+  })
+
+  id_list.forEach(element => {
+    if (id != element) {
+      $("#" + element).fadeOut(10)
+    }
+    else{
+      $("#" + element).fadeIn(300);
+    }
+  });
+ });
+</script>
+{% endblock %}
