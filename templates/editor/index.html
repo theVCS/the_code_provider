@@ -308,67 +308,6 @@
     }
   })
 
-
-  // submission of code to the server using ajax request
-  $('#submit').click(function (event) {
-
-    // got code from the editor
-    let code = editor.getSession().getValue();
-
-    if (code == "") {
-      $("#warnmodalbtn").click();
-    } else {
-      // variable to make ajax request
-      var request;
-
-      // Abort any pending request
-      if (request) {
-        request.abort();
-      }
-
-      // got csrf token
-      var token = '{{csrf_token}}';
-
-      request = $.ajax({
-        headers: {
-          "X-CSRFToken": token
-        },
-        url: "/code_editor/submit/",
-        type: "post",
-        data: {
-          "username": "{{user.username}}",
-          "code": code,
-          "file_name": "question.c",
-          "website": "codeforces",
-          "filter": window.preference,
-          "language": $("#btnGroupDrop1").html(),
-        },
-      });
-
-      // Callback handler that will be called on success
-      request.done(function (response, textStatus, jqXHR) {
-        // rendering another page
-        $("#successupload").click();
-      });
-
-      // Callback handler that will be called on failure
-      request.fail(function (jqXHR, textStatus, errorThrown) {
-        // Log the error to the console
-        console.error(
-          "The following error occurred: " +
-          textStatus, errorThrown
-        );
-      });
-
-      // Callback handler that will be called regardless
-      // if the request failed or succeeded
-      request.always(function () {
-        // Reenable the inputs
-        $("#search_query").prop("disabled", false);
-      });
-    }
-  })
-
   // searching an url of codeforces etc.
   $('#search').keydown(function (event) {
 
