@@ -33,6 +33,7 @@
         var editor = ace.edit("editor");
         editor.setReadOnly(true);
         editor.autoIndent(true);
+        editor.setShowPrintMargin(false);   
         editor.setTheme("ace/theme/dracula");
         let nmode = "ace/mode/c_cpp";
         editor.session.setMode(nmode);

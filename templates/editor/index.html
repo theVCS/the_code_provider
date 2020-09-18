@@ -123,6 +123,7 @@
           </div>
         </div>
 
+        <!-- url_generator -->
         <div class="input-group mb-3 url_generator" style="display: none;">
           <input type="text" class="form-control" id="url" aria-describedby="basic-addon2" value="">
           <div class="input-group-append">
@@ -131,7 +132,22 @@
               <img src="{% static 'icons/clipboard.svg' %}" alt="Copy to clipboard" style="height: 1rem;">
             </span>
           </div>
-        </div>     
+        </div>
+
+
+        <!-- friend list -->
+        {%if user.is_authenticated%}
+        <form class="form-group">
+          <h6>Toggle To Share With Friends</h6>
+          {%for friend in friends_list%}
+            <div class="custom-control custom-switch">
+              <input type="checkbox" class="custom-control-input" id="customSwitch{{friend.username}}">
+              <label class="custom-control-label" for="customSwitch{{friend.username}}">{{friend.username}}</label>
+            </div>
+          {%endfor%}
+          <button type="submit" class="btn btn-sm my-2" style="color: white; background-color: orange;">Share</button>
+        </form>
+        {%endif%}
 
       </div>
     </div>
@@ -196,7 +212,6 @@
 <script src="{% static 'js/editor/ace.js' %}"></script>
 <script src="{% static 'js/editor/ext-language_tools.js' %}"></script>
 <script>
-
   new ClipboardJS('.copy');
   var editor = ace.edit("editor");
 
@@ -273,7 +288,74 @@
           $("#share").html("Edit");
           $("#share").prop('disabled', false);
           $('.url_generator').css("display", "flex")
-          $("#url").val( document.location.host + "/shared/?id=" + localStorage.getItem("id"))
+          $("#share").attr("id", "tempEdit")
+          $("#url").val(document.location.host + "/shared/?id=" + localStorage.getItem("id"))
+        });
+      }
+    })
+
+    // submission of edited code to the server using ajax request
+    $('#share').click(function (event) {
+
+      // got code from the editor
+      let code = editor.getSession().getValue();
+
+      if (code == "") {
+        $("#warnmodalbtn").click();
+      } else {
+        // variable to make ajax request
+        var request;
+
+        // Abort any pending request
+        if (request) {
+          request.abort();
+        }
+
+        // got csrf token
+        var token = '{{csrf_token}}';
+
+        $(this).html(`<div class="spinner-border text-light" role="status">
+  <span class="sr-only">Loading...</span>
+</div>`)
+        $(this).prop('disabled', true);
+
+        request = $.ajax({
+          headers: {
+            "X-CSRFToken": token
+          },
+          url: "/code_editor/share/",
+          type: "post",
+          data: {
+            "code": code,
+            "language": $("#btnGroupDrop1").html(),
+          },
+        });
+
+        // Callback handler that will be called on success
+        request.done(function (response, textStatus, jqXHR) {
+          localStorage.setItem("id", JSON.parse(response)['file_name'])
+          // rendering another page
+          $("#successupload").click();
+        });
+
+        // Callback handler that will be called on failure
+        request.fail(function (jqXHR, textStatus, errorThrown) {
+          // Log the error to the console
+          console.error(
+            "The following error occurred: " +
+            textStatus, errorThrown
+          );
+        });
+
+        // Callback handler that will be called regardless
+        // if the request failed or succeeded
+        request.always(function () {
+          // Reenable the inputs
+          $("#share").html("Edit");
+          $("#share").prop('disabled', false);
+          $('.url_generator').css("display", "flex")
+          $("#share").attr("id", "tempEdit")
+          $("#url").val(document.location.host + "/shared/?id=" + localStorage.getItem("id"))
         });
       }
     })

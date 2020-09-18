@@ -6,6 +6,10 @@ import json
 from . import drive, question_fetcher
 from .models import Code
 import uuid
+from django.apps import apps
+
+
+Profile = apps.get_model('profiles', 'Profile')
 
 
 def random_string_generator(size=6, chars=string.ascii_lowercase + string.digits + string.ascii_uppercase):
@@ -13,9 +17,17 @@ def random_string_generator(size=6, chars=string.ascii_lowercase + string.digits
 
 
 def home(request):
-    context = {
-        "title": "coding section"
-    }
+    if request.user == "":
+        profile = Profile.objects.get(user=request.user)
+        friends_list = profile.friends.all()
+        context = {
+            "title": "coding section",
+            "friends_list": friends_list,
+        }
+    else:
+        context = {
+            "title": "home",
+        }
     return render(request, "editor/index.html", context)
 
 
