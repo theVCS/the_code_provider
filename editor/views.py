@@ -65,3 +65,12 @@ def show(request):
     id = request.GET.get("id")
     code = drive.show_shared(id)
     return HttpResponse(json.dumps({'code': code}))
+
+
+def edit_temp(request):
+    code = request.POST.get('code')
+    language = request.POST.get('language')
+    language = language.strip()
+    file_name = request.POST.get('file_name')
+    file_name = drive.temp_edit(code, language, file_name)
+    return HttpResponse(json.dumps({'file_name': file_name}))

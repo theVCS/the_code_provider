@@ -9,4 +9,5 @@ urlpatterns = [
     path('fetch_question/', views.fetch_question, name="fetch_question"),
     path('share/', views.share, name="share"),
     path('show/', views.show, name="show"),
+    path('tempEdit/', views.edit_temp, name="tempEdit"),
 ]
