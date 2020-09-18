@@ -15,6 +15,14 @@
     font-size: 1rem;
     margin-bottom: 2rem;
   }
+
+  .menu_bar {
+    border: 2px solid aliceblue;
+    background-color: aliceblue;
+    padding: 20px;
+    height: 35rem;
+    overflow-y: scroll;
+  }
 </style>
 {% endblock %}
 
@@ -47,66 +55,90 @@
   <p class="lead mb-5" id="notes"></p>
 </div>
 
-<div class="container">
-  <div class="row my-3">
 
-    <div class="alert alert-info col-md-6 text-center" role="alert" style="visibility: hidden;">
-      A simple info alert—check it out!
-    </div>
+<div class="row">
 
-    <div class="col-md-6 row">
+  <div class="col-md-9">
+    <div id="editor"></div>
+  </div>
 
-      <div class="col-md-8"></div>
+  <div class="col-md-3">
 
-      <div class="col-md-2">
-        <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-          <div class="btn-group" role="group">
-            <button id="btnGroupDrop1" type="button" class="btn btn-warning dropdown-toggle text-white"
-              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              c
-            </button>
-            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-              <a class="dropdown-item" href="javascript:void(0);" lang="c_cpp">c</a>
-              <a class="dropdown-item" href="javascript:void(0);" lang="c_cpp">cpp</a>
-              <a class="dropdown-item" href="javascript:void(0);" lang="python">python</a>
-              <a class="dropdown-item" href="javascript:void(0);" lang="java">java</a>
+    <div style="padding: 20px 0;">
+      <div class="menu_bar">
+
+        <!-- choosing language -->
+        <div class="row">
+          <div class="col-md-6">
+            <label for="exampleInputEmail1">Please Choose Your Language</label>
+          </div>
+          <div class="col-md-6">
+            <div class="btn-group">
+              <div class="btn-group" role="group">
+                <button id="btnGroupDrop1" type="button" class="btn btn-warning dropdown-toggle text-white"
+                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  c
+                </button>
+                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                  <a class="dropdown-item" href="javascript:void(0);" lang="c_cpp">c</a>
+                  <a class="dropdown-item" href="javascript:void(0);" lang="c_cpp">cpp</a>
+                  <a class="dropdown-item" href="javascript:void(0);" lang="python">python</a>
+                  <a class="dropdown-item" href="javascript:void(0);" lang="java">java</a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-
-      <div class="col-md-2">
-        <fieldset class="form-group" style="display: inline-block;">
-          <div class="row">
-            <div class="col-sm-10">
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="me" checked>
-                <label class="form-check-label" for="gridRadios1">
-                  Me
-                </label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="private">
-                <label class="form-check-label" for="gridRadios2">
-                  Private
-                </label>
-              </div>
-              <div class="form-check disabled">
-                <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios3" value="public">
-                <label class="form-check-label" for="gridRadios3">
-                  Public
-                </label>
-              </div>
-            </div>
+        <!-- preference -->
+        <div class="row mt-3">
+          <div class="col-md-6">
+            <label for="exampleInputEmail1">Please Choose Your Preference</label>
           </div>
-        </fieldset>
+          <div class="col-md-6">
+            <fieldset class="form-group" style="display: inline-block;">
+              <div class="row">
+                <div class="col-sm-10">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="me" checked>
+                    <label class="form-check-label" for="gridRadios1">
+                      Me
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="private">
+                    <label class="form-check-label" for="gridRadios2">
+                      Private
+                    </label>
+                  </div>
+                  <div class="form-check disabled">
+                    <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios3" value="public">
+                    <label class="form-check-label" for="gridRadios3">
+                      Public
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+        </div>
+
+        <div class="input-group mb-3 url_generator" style="display: none;">
+          <input type="text" class="form-control" id="url" aria-describedby="basic-addon2" value="">
+          <div class="input-group-append">
+            <span class="input-group-text copy" id="basic-addon2" style="height: 2.35rem;" data-clipboard-target="#url">
+              <!-- Trigger -->
+              <img src="{% static 'icons/clipboard.svg' %}" alt="Copy to clipboard" style="height: 1rem;">
+            </span>
+          </div>
+        </div>     
+
       </div>
     </div>
+
   </div>
 </div>
 
-<div id="editor" class="mb-4"></div>
 {%if not user.is_authenticated%}
 <button type="button" class="btn btn-lg btn-primary" style="color: white;" id="share">Share</button>
 {%else%}
@@ -164,13 +196,17 @@
 <script src="{% static 'js/editor/ace.js' %}"></script>
 <script src="{% static 'js/editor/ext-language_tools.js' %}"></script>
 <script>
+
+  new ClipboardJS('.copy');
   var editor = ace.edit("editor");
+
   $(document).ready(function () {
 
     window.preference = "me";
 
     editor.setReadOnly(false);
     editor.autoIndent(false);
+    editor.setShowPrintMargin(false);
     editor.setTheme("ace/theme/dracula");
     let nmode = "ace/mode/c_cpp";
     editor.session.setMode(nmode);
@@ -234,10 +270,10 @@
         // if the request failed or succeeded
         request.always(function () {
           // Reenable the inputs
-          $("#share").html("Share");
+          $("#share").html("Edit");
           $("#share").prop('disabled', false);
-          $('.alert').css("visibility", "visible")
-          $('.alert').html(document.location.host + "/shared/?id=" + localStorage.getItem("id") + "<br>share this link with your friends to let them see your code")
+          $('.url_generator').css("display", "flex")
+          $("#url").val( document.location.host + "/shared/?id=" + localStorage.getItem("id"))
         });
       }
     })
