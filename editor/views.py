@@ -1,8 +1,11 @@
 import random
 import string
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 import json
+
+from django.urls import reverse
+
 from . import drive, question_fetcher
 from .models import Code
 import uuid
@@ -42,8 +45,9 @@ def submit(request):
         unique_code_id = random_string_generator()
     code = Code.create(unique_code_id=unique_code_id, user=request.user, website=website, language=language,
                        sharing_option=sharing_option)
-    # drive.upload(file_name, code, website, language)
-    return HttpResponse(json.dumps(code_text))
+    # drive.upload(unique_code_id, code, website, language)
+
+    return HttpResponseRedirect(reverse('editor:get_code_view', kwargs={'unique_code_id': unique_code_id}))
 
 
 def fetch_question(request):
@@ -73,3 +77,8 @@ def edit_temp(request):
     file_name = request.POST.get('file_name')
     file_name = drive.temp_edit(code, language, file_name)
     return HttpResponse(json.dumps({'file_name': file_name}))
+
+
+def get_code_view(request, unique_code_id):
+    # get code file with id : unique_code_id
+    return HttpResponse("Will be available soon")
