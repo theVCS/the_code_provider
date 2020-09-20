@@ -17,16 +17,16 @@ def random_string_generator(size=6, chars=string.ascii_lowercase + string.digits
 
 
 def home(request):
-    if request.user == "":
+    if request.user != "":
+        context = {
+            "title": "home",
+        }
+    else:
         profile = Profile.objects.get(user=request.user)
         friends_list = profile.friends.all()
         context = {
             "title": "coding section",
             "friends_list": friends_list,
-        }
-    else:
-        context = {
-            "title": "home",
         }
     return render(request, "editor/index.html", context)
 
