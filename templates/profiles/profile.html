@@ -326,62 +326,67 @@
                   </div>
                 </div>
                 <div class="collapse" id="codes">
-                  <ul>
-                    <div>
-                      <div class="profile-header-section1"><p> Only Me codes </p> </div>
-                      {%if me_codes.count == 0 %}
-                      <div>
-                        No Code Available
-                      </div>
-                      {%else%}
-                        {%for code in me_codes%}
-                        <li>
-                          <a
-                            href="/userCodes/?id={{code.unique_code_id}}&language={{code.language}}&website={{code.website}}">
-                            <span style="color: black;">Code Date</span>:{{code.date}} <span style="color: black;">Sharing
-                              Code: </span>{{code.unique_code_id}}
-                          </a>
-                        </li>
-                        {%endfor%}
-                      {%endif%}
-                    </div>
-                    <div>
-                      <div class="profile-header-section1"><p>Private Codes</p></div>
-                      {%if private_codes.count == 0 %}
+                  <div class="row">
+                    <div class="col-3"></div>
+                    <div class="col-auto">
+                      <ul>
                         <div>
-                          No Code Available
+                          <div class="profile-header-section1"><p> Only Me codes </p> </div>
+                          {%if me_codes.count == 0 %}
+                          <div>
+                            No Code Available
+                          </div>
+                          {%else%}
+                            {%for code in me_codes%}
+                            <li>
+                              <a
+                                href="/userCodes/?id={{code.unique_code_id}}&language={{code.language}}&website={{code.website}}">
+                                <span style="color: black;">Code Date</span>:{{code.date}} <span style="color: black;">Sharing
+                                  Code: </span>{{code.unique_code_id}}
+                              </a>
+                            </li>
+                            {%endfor%}
+                          {%endif%}
                         </div>
-                      {%else%}
-                        {%for code in private_codes%}
-                        <li>
-                          <a
-                            href="/userCodes/?id={{code.unique_code_id}}&language={{code.language}}&website={{code.website}}">
-                            <span style="color: black;">Code Date</span>:{{code.date}} <span style="color: black;">Sharing
-                              Code: </span>{{code.unique_code_id}}
-                          </a>
-                        </li>
-                        {%endfor%}
-                      {%endif%}
-                    </div>
-                    <div>
-                      <div class="profile-header-section1"><p>Public Codes</p></div>
-                      {%if public_codes.count == 0 %}
                         <div>
-                          No Code Available
+                          <div class="profile-header-section1"><p>Private Codes</p></div>
+                          {%if private_codes.count == 0 %}
+                            <div>
+                              No Code Available
+                            </div>
+                          {%else%}
+                            {%for code in private_codes%}
+                            <li>
+                              <a
+                                href="/userCodes/?id={{code.unique_code_id}}&language={{code.language}}&website={{code.website}}">
+                                <span style="color: black;">Code Date</span>:{{code.date}} <span style="color: black;">Sharing
+                                  Code: </span>{{code.unique_code_id}}
+                              </a>
+                            </li>
+                            {%endfor%}
+                          {%endif%}
                         </div>
-                      {%else%}
-                        {%for code in public_codes%}
-                        <li>
-                          <a
-                            href="/userCodes/?id={{code.unique_code_id}}&language={{code.language}}&website={{code.website}}">
-                            <span style="color: black;">Code Date</span>:{{code.date}} <span style="color: black;">Sharing
-                              Code: </span>{{code.unique_code_id}}
-                          </a>
-                        </li>
-                        {%endfor%}
-                      {%endif%}
+                        <div>
+                          <div class="profile-header-section1 pd-2"><p>Public Codes</p></div>
+                          {%if public_codes.count == 0 %}
+                            <div>
+                              No Code Available
+                            </div>
+                          {%else%}
+                            {%for code in public_codes%}
+                            <li>
+                              <a
+                                href="/userCodes/?id={{code.unique_code_id}}&language={{code.language}}&website={{code.website}}">
+                                <span style="color: black;">Code Date</span>:{{code.date}} <span style="color: black;">Sharing
+                                  Code: </span>{{code.unique_code_id}}
+                              </a>
+                            </li>
+                            {%endfor%}
+                          {%endif%}
+                        </div>
+                      </ul>
                     </div>
-                  </ul>
+                  </div>
                 </div>
                 <div class="collapse" id="resume">
                   Resume
@@ -408,11 +413,22 @@
                 </div>
                 <div class="col-md-12 image-right-detail-section2">
                   {% if user.username == profile_user.username %}
-                  {%for pending_friend_request in pending_friend_requests%}
-                  <a href="{% url 'profiles:accept_friend_request' pending_friend_request.pk %}">
-                    {{pending_friend_request.request_by.username}}
-                  </a>
-                  {% endfor %}
+                    {%if pending_friend_requests.count == 0 %}
+                      <div class="container">
+                        <div class="row my-4 mr-2">
+                          <div class="col"></div>
+                          <div class="col-auto">
+                            No Pending Friend Request
+                          </div>
+                        </div>
+                      </div>
+                    {%else%}
+                      {%for pending_friend_request in pending_friend_requests%}
+                      <a href="{% url 'profiles:accept_friend_request' pending_friend_request.pk %}">
+                        {{pending_friend_request.request_by.username}}
+                      </a>
+                      {% endfor %}
+                    {%endif%}
                   {% else %}
                   <p>Nothing</p>
                   {%endif%}
