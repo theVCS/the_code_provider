@@ -109,7 +109,7 @@
 </div>
 
 {%if user.is_authenticated%}
-<button type="button" class="btn btn-lg btn-primary" style="color: white;" id="submit">Update</button>
+<button type="button" class="btn btn-lg btn-primary" style="color: white;" id="update">Update</button>
 {%endif%}
 
 <!-- Button trigger modal -->
@@ -157,8 +157,6 @@
   </div>
 </div>
 
-<div id="language_selector" style="display: none;">{{language}}</div>
-
 {% endblock %}
 
 {% block script %}
@@ -166,12 +164,6 @@
 <script src="{% static 'js/editor/ace.js' %}"></script>
 <script src="{% static 'js/editor/ext-language_tools.js' %}"></script>
 <script>
-  // clearing localStorage if the page is reloaded
-  if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
-    localStorage.clear("id")
-    localStorage.clear("uploaded_once")
-  }
-
   new ClipboardJS('.copy');
   var editor = ace.edit("editor");
 
@@ -186,100 +178,16 @@
 
     var language = '{{language}}';
 
-    if (language =="c" || language == "cpp") {
+    if (language == "c" || language == "cpp") {
       language = "c_cpp";
     }
 
     let nmode = "ace/mode/" + language;
     editor.session.setMode(nmode);
     editor.session.setMode(nmode);
-
-
-    // submission of code to the server using ajax request
-    $('#share').click(function (event) {
-
-      // got code from the editor
-      let code = editor.getSession().getValue();
-
-      if (code == "") {
-        $("#warnmodalbtn").click();
-      } else {
-        // variable to make ajax request
-        var request;
-
-        // Abort any pending request
-        if (request) {
-          request.abort();
-        }
-
-        // got csrf token
-        var token = '{{csrf_token}}';
-
-        $(this).html(`<div class="spinner-border text-light" role="status">
-  <span class="sr-only">Loading...</span>
-</div>`)
-        $(this).prop('disabled', true);
-
-        if (localStorage.getItem("uploaded_once") == "1") {
-          // for editing the code
-          request = $.ajax({
-            headers: {
-              "X-CSRFToken": token
-            },
-            url: "/userCodes/tempEdit/",
-            type: "post",
-            data: {
-              "code": code,
-              "language": $("#btnGroupDrop1").html(),
-              "file_name": localStorage.getItem("id"),
-            },
-          });
-        } else {
-          // for uploading a new code
-          request = $.ajax({
-            headers: {
-              "X-CSRFToken": token
-            },
-            url: "/code_editor/share/",
-            type: "post",
-            data: {
-              "code": code,
-              "language": $("#btnGroupDrop1").html(),
-            },
-          });
-        }
-
-        // Callback handler that will be called on success
-        request.done(function (response, textStatus, jqXHR) {
-          localStorage.setItem("id", JSON.parse(response)['file_name'])
-          localStorage.setItem("uploaded_once", 1)
-          // rendering another page
-          $("#successupload").click();
-        });
-
-        // Callback handler that will be called on failure
-        request.fail(function (jqXHR, textStatus, errorThrown) {
-          // Log the error to the console
-          console.error(
-            "The following error occurred: " +
-            textStatus, errorThrown
-          );
-        });
-
-        // Callback handler that will be called regardless
-        // if the request failed or succeeded
-        request.always(function () {
-          // Reenable the inputs
-          $("#share").html("Edit");
-          $("#share").prop('disabled', false);
-          $('.url_generator').css("display", "flex")
-          $("#url").val(document.location.host + "/shared/?id=" + localStorage.getItem("id"))
-        });
-      }
-    })
   });
 
-  $('#submit').click(function (event) {
+  $('#update').click(function (event) {
 
     // got code from the editor
     let code = editor.getSession().getValue();
@@ -307,15 +215,14 @@
         headers: {
           "X-CSRFToken": token
         },
-        url: "/code_editor/submit/",
+        url: "/userCodes/edit/",
         type: "post",
         data: {
-          "username": "{{user.username}}",
           "code": code,
-          "file_name": "question.c",
-          "website": "codeforces",
+          "file_name": '{{file_name}}',
+          "website": '{{website}}',
+          "language": '{{language}}',
           "filter": window.preference,
-          "language": $("#btnGroupDrop1").html(),
         },
       });
 
@@ -338,122 +245,10 @@
       // if the request failed or succeeded
       request.always(function () {
         // Reenable the inputs
-        $("#submit").html("Upload");
-        $("#submit").prop('disabled', false);
+        $("#update").html("Update");
+        $("#update").prop('disabled', false);
       });
     }
-  })
-
-  // searching an url of codeforces etc.
-  $('#search').keydown(function (event) {
-
-    if (event.keyCode === 13) {
-
-      // preventing the default behaviuor of the object
-      event.preventDefault();
-
-      // got csrf token
-      var token = '{{csrf_token}}';
-
-      // getting url from the searhing panel
-      const url = $(this).val();
-
-      // variable to make ajax request
-      var request;
-
-      request = $.ajax({
-        headers: {
-          "X-CSRFToken": token
-        },
-        url: "/code_editor/fetch_question/",
-        type: "post",
-        data: {
-          "url": url,
-        },
-      });
-
-      // Callback handler that will be called on success
-      request.done(function (response, textStatus, jqXHR) {
-        // rendering another page
-        response = JSON.parse(response)
-
-        // make display of #show_ques block
-        document.getElementById('show_ques').style.display = "block"
-
-        // checking if any variabkle is empty
-
-
-        if (response['title'] != "") {
-          $("#title").html(response['title'])
-        } else {
-          $("#title").html("No Title")
-
-        }
-
-
-        if (response['statement'] != "") {
-          $("#statement").html(response['statement'])
-        } else {
-          $("#statement").html("No Statement Provided")
-        }
-
-
-        if (response['input_const'] != "") {
-          $("#input_const").html(response['input_const'])
-        } else {
-          $("#input_const").html("No Input Constraints")
-        }
-
-
-        if (response['output'] != "") {
-          $("#output").html(response['output'])
-        } else {
-          $("#output").html("No Output Statement Provided")
-        }
-
-
-        if (response['examples'] != "") {
-          $("#examples").html(response['examples'])
-        } else {
-          $("#examples").html("No Examples Provided")
-        }
-
-
-        if (response['notes'] != "") {
-          $("#notes").html(response['notes'])
-        } else {
-          $("#notes").html("No Notes Given")
-        }
-        load_math();
-      });
-
-      // Callback handler that will be called on failure
-      request.fail(function (jqXHR, textStatus, errorThrown) {
-        // Log the error to the console
-        console.error(
-          "The following error occurred: " +
-          textStatus, errorThrown
-        );
-      });
-    }
-
-    // loading the math script
-    function load_math() {
-      src = 'https://assets.codeforces.com/mathjax/MathJax.js?config=TeX-AMS_HTML-full';
-      $('script[src="' + src + '"]').remove();
-      $('<script>').attr('src', src).appendTo('head');
-    }
-
-  })
-
-  $(".form-check-input").click(function (event) {
-    window.preference = $(this).val()
-  })
-
-  $(".dropdown-item").click(function (event) {
-    $("#btnGroupDrop1").html($(this).html())
-    nmode = "ace/mode/" + $(this).attr('lang');
-    editor.session.setMode(nmode);
   })
 </script>
 {% endblock %}

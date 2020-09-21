@@ -66,10 +66,10 @@ def show_shared(id):
     return file[0].GetContentString()
 
 
-def temp_edit(data, language, file_name):
+def edit(data, website, language, file_name):
     """this will upload a file to drive with file_name as title and content as data and return the file_name"""
     drive = GoogleDrive(gauth)
-    file = drive.ListFile({'q': "'" + file_locator["sharing"] + f"' in parents and title contains '{file_name}' and trashed=false"}).GetList()[0]
+    file = drive.ListFile({'q': "'" + file_locator[website][language] + f"' in parents and title contains '{file_name}' and trashed=false"}).GetList()[0]
     file.SetContentString(data)
 
     # in-built function used to upload data to the drive

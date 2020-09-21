@@ -53,8 +53,24 @@ def home(request):
         file_name = request.GET.get("id")
         language = request.GET.get("language")
         website = request.GET.get("website")
-        
+
         context["code"] = drive.get_content(website, language, file_name)
         context["language"] = language
+        context["website"] = website
+        context["file_name"] = file_name
 
         return render(request, "userCodes/index.html", context)
+
+
+def edit(request):
+    code = request.POST.get("code")
+    file_name = request.POST.get("file_name")
+    website = request.POST.get("website")
+    preference = request.POST.get("filter")
+    language = request.POST.get("language")
+    file_name = drive.edit(code, website, language, file_name)
+
+    # needs to change preference is database
+    
+    params = json.dumps({"file_name": file_name})
+    return HttpResponse(params)
