@@ -15,6 +15,32 @@
     background-color: #f1f1f1;
   }
 
+  .people-nearby .google-maps{
+    background: #f8f8f8;
+    border-radius: 4px;
+    border: 1px solid #f1f2f2;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+
+  .people-nearby .google-maps .map{
+    height: 300px;
+    width: 100%;
+    border: none;
+  }
+
+  .people-nearby .nearby-user{
+    padding: 20px 0;
+    border-top: 1px solid #f1f2f2;
+    border-bottom: 1px solid #f1f2f2;
+    margin-bottom: 20px;
+  }
+
+  img.profile-photo-lg{
+    height: 80px;
+    width: 80px;
+    border-radius: 50%;
+  }
   .border {
     border-bottom: 1px solid #F1F1F1;
     margin-bottom: 10px;
@@ -247,14 +273,15 @@
               <div class="row">
                 <div class="col-md-8  profile-tag-section text-center">
                   <div class="row">
+                     <div class="col-md-3 col-sm-3 profile-tag">
                     <a id="#userinfo" class="info_shower">
-                      <div class="col-md-3 col-sm-3 profile-tag">
                         <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
                         <p>Info</p>
                     </a>
                   </div>
-                  <a id="#friendlist" class="info_shower">
                     <div class="col-md-3 col-sm-3 profile-tag">
+                  <a id="#friendlist" class="info_shower">
+
                       <i class="fa fa-address-book" aria-hidden="true"></i>
                       <p>Friends List</p>
                   </a>
@@ -278,13 +305,25 @@
                   </ul>
                 </div>
                 <div class="collapse" id="friendlist">
-                  <ul>
+                  <div class="people-nearby">
                     {%for friend in friends_list%}
-                    <li>
-                      <a href="{%url 'profiles:profile' friend.username%}">{{friend.username}}</a>
-                    </li>
+                    <div class="nearby-user">
+                      <div class="row">
+                        <div class="col-md-2 col-sm-2">
+                          <img src="{% static 'images/male_avatar.png' %}" class="profile-photo-lg">
+                        </div>
+                        <div class="col-md-7 col-sm-7">
+                          <h5><a href="#" class="profile-link">{{friend.username}}</a></h5>
+                        </div>
+                        <div class="col-md-3 col-sm-3">
+                          <a href="{%url 'profiles:profile' friend.username%}" class="btn btn-sm btn-primary pull-right">
+                            Profile
+                          </a>
+                        </div>
+                      </div>
+                    </div>
                     {%endfor%}
-                  </ul>
+                  </div>
                 </div>
                 <div class="collapse" id="codes">
                   <ul>
