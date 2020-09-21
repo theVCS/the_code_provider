@@ -162,8 +162,8 @@
   .image-right-detail-section2 span {
     color: #7F7F7F;
   }
-  
-  a:hover{
+
+  a:hover {
     cursor: pointer;
   }
 </style>
@@ -247,75 +247,91 @@
               <div class="row">
                 <div class="col-md-8  profile-tag-section text-center">
                   <div class="row">
-                    <div class="col-md-3 col-sm-3 profile-tag">
-                      <a id="#userinfo" class="info_shower">
+                    <a id="#userinfo" class="info_shower">
+                      <div class="col-md-3 col-sm-3 profile-tag">
                         <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-                      </a>
-                      <p>Info</p>
-                    </div>
-                    <div class="col-md-3 col-sm-3 profile-tag">
-                      <a id="#friendlist" class="info_shower">
-                        <i class="fa fa-address-book" aria-hidden="true"></i>
-                      </a>
-                      <p>Friends List</p>
-                    </div>
-                    <div class="col-md-3 col-sm-3 profile-tag" class="info_shower">
-                      <a href="#"><i class="fa fa-paperclip" aria-hidden="true"></i></a>
-                      <p>Codes</p>
-                    </div>
-                    <div class="col-md-3 col-sm-3 profile-tag" class="info_shower">
-                      <a href="#"><i class="fa fa-paperclip" aria-hidden="true"></i></a>
-                      <p>Resume</p>
-                    </div>
+                        <p>Info</p>
+                    </a>
                   </div>
-                  <div class="row" id="display_info">
-                    <div class="show" id="userinfo">
-                      <ul>
-                        <li>{{profile.email_id}}</li>
-                      </ul>
+                  <a id="#friendlist" class="info_shower">
+                    <div class="col-md-3 col-sm-3 profile-tag">
+                      <i class="fa fa-address-book" aria-hidden="true"></i>
+                      <p>Friends List</p>
+                  </a>
+                </div>
+                <div class="col-md-3 col-sm-3 profile-tag">
+                  <a id="#codes" class="info_shower">
+                    <i class="fa fa-paperclip" aria-hidden="true"></i>
+                    <p>Codes</p>
+                  </a>
+                </div>
+                <div class="col-md-3 col-sm-3 profile-tag" class="info_shower">
+                  <a id="#resume" class="info_shower"><i class="fa fa-paperclip" aria-hidden="true"></i>
+                  <p>Resume</p>
+                </a>
+                </div>
+              </div>
+              <div class="row" id="display_info">
+                <div class="show" id="userinfo">
+                  <ul>
+                    <li>{{profile.email_id}}</li>
+                  </ul>
+                </div>
+                <div class="collapse" id="friendlist">
+                  <ul>
+                    {%for friend in friends_list%}
+                    <li>
+                      <a href="{%url 'profiles:profile' friend.username%}">{{friend.username}}</a>
+                    </li>
+                    {%endfor%}
+                  </ul>
+                </div>
+                <div class="collapse" id="codes">
+                  <ul>
+                    {%for code in public_codes%}
+                    <li>
+                      <a
+                        href="/userCodes/?id={{code.unique_code_id}}&language={{code.language}}&website={{code.website}}"><span
+                          style="color: black;">Code Date</span>:{{code.date}} <span style="color: black;">Sharing
+                          Code: </span>{{code.unique_code_id}} </a>
+                    </li>
+                    {%endfor%}
+                  </ul>
+                </div>
+                <div class="collapse" id="resume">
+                  Resume
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 img-main-rightPart">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="row image-right-part">
+                    {% if user.username == profile_user.username %}
+                    <div class="col-md-6 pull-left image-right-detail">
+                      <p>Friend Requests</p>
                     </div>
-                    <div class="collapse" id="friendlist">
-                      {%for friend in friends_list%}
-                      <ul>
-                        <li>
-                          <a href="{%url 'profiles:profile' friend.username%}">{{friend.username}}</a>
-                        </li>
-                      </ul>
-                      {%endfor%}
+                    {%else%}
+                    <div class="col-md-6 pull-left image-right-detail">
+                      <p>Today's Codes</p>
+                    </div>
+                    {%endif%}
+                    <div class="col-md-6 pull-right image-right-detail text-right">
+                      <span><a href="#">more</a></span>
                     </div>
                   </div>
                 </div>
-                <div class="col-md-4 img-main-rightPart">
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="row image-right-part">
-                        {% if user.username == profile_user.username %}
-                        <div class="col-md-6 pull-left image-right-detail">
-                          <p>Friend Requests</p>
-                        </div>
-                        {%else%}
-                        <div class="col-md-6 pull-left image-right-detail">
-                          <p>Today's Codes</p>
-                        </div>
-                        {%endif%}
-                        <div class="col-md-6 pull-right image-right-detail text-right">
-                          <span><a href="#">more</a></span>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-12 image-right-detail-section2">
-                      {% if user.username == profile_user.username %}
-                      {%for pending_friend_request in pending_friend_requests%}
-                      <a href="{% url 'profiles:accept_friend_request' pending_friend_request.pk %}">
-                        {{pending_friend_request.request_by.username}}
-                      </a>
-                      {% endfor %}
-                      {% else %}
-                      <p>Nothing</p>
-                      {%endif%}
-                      <span></span>
-                    </div>
-                  </div>
+                <div class="col-md-12 image-right-detail-section2">
+                  {% if user.username == profile_user.username %}
+                  {%for pending_friend_request in pending_friend_requests%}
+                  <a href="{% url 'profiles:accept_friend_request' pending_friend_request.pk %}">
+                    {{pending_friend_request.request_by.username}}
+                  </a>
+                  {% endfor %}
+                  {% else %}
+                  <p>Nothing</p>
+                  {%endif%}
+                  <span></span>
                 </div>
               </div>
             </div>
@@ -324,28 +340,31 @@
       </div>
     </div>
   </div>
+  </div>
+  </div>
 </body>
 {% endblock %}
 
 {% block script %}
 <script>
-  $(".info_shower").click(function (event) {
-  const id = $(this).attr("id").slice(1, );
-  const children = $("#display_info").children();
-  let id_list = []
+  $(document).ready(function () {
+    $(".info_shower").click(function (event) {
+      const id = $(this).attr("id").slice(1, );
+      const children = $("#display_info").children();
+      let id_list = []
 
-  children.each(function(index , child){
-    id_list.push(child["id"])
+      children.each(function (index, child) {
+        id_list.push(child["id"])
+      })
+
+      id_list.forEach(element => {
+        if (id != element) {
+          $("#" + element).fadeOut(10)
+        } else {
+          $("#" + element).fadeIn(300);
+        }
+      });
+    });
   })
-
-  id_list.forEach(element => {
-    if (id != element) {
-      $("#" + element).fadeOut(10)
-    }
-    else{
-      $("#" + element).fadeIn(300);
-    }
-  });
- });
 </script>
 {% endblock %}

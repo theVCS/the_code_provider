@@ -11,4 +11,5 @@ urlpatterns = [
     path('code_editor/', include('editor.urls'), name="code_editor"),
     path('profile/', include('profiles.urls')),
     path('shared/', include('SharedCode.urls')),
+    path('userCodes/', include('userCodes.urls')),
 ]

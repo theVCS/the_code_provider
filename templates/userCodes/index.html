@@ -28,38 +28,12 @@
 
 {% block body%}
 
-<div id="show_ques"
-  style="margin: 50px 0; border: 2px solid aliceblue; padding: 20px; border-radius: 10px; background-color: aliceblue; display: none;">
-
-  <!-- question heading -->
-  <h3 id="title" class="text-center"></h3>
-
-  <!-- question statement -->
-  <blockquote class="blockquote text-center">
-    <p class="mt-5" id="statement"></p>
-  </blockquote>
-
-  <!-- input constraints -->
-  <p class="h5 mt-5">INPUT</p>
-  <p class="lead mb-5" id="input_const"></p>
-
-  <!-- output constraints -->
-  <p class="h5">OUTPUT</p>
-  <p class="lead mb-5" id="output"></p>
-
-  <!-- examples -->
-  <p class="lead mb-5" id="examples"></p>
-
-  <!-- notes -->
-  <p class="h5">Notes</p>
-  <p class="lead mb-5" id="notes"></p>
-</div>
 
 
 <div class="row">
 
   <div class="col-md-9">
-    <div id="editor"></div>
+    <div id="editor">{{code}}</div>
   </div>
 
   <div class="col-md-3">
@@ -67,35 +41,6 @@
     <div style="padding: 20px 0;">
       <div class="menu_bar">
 
-        <!-- choosing language -->
-        <div class="row">
-          <div class="col-md-6">
-            <label for="exampleInputEmail1">Please Choose Your Language</label>
-          </div>
-          <div class="col-md-6">
-            <div class="btn-group">
-              <div class="btn-group" role="group">
-                <button id="btnGroupDrop1" type="button" class="btn btn-warning dropdown-toggle text-white"
-                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  c
-                </button>
-                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                  <a class="dropdown-item" href="javascript:void(0);" lang="c_cpp">c</a>
-                  <a class="dropdown-item" href="javascript:void(0);" lang="c_cpp">cpp</a>
-                  <a class="dropdown-item" href="javascript:void(0);" lang="python">python</a>
-                  <a class="dropdown-item" href="javascript:void(0);" lang="java">java</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div>
-          <form action="{%url 'editor:home' %}" method="post">
-            {%csrf_token%}
-            {{user_search_form}}
-            <input type="button" value="Search">
-          </form>
-        </div>
         <!-- preference -->
         {%if user.is_authenticated%}
         <div class="row mt-3">
@@ -163,10 +108,8 @@
   </div>
 </div>
 
-{%if not user.is_authenticated%}
-<button type="button" class="btn btn-lg btn-primary" style="color: white;" id="share">Share</button>
-{%else%}
-<button type="button" class="btn btn-lg btn-primary" style="color: white;" id="submit">Upload</button>
+{%if user.is_authenticated%}
+<button type="button" class="btn btn-lg btn-primary" style="color: white;" id="submit">Update</button>
 {%endif%}
 
 <!-- Button trigger modal -->
@@ -213,6 +156,9 @@
     </div>
   </div>
 </div>
+
+<div id="language_selector" style="display: none;">{{language}}</div>
+
 {% endblock %}
 
 {% block script %}
@@ -237,7 +183,14 @@
     editor.autoIndent(false);
     editor.setShowPrintMargin(false);
     editor.setTheme("ace/theme/dracula");
-    let nmode = "ace/mode/c_cpp";
+
+    var language = '{{language}}';
+
+    if (language =="c" || language == "cpp") {
+      language = "c_cpp";
+    }
+
+    let nmode = "ace/mode/" + language;
     editor.session.setMode(nmode);
     editor.session.setMode(nmode);
 
@@ -273,7 +226,7 @@
             headers: {
               "X-CSRFToken": token
             },
-            url: "/code_editor/tempEdit/",
+            url: "/userCodes/tempEdit/",
             type: "post",
             data: {
               "code": code,
@@ -357,7 +310,9 @@
         url: "/code_editor/submit/",
         type: "post",
         data: {
+          "username": "{{user.username}}",
           "code": code,
+          "file_name": "question.c",
           "website": "codeforces",
           "filter": window.preference,
           "language": $("#btnGroupDrop1").html(),
