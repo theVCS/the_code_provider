@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from .models import Profile, FriendRequest
+from .decorators import user_can_accept_friend_request
 
 Code = apps.get_model('editor', 'Code')
 
@@ -28,6 +29,7 @@ def profile_view(request, username):
     return render(request, 'profiles/profile.html', context)
 
 
+@login_required
 def send_friend_request_view(request, friend_username):
     request_by = request.user
     request_to = User.objects.get(username=friend_username)
@@ -36,6 +38,8 @@ def send_friend_request_view(request, friend_username):
     return HttpResponseRedirect(reverse('profiles:profile', kwargs={'username': friend_username}))
 
 
+@login_required
+@user_can_accept_friend_request
 def accept_friend_request_view(request, friend_request_id):
     friend_request = FriendRequest.objects.get(pk=friend_request_id)
     request_to_profile = Profile.objects.get(user=friend_request.request_to)
@@ -46,6 +50,7 @@ def accept_friend_request_view(request, friend_request_id):
     return HttpResponseRedirect(reverse('profiles:profile', kwargs={'username': request.user.username}))
 
 
+@login_required
 def follow_user(request, user_name):
     user = User.objects.get(username=user_name)
     user_profile = Profile.objects.get(user=user)

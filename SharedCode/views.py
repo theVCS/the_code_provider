@@ -7,8 +7,8 @@ import json
 
 
 def home(request):
-    id = request.GET.get("id")
-    code = drive.show_shared(id)
+    unique_id = request.GET.get("id")
+    code = drive.show_shared(unique_id)
     context = {
         "title": "sharedCode",
         'code': code,
