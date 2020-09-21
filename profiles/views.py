@@ -17,11 +17,14 @@ def profile_view(request, username):
     profile = Profile.objects.get(user=user)
     followers_list = profile.followers.all()
     friends_list = profile.friends.all()
-    public_codes = Code.objects.filter(user=user, sharing_option='public')[::-1]
+    public_codes = Code.objects.filter(user=user, sharing_option='public').order_by('-date')
+    private_codes = Code.objects.filter(user=user, sharing_option='private').order_by('-date')
+    me_codes = Code.objects.filter(user=user, sharing_option='me').order_by('-date')
     pending_friend_requests = FriendRequest.objects.filter(status='pending', request_to=user)
     context = {'profile': profile, 'profile_user': user, 'title': 'Profile', 'friends_list': friends_list,
                'pending_friend_requests': pending_friend_requests, 'friends_count': friends_list.count(),
-               'followers_list': followers_list, 'public_codes': public_codes}
+               'followers_list': followers_list, 'public_codes': public_codes, 'private_codes': private_codes,
+               'me_codes': me_codes}
     return render(request, 'profiles/profile.html', context)
 
 
