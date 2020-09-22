@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class CoderConfig(AppConfig):
-    name = 'coder'
+class EditorConfig(AppConfig):
+    name = 'editor'

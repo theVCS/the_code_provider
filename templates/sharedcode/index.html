@@ -1,0 +1,42 @@
+{% extends 'sharedcode/basic.html' %}
+
+<!-- loaded static -->
+{% load static %}
+
+{% block title %}{{title}}{% endblock %}
+
+{% block css %}
+<style>
+    #editor {
+        top: 20px;
+        left: 0px;
+        height: 35rem;
+        width: 100%;
+        font-size: 1rem;
+        margin-bottom: 2rem;
+    }
+</style>
+{% endblock %}
+
+{% block body%}
+
+<div id="editor" class="mb-4">{{code}}</div>
+
+{% endblock %}
+
+{% block script %}
+<!-- <script async="" src="https://assets.codeforces.com/mathjax/MathJax.js?config=TeX-AMS_HTML-full" type="text/javascript"></script> -->
+<script src="{% static 'js/editor/ace.js' %}"></script>
+<script src="{% static 'js/editor/ext-language_tools.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        var editor = ace.edit("editor");
+        editor.setReadOnly(true);
+        editor.autoIndent(true);
+        editor.setShowPrintMargin(false);   
+        editor.setTheme("ace/theme/dracula");
+        let nmode = "ace/mode/c_cpp";
+        editor.session.setMode(nmode);
+    })
+</script>
+{% endblock %}

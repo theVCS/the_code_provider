@@ -1,0 +1,271 @@
+{% extends 'editor/basic.html' %}
+
+<!-- loaded static -->
+{% load static %}
+
+{% block title %}{{title}}{% endblock %}
+
+{% block css %}
+<style>
+  #editor {
+    top: 20px;
+    left: 0px;
+    height: 35rem;
+    width: 100%;
+    font-size: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .menu_bar {
+    border: 2px solid aliceblue;
+    background-color: aliceblue;
+    padding: 20px;
+    height: 35rem;
+    overflow-y: scroll;
+  }
+</style>
+{% endblock %}
+
+{% block body%}
+
+
+
+<div class="row">
+
+  <div class="col-md-9">
+    <div id="editor">{{code}}</div>
+  </div>
+
+  <div class="col-md-3">
+
+    <div style="padding: 20px 0;">
+      <div class="menu_bar">
+
+        <!-- preference -->
+        <div class="row mt-3">
+          <div class="col-md-6">
+            <label for="exampleInputEmail1">Please Choose Your Preference</label>
+          </div>
+          <div class="col-md-6">
+            <fieldset class="form-group" style="display: inline-block;">
+              <div class="row">
+                <div class="col-sm-10">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="me" checked>
+                    <label class="form-check-label" for="gridRadios1">
+                      Me
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="private">
+                    <label class="form-check-label" for="gridRadios2">
+                      Private
+                    </label>
+                  </div>
+                  <div class="form-check disabled">
+                    <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios3" value="public">
+                    <label class="form-check-label" for="gridRadios3">
+                      Public
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+        </div>
+
+        <!-- url_generator -->
+        <div class="input-group mb-3 url_generator">
+          <input type="text" class="form-control" id="url" aria-describedby="basic-addon2" value="">
+          <div class="input-group-append">
+            <span class="input-group-text copy" id="basic-addon2" style="height: 2.35rem;" data-clipboard-target="#url">
+              <!-- Trigger -->
+              <img src="{% static 'icons/clipboard.svg' %}" alt="Copy to clipboard" style="height: 1rem;">
+            </span>
+          </div>
+        </div>
+
+        <!-- url_generator -->
+        <div class="input-group mb-3 url_generator" style="display: none;">
+          <input type="text" class="form-control" id="url" aria-describedby="basic-addon2" value="">
+          <div class="input-group-append">
+            <span class="input-group-text copy" id="basic-addon2" style="height: 2.35rem;" data-clipboard-target="#url">
+              <!-- Trigger -->
+              <img src="{% static 'icons/clipboard.svg' %}" alt="Copy to clipboard" style="height: 1rem;">
+            </span>
+          </div>
+        </div>
+
+
+        <!-- friend list -->
+        {%if user.is_authenticated%}
+        <form class="form-group">
+          <h6>Toggle To Share With Friends</h6>
+          {%for friend in friends_list%}
+          <div class="custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" id="customSwitch{{friend.username}}">
+            <label class="custom-control-label" for="customSwitch{{friend.username}}">{{friend.username}}</label>
+          </div>
+          {%endfor%}
+          <button type="submit" class="btn btn-sm my-2" style="color: white; background-color: orange;">Share</button>
+        </form>
+        {%endif%}
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{%if user.is_authenticated%}
+<button type="button" class="btn btn-lg btn-primary" style="color: white;" id="update">Update</button>
+{%endif%}
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#warnmodal" id="warnmodalbtn"
+  style="display: none;">
+  Launch demo modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="warnmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-danger" id="exampleModalLabel">Warning</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h4>Please Write Some Code</h4>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#successuploadmodal" id="successupload"
+  style="display: none;">
+  Launch demo modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="successuploadmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-success" id="exampleModalLabel">Success</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h4>Your Code has Been Submitted Successfully</h4>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+<!-- <script async="" src="https://assets.codeforces.com/mathjax/MathJax.js?config=TeX-AMS_HTML-full" type="text/javascript"></script> -->
+<script src="{% static 'js/editor/ace.js' %}"></script>
+<script src="{% static 'js/editor/ext-language_tools.js' %}"></script>
+<script>
+  new ClipboardJS('.copy');
+  var editor = ace.edit("editor");
+
+  $(document).ready(function () {
+
+    window.preference = "me";
+
+    editor.setReadOnly(false);
+    editor.autoIndent(false);
+    editor.setShowPrintMargin(false);
+    editor.setTheme("ace/theme/dracula");
+
+    var language = '{{language}}';
+
+    if (language == "c" || language == "cpp") {
+      language = "c_cpp";
+    }
+
+    let nmode = "ace/mode/" + language;
+    editor.session.setMode(nmode);
+    editor.session.setMode(nmode);
+  });
+
+  // Reenable the inputs
+  $("#url").val(document.location.host + "/shared/user?id=" + '{{file_name}}'+  "&website=" + '{{website}}' + "&language=" + '{{language}}')
+
+  $('#update').click(function (event) {
+
+    // got code from the editor
+    let code = editor.getSession().getValue();
+
+    if (code == "") {
+      $("#warnmodalbtn").click();
+    } else {
+      // variable to make ajax request
+      var request;
+
+      // Abort any pending request
+      if (request) {
+        request.abort();
+      }
+
+      // got csrf token
+      var token = '{{csrf_token}}';
+
+      $(this).html(`<div class="spinner-border text-light" role="status">
+  <span class="sr-only">Loading...</span>
+</div>`)
+      $(this).prop('disabled', true);
+
+      request = $.ajax({
+        headers: {
+          "X-CSRFToken": token
+        },
+        url: "/userCodes/edit/",
+        type: "post",
+        data: {
+          "code": code,
+          "file_name": '{{file_name}}',
+          "website": '{{website}}',
+          "language": '{{language}}',
+          "filter": window.preference,
+        },
+      });
+
+      // Callback handler that will be called on success
+      request.done(function (response, textStatus, jqXHR) {
+        // rendering another page
+        $("#successupload").click();
+      });
+
+      // Callback handler that will be called on failure
+      request.fail(function (jqXHR, textStatus, errorThrown) {
+        // Log the error to the console
+        console.error(
+          "The following error occurred: " +
+          textStatus, errorThrown
+        );
+      });
+
+      // Callback handler that will be called regardless
+      // if the request failed or succeeded
+      request.always(function () {
+        // Reenable the inputs
+        $("#update").html("Update");
+        $("#update").prop('disabled', false);
+      });
+    }
+  })
+</script>
+{% endblock %}
+
+
+<!-- i need to work on the language selector for sharing -->
+<!-- i have to make css file loaded when new url of the question is Given -->
+<!-- i have to make some changes in the model to use the unique id  -->

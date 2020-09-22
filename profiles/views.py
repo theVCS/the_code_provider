@@ -1,3 +1,4 @@
+from django.apps import apps
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
@@ -5,6 +6,9 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from .models import Profile, FriendRequest
+from .decorators import user_can_accept_friend_request
+
+Code = apps.get_model('editor', 'Code')
 
 
 # Create your views here.
@@ -14,13 +18,18 @@ def profile_view(request, username):
     profile = Profile.objects.get(user=user)
     followers_list = profile.followers.all()
     friends_list = profile.friends.all()
+    public_codes = Code.objects.filter(user=user, sharing_option='public').order_by('-date')
+    private_codes = Code.objects.filter(user=user, sharing_option='private').order_by('-date')
+    me_codes = Code.objects.filter(user=user, sharing_option='me').order_by('-date')
     pending_friend_requests = FriendRequest.objects.filter(status='pending', request_to=user)
     context = {'profile': profile, 'profile_user': user, 'title': 'Profile', 'friends_list': friends_list,
                'pending_friend_requests': pending_friend_requests, 'friends_count': friends_list.count(),
-               'followers_list': followers_list}
+               'followers_list': followers_list, 'public_codes': public_codes, 'private_codes': private_codes,
+               'me_codes': me_codes}
     return render(request, 'profiles/profile.html', context)
 
 
+@login_required
 def send_friend_request_view(request, friend_username):
     request_by = request.user
     request_to = User.objects.get(username=friend_username)
@@ -29,6 +38,8 @@ def send_friend_request_view(request, friend_username):
     return HttpResponseRedirect(reverse('profiles:profile', kwargs={'username': friend_username}))
 
 
+@login_required
+@user_can_accept_friend_request
 def accept_friend_request_view(request, friend_request_id):
     friend_request = FriendRequest.objects.get(pk=friend_request_id)
     request_to_profile = Profile.objects.get(user=friend_request.request_to)
@@ -39,6 +50,7 @@ def accept_friend_request_view(request, friend_request_id):
     return HttpResponseRedirect(reverse('profiles:profile', kwargs={'username': request.user.username}))
 
 
+@login_required
 def follow_user(request, user_name):
     user = User.objects.get(username=user_name)
     user_profile = Profile.objects.get(user=user)
