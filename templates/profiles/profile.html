@@ -271,30 +271,35 @@
             </div>
             <div class="col-md-12">
               <div class="row">
-                <div class="col-md-8  profile-tag-section text-center">
+                <div class="col-md-12  profile-tag-section text-center">
                   <div class="row">
-                     <div class="col-md-3 col-sm-3 profile-tag">
+                     <div class="col-md-2 col-sm-2 profile-tag">
                     <a id="#userinfo" class="info_shower">
                         <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
                         <p>Info</p>
                     </a>
                   </div>
-                    <div class="col-md-3 col-sm-3 profile-tag">
+                    <div class="col-md-2 col-sm-2 profile-tag">
                   <a id="#friendlist" class="info_shower">
 
                       <i class="fa fa-address-book" aria-hidden="true"></i>
                       <p>Friends List</p>
                   </a>
                 </div>
-                <div class="col-md-3 col-sm-3 profile-tag">
+                <div class="col-md-2 col-sm-2 profile-tag">
                   <a id="#codes" class="info_shower">
                     <i class="fa fa-paperclip" aria-hidden="true"></i>
                     <p>Codes</p>
                   </a>
                 </div>
-                <div class="col-md-3 col-sm-3 profile-tag" class="info_shower">
-                  <a id="#resume" class="info_shower"><i class="fa fa-paperclip" aria-hidden="true"></i>
-                  <p>Resume</p>
+                <div class="col-md-2 col-sm-2 profile-tag" class="info_shower">
+                  <a id="#inbox" class="info_shower"><i class="fa fa-paperclip" aria-hidden="true"></i>
+                  <p>Inbox</p>
+                </a>
+                </div>
+                <div class="col-md-2 col-sm-2 profile-tag" class="info_shower">
+                  <a id="#friendrequest" class="info_shower"><i class="fa fa-paperclip" aria-hidden="true"></i>
+                  <p>Pending Friend Request</p>
                 </a>
                 </div>
               </div>
@@ -390,51 +395,33 @@
                     </div>
                   </div>
                 </div>
-                <div class="collapse" id="resume">
-                  Resume
+                <div class="collapse" id="inbox">
+                  Inbox
                 </div>
-              </div>
-            </div>
-            <div class="col-md-4 img-main-rightPart">
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="row image-right-part">
+                <div class="collapse" id="friendrequest">
+                  <div class="col-md-12 image-right-detail-section2">
                     {% if user.username == profile_user.username %}
-                    <div class="col-md-6 pull-left image-right-detail">
-                      <p>Friend Requests</p>
-                    </div>
-                    {%else%}
-                    <div class="col-md-6 pull-left image-right-detail">
-                      <p>Today's Codes</p>
-                    </div>
-                    {%endif%}
-                    <div class="col-md-6 pull-right image-right-detail text-right">
-                      <span><a href="#">more</a></span>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-12 image-right-detail-section2">
-                  {% if user.username == profile_user.username %}
-                    {%if pending_friend_requests.count == 0 %}
-                      <div class="container">
-                        <div class="row my-4 mr-2">
-                          <div class="col"></div>
-                          <div class="col-auto">
-                            No Pending Friend Request
+                      {%if pending_friend_requests.count == 0 %}
+                        <div class="container">
+                          <div class="row my-4 mr-2">
+                            <div class="col"></div>
+                            <div class="col-auto">
+                              No Pending Friend Request
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    {%else%}
-                      {%for pending_friend_request in pending_friend_requests%}
-                      <a href="{% url 'profiles:accept_friend_request' pending_friend_request.pk %}">
-                        {{pending_friend_request.request_by.username}}
-                      </a>
-                      {% endfor %}
+                      {%else%}
+                        {%for pending_friend_request in pending_friend_requests%}
+                        <a href="{% url 'profiles:accept_friend_request' pending_friend_request.pk %}">
+                          {{pending_friend_request.request_by.username}}
+                        </a>
+                        {% endfor %}
+                      {%endif%}
+                    {% else %}
+                    <p>Nothing</p>
                     {%endif%}
-                  {% else %}
-                  <p>Nothing</p>
-                  {%endif%}
-                  <span></span>
+                    <span></span>
+                  </div>
                 </div>
               </div>
             </div>
