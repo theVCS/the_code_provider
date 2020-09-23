@@ -31,3 +31,18 @@ class FriendRequest(models.Model):
     def create(cls, request_by, request_to):
         friend_request = cls(request_by=request_by, request_to=request_to)
         return friend_request
+
+
+class Message(models.Model):
+    message_text = models.CharField(max_length=50)
+    send_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="send_by")
+    recieved_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="recieved_by")
+    send_time = models.DateTimeField(default=datetime.now)
+    link = models.URLField(max_length=128, blank=True, null=True)
+
+    def __str__(self):
+        return self.message_text
+
+    @classmethod
+    def create(cls, message_text, send_by, recieved_by, send_time):
+        return cls(message_text=message_text, send_by=send_by, recieved_by=recieved_by, send_time=send_time)
