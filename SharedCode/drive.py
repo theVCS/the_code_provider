@@ -3,6 +3,12 @@ from pydrive.drive import GoogleDrive
 
 # id container ---- this dictionary will contain all the folder ids
 file_locator = {
+    "codeforces": {
+        "c": "15N0wYUmgzYWMCnSCUFn3GBbywDVaJqyJ",
+        "cpp": "1vZogqyO5yI5sDpLJpgOakT5Ur0kx01Ko",
+        "python": "16ZfrzwMgZ_3poKQWAaDtQklVIHjw_-4b",
+        "java": "1r3RnNGZArF5UQV2Obp3gGUrK9-XtFv9j",
+    },
     "sharing": "1V8za1ulCVItrgH38sEW69yLsI65gebTQ"
 }
 
@@ -32,3 +38,8 @@ def show_shared(id):
     return file[0].GetContentString()
 
 
+def get_content(website, language, file_name):
+    """this function will return the data inside the files which have title like file_name"""
+    drive = GoogleDrive(gauth)
+    file = drive.ListFile({'q': "'" + file_locator[website][language] + f"' in parents and title contains '{file_name}' and trashed=false"}).GetList()[0]
+    return file.GetContentString()

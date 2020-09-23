@@ -55,6 +55,10 @@
   <p class="lead mb-5" id="notes"></p>
 </div>
 
+<div id="solutions" style="display: none;">
+
+</div>
+
 
 <div class="row">
 
@@ -361,6 +365,7 @@
           "website": "codeforces",
           "filter": window.preference,
           "language": $("#btnGroupDrop1").html(),
+          "problem_title": $('#search').val(),
         },
       });
 
@@ -469,6 +474,20 @@
         } else {
           $("#notes").html("No Notes Given")
         }
+
+        let str = "";
+
+        $.each(response['public_codes'], function (index, value) {
+          str += `<div class="alert alert-success text-center col-md-12"><a  rel="noreferrer"  target="_blank" href="${document.location.host}/shared/answer/?id=${value['unique_code_id']}&website=${value['website']}&language=${value['language']}">
+                    ${value['unique_code_id']}
+                  </a></div>`;
+        });
+
+        $("#solutions").html(str)
+        $("#solutions").css('display', 'block')
+        
+        console.log(response['public_codes'])
+
         load_math();
       });
 

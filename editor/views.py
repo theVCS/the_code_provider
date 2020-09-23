@@ -53,16 +53,20 @@ def home(request):
 
 def submit(request):
     code_text = request.POST.get("code")
-    # file_name = request.POST.get("file_name")
     website = request.POST.get("website")
     sharing_option = request.POST.get("filter")
     language = request.POST.get("language")
     language = language.strip()
     unique_code_id = random_string_generator()
+    problem_title = request.POST.get("problem_title")
     while Code.objects.filter(unique_code_id=unique_code_id).count() > 0:
         unique_code_id = random_string_generator()
+
+    if "codeforces" in problem_title:
+        problem_title = problem_title[-1:-7:-1][::-1]
+
     code = Code.create(unique_code_id=unique_code_id, user=request.user, website=website, language=language,
-                       sharing_option=sharing_option)
+                       sharing_option=sharing_option,problem_title=problem_title)
 
     file_name = drive.upload(unique_code_id, code_text, website, language)
     return HttpResponseRedirect(reverse('editor:get_code_view', kwargs={'unique_code_id': unique_code_id}))
@@ -70,7 +74,26 @@ def submit(request):
 
 def fetch_question(request):
     url = request.POST.get("url")
+
+    problem_title = None
+
+    if "codeforces" in url:
+        problem_title = url[-1:-7:-1][::-1]
+
     data = question_fetcher.codeforces(url)
+    data = json.loads(data)
+
+    data['public_codes'] = list(Code.objects.filter(problem_title=problem_title, sharing_option='public').values())
+
+    for code in data['public_codes']:
+        del code['date']
+        del code['sharing_option']
+        del code['id']
+        del code['user_id']
+        del code['problem_title']
+
+    data = json.dumps(data)
+
     return HttpResponse(data)
 
 
