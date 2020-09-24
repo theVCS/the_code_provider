@@ -386,17 +386,14 @@
                         <!-- private code -->
                         {%if profile_user == user%}
                         <div class="col-md-4">
-                          {%else%}
-                          <div class="col-md-6">
-                            {%endif%}
-                            <div class="profile-header-section1">
-                              <p>Private Codes</p>
-                            </div>
-                            {%if private_codes.count == 0 %}
+                          <div class="profile-header-section1">
+                            <p>Private Codes</p>
+                          </div>
+                          {%if private_codes.count == 0 %}
                             <ul style="list-style-type: none; overflow-y: scroll; height: 10rem;">
                               <li>No Code Provided</li>
                             </ul>
-                            {%else%}
+                          {%else%}
                             <ul style="list-style-type: none; overflow-y: scroll; height: 10rem;">
                               {%for code in private_codes%}
                               <li>
@@ -407,8 +404,13 @@
                               </li>
                               {%endfor%}
                             </ul>
-                            {%endif%}
-                          </div>
+                          {%endif%}
+                        </div>
+                        {%else%}
+                      <div class="col-md-6"></div>
+                      {%endif%}
+
+
 
                           <!-- public code -->
                           {%if profile_user == user%}
