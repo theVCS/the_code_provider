@@ -93,13 +93,7 @@
             </div>
           </div>
         </div>
-        <div>
-          <form action="{%url 'editor:home' %}" method="post">
-            {%csrf_token%}
-            {{user_search_form}}
-            <input type="button" value="Search">
-          </form>
-        </div>
+
         <!-- preference -->
         {%if user.is_authenticated%}
         <div class="row mt-3">
