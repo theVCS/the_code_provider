@@ -16,6 +16,7 @@ from django.apps import apps
 from .forms import UserSearchForm
 
 Profile = apps.get_model('profiles', 'Profile')
+Message = apps.get_model('profiles', 'Message')
 
 
 def random_string_generator(size=6, chars=string.ascii_lowercase + string.digits + string.ascii_uppercase):
@@ -66,7 +67,7 @@ def submit(request):
         problem_title = problem_title[-1:-7:-1][::-1]
 
     code = Code.create(unique_code_id=unique_code_id, user=request.user, website=website, language=language,
-                       sharing_option=sharing_option,problem_title=problem_title)
+                       sharing_option=sharing_option, problem_title=problem_title)
 
     file_name = drive.upload(unique_code_id, code_text, website, language)
     return HttpResponseRedirect(reverse('editor:get_code_view', kwargs={'unique_code_id': unique_code_id}))
@@ -123,3 +124,19 @@ def edit_temp(request):
 def get_code_view(request, unique_code_id):
     # get code file with id : unique_code_id
     return HttpResponse("Will be available soon")
+
+
+def send_message(request):
+    message_text = request.POST.get("message_text")
+    friend_list = json.loads(request.POST.get("friend_list"))
+
+    for user in friend_list:
+        message = Message.create(message_text=message_text,  send_by=request.user, recieved_by=User.objects.get(username=user), link="https://localhost:8000")
+
+    return HttpResponse({"name": "prince"})
+
+
+def delete_message(request):
+    message_id = request.POST.get("id")
+    Message.objects.get(id=message_id).delete()
+    return HttpResponse({"name": "prince"})

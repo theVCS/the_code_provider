@@ -11,4 +11,6 @@ urlpatterns = [
     path('share/', views.share, name="share"),
     path('show/', views.show, name="show"),
     path('tempEdit/', views.edit_temp, name="tempEdit"),
+    path('send_message/', views.send_message, name="send_message"),
+    path('delete_message/', views.delete_message, name="send_message"),
 ]

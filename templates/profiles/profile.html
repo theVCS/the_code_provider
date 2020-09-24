@@ -300,18 +300,23 @@
                     </div>
 
                     <!-- inbox button -->
+                    {% if user.username == profile_user.username %}
                     <div class="col-md-2 col-sm-2 profile-tag" class="info_shower">
-                      <a id="#inbox" class="info_shower"><i class="fa fa-inbox" aria-hidden="true"></i>
+                      <a id="#inbox" class="info_shower"><i class="fa fa-inbox"
+                          aria-hidden="true"><sup><b>{{ messages.count }}</b></sup></i>
                         <p>Inbox</p>
                       </a>
                     </div>
+                    {% endif %}
 
-                    <!-- friend button -->
+                    <!-- friend request button -->
+                    {% if user.username == profile_user.username %}
                     <div class="col-md-2 col-sm-2 profile-tag" class="info_shower">
                       <a id="#friendrequest" class="info_shower"><i class="fa fa-address-card-o" aria-hidden="true"></i>
                         <p>Friend Request</p>
                       </a>
                     </div>
+                    {% endif %}
 
                     <!-- resume button -->
                     <div class="col-md-2 col-sm-2 profile-tag" class="info_shower">
@@ -336,7 +341,8 @@
                       <div class="row">
                         {%for friend in friends_list%}
                         <div class="col-md-4 col-sm-3">
-                          <img src="{% static 'images/male_avatar.png' %}" class="profile-photo-lg">
+                          <a href="{%url 'profiles:profile' friend.username%}"><img
+                              src="{% static 'images/male_avatar.png' %}" class="profile-photo-lg"></a>
                           <h5 class="text-center text-truncate"><a href="{%url 'profiles:profile' friend.username%}"
                               class="profile-link">{{friend.username}}</a></h5>
                         </div>
@@ -350,42 +356,46 @@
                       <div class="row">
 
                         <!-- me code -->
+                        {%if profile_user == user%}
                         <div class="col-md-4">
-                          <div>
-                            {%if profile_user == user%}
-                            <div class="profile-header-section1">
-                              <p> Only Me codes </p>
-                            </div>
-                            {%if me_codes.count == 0 %}
-                            <div>
-                              No Code Available
-                            </div>
-                            {%else%}
-
-                            <ul style="list-style-type: none; overflow-y: scroll; height: 10rem;">
-                              {%for code in me_codes%}
-                              <li>
-                                <a
-                                  href="/userCodes/?id={{code.unique_code_id}}&language={{code.language}}&website={{code.website}}">
-                                  {{code.date}}
-                                </a>
-                              </li>
-                              {%endfor%}
-                            </ul>
-                            {%endif%}
+                          <div class="profile-header-section1">
+                            <p> Me codes </p>
                           </div>
+
+                          {%if me_codes.count == 0 %}
+                          <ul style="list-style-type: none; overflow-y: scroll; height: 10rem;">
+                            <li>No Code Provided</li>
+                          </ul>
+
+                          {%else%}
+                          <ul style="list-style-type: none; overflow-y: scroll; height: 10rem;">
+                            {%for code in me_codes%}
+                            <li>
+                              <a
+                                href="/userCodes/?id={{code.unique_code_id}}&language={{code.language}}&website={{code.website}}">
+                                {{code.date}}
+                              </a>
+                            </li>
+                            {%endfor%}
+                          </ul>
+
+                          {%endif%}
                         </div>
+                        {%endif%}
 
                         <!-- private code -->
+                        {%if profile_user == user%}
                         <div class="col-md-4">
-                          <div>
+                          {%else%}
+                          <div class="col-md-6">
+                            {%endif%}
                             <div class="profile-header-section1">
                               <p>Private Codes</p>
                             </div>
                             {%if private_codes.count == 0 %}
-                            <div>
-                              No Code Available
-                            </div>
+                            <ul style="list-style-type: none; overflow-y: scroll; height: 10rem;">
+                              <li>No Code Provided</li>
+                            </ul>
                             {%else%}
                             <ul style="list-style-type: none; overflow-y: scroll; height: 10rem;">
                               {%for code in private_codes%}
@@ -399,113 +409,171 @@
                             </ul>
                             {%endif%}
                           </div>
-                        </div>
 
-                        <!-- public code -->
-                        <div class="col-md-4">
-                          <div>
-                            <div class="profile-header-section1 pd-2">
-                              <p>Public Codes</p>
-                            </div>
-                            {%if public_codes.count == 0 %}
-                            <div>
-                              No Code Available
-                            </div>
-                            {%else%}
+                          <!-- public code -->
+                          {%if profile_user == user%}
+                          <div class="col-md-4">
+                            {% else %}
+                            <div class="col-md-6">
+                              {% endif %}
+                              <div class="profile-header-section1">
+                                <p>Public Codes</p>
+                              </div>
 
-                            <ul style="list-style-type: none; overflow-y: scroll; height: 10rem;">
-                              {%for code in public_codes%}
-                              <li>
-                                <a
-                                  href="/userCodes/?id={{code.unique_code_id}}&language={{code.language}}&website={{code.website}}">
-                                  {{code.date}}
-                                </a>
-                              </li>
-                              {%endfor%}
-                            </ul>
-                            {%endif%}
+                              {%if public_codes.count == 0 %}
+                              <ul style="list-style-type: none; overflow-y: scroll; height: 10rem;">
+                                <li>No Code Provided</li>
+                              </ul>
+
+                              {%else%}
+                              <ul style="list-style-type: none; overflow-y: scroll; height: 10rem;">
+                                {%for code in public_codes%}
+                                <li>
+                                  <a
+                                    href="/userCodes/?id={{code.unique_code_id}}&language={{code.language}}&website={{code.website}}">
+                                    {{code.date}}
+                                  </a>
+                                </li>
+                                {%endfor%}
+                              </ul>
+                              {%endif%}
+                            </div>
+
                           </div>
                         </div>
-                        {%endif%}
+
+                        <!-- inbox section -->
+                        <div class="collapse col-md-12" id="inbox" style="height: 10rem; overflow-y: scroll;">
+                          {%if messages.count == 0 %}
+                          <div class="container">
+                            <img src="{% static 'icons/empty.svg' %}" alt="" style="height: 8rem;">
+                          </div>
+                          {% else %}
+                          <table class="table table-dark">
+                            <thead>
+                              <tr>
+                                <th scope="col">Sender Name</th>
+                                <th scope="col">Time</th>
+                                <th scope="col">Read</th>
+                                <th scope="col">Delete</th>
+                              </tr>
+                            </thead>
+
+                            <tbody>
+
+                              {% for message in messages %}
+                              <tr>
+                                <th scope="row">{{ message.send_by }}</th>
+                                <td>{{ message.send_time }}</td>
+                                <td>
+                                  <button type="submit" class="btn btn-info req-btn" data-toggle="modal"
+                                    data-target="#modal{{ message.id }}">
+                                    Read
+                                  </button>
+                                </td>
+                                <td><button type="button" class="btn btn-danger req-btn delete_messages"
+                                    value="{{message.id}}">Delete</button></td>
+                              </tr>
+                              {% endfor %}
+
+                            </tbody>
+
+                          </table>
+                          {% endif %}
+                        </div>
+
+                        {% for message in messages %}
+
+                        <div class="modal fade" id="modal{{ message.id }}" data-backdrop="static" data-keyboard="false"
+                          tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                {{message.message_text}}
+                              </div>
+                              <div class="modal-body">
+                                Solution URL - <a rel="noreferrer" target="_blank" href="{{message.link}}">Solution</a>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {% endfor %}
+
+                        <!-- friend request section -->
+                        <div class="col-md-12 collapse" id="friendrequest" style="overflow-y: scroll; height: 10rem;">
+
+                          {% if user.username == profile_user.username %}
+
+                          {%if pending_friend_requests.count == 0 %}
+                          <div class="container">
+                            <img src="{% static 'icons/empty.svg' %}" alt="" style="height: 8rem;">
+                          </div>
+
+                          {%else%}
+                          <table class="table table-dark">
+                            <thead>
+                              <tr>
+                                <th scope="col">Image</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Accept</th>
+                                <th scope="col">Reject</th>
+                              </tr>
+                            </thead>
+
+                            <tbody>
+
+                              {%for pending_friend_request in pending_friend_requests%}
+
+                              <tr>
+                                <th scope="row"><img src="{% static 'images/male_avatar.png' %}" alt="..."
+                                    class="rounded-circle" style="height: 3rem;"></th>
+                                <td>{{pending_friend_request.request_by.username}}</td>
+                                <td>
+                                  <button type="submit" class="btn btn-info req-btn"><a
+                                      href="{% url 'profiles:accept_friend_request' pending_friend_request.pk %}"
+                                      class="text-white text-decoration-none">
+                                      Accept
+                                    </a></button>
+                                </td>
+                                <td>
+                                  <button type="submit" class="btn btn-danger req-btn"><a
+                                      href="{% url 'profiles:accept_friend_request' pending_friend_request.pk %}"
+                                      class="text-white text-decoration-none">
+                                      Reject
+                                    </a></button>
+                                </td>
+                              </tr>
+
+                              {% endfor %}
+
+                            </tbody>
+
+                          </table>
+
+                          {%endif%}
+                          {%endif%}
+
+                        </div>
+
+                        <!-- resume section -->
+                        <div class="collapse col-md-12" id="resume" style="height: 10rem; overflow-y: scroll;">
+                          <div class="container">
+                            <img src="{% static 'icons/empty.svg' %}" alt="" style="height: 8rem;">
+                          </div>
+                        </div>
 
                       </div>
                     </div>
-
-                    <!-- inbox section -->
-                    <div class="collapse" id="inbox">
-                      Inbox
-                    </div>
-
-                    <!-- friend request seection -->
-                    <div class="col-md-12 collapse" id="friendrequest" style="overflow-y: scroll; height: 10rem;">
-
-                      {% if user.username == profile_user.username %}
-                      {%if pending_friend_requests.count == 0 %}
-                      <div class="container">
-                        <div class="row my-4 mr-2">
-                          <div class="col"></div>
-                          <div class="col-auto">
-                            No Pending Friend Request
-                          </div>
-                        </div>
-                      </div>
-
-                      {%else%}
-
-                      <table class="table table-dark">
-                        <thead style="display: none;">
-                          <tr>
-                            <th scope="col">Image</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Accept</th>
-                          </tr>
-                        </thead>
-
-                        <tbody>
-
-                          {%for pending_friend_request in pending_friend_requests%}
-
-                          <tr>
-                            <th scope="row"><img src="{% static 'images/male_avatar.png' %}" alt="..."
-                                class="rounded-circle" style="height: 3rem;"></th>
-                            <td>{{pending_friend_request.request_by.username}}</td>
-                            <td>
-                              <!-- accept button -->
-                              <button type="submit" class="btn btn-info req-btn"><a
-                                  href="{% url 'profiles:accept_friend_request' pending_friend_request.pk %}"
-                                  class="text-white text-decoration-none">
-                                  Accept
-                                </a></button>
-                              
-                              <!-- reject button -->
-                              <button type="submit" class="btn btn-danger req-btn"><a
-                                href="{% url 'profiles:accept_friend_request' pending_friend_request.pk %}"
-                                class="text-white text-decoration-none">
-                                Reject
-                              </a></button>
-                              </td>
-                          </tr>
-                          {% endfor %}
-
-                        </tbody>
-
-                      </table>
-
-
-                      {%endif%}
-                      {% else %}
-                      <p>Nothing</p>
-                      {%endif%}
-
-
-
-                    </div>
-
-                    <!-- resume section -->
-                    <div class="collapse" id="resume">
-                      Resume
-                    </div>
-
                   </div>
                 </div>
               </div>
@@ -513,14 +581,14 @@
           </div>
         </div>
       </div>
-    </div>
-  </div>
 </body>
+
 {% endblock %}
 
 {% block script %}
 <script>
   $(document).ready(function () {
+
     $(".info_shower").click(function (event) {
       const id = $(this).attr("id").slice(1, );
       const children = $("#display_info").children();
@@ -537,7 +605,51 @@
           $("#" + element).fadeIn(300);
         }
       });
-    });
+
+
+      $(".delete_messages").click(function (event) {
+
+        const id = $(this).val()
+        $(this).parent().parent().remove();
+
+        // got csrf token
+        var token = '{{csrf_token}}';
+
+        request = $.ajax({
+          headers: {
+            "X-CSRFToken": token
+          },
+          url: "/code_editor/delete_message/",
+          type: "post",
+          data: {
+            "id": id,
+          },
+        });
+
+        // Callback handler that will be called on success
+        request.done(function (response, textStatus, jqXHR) {
+          // rendering another page
+          $("#successupload").click();
+        });
+
+        // Callback handler that will be called on failure
+        request.fail(function (jqXHR, textStatus, errorThrown) {
+          // Log the error to the console
+          console.error(
+            "The following error occurred: " +
+            textStatus, errorThrown
+          );
+        });
+
+        // Callback handler that will be called regardless
+        // if the request failed or succeeded
+        request.always(function () {
+          // Reenable the inputs
+          // $("#submit").html("Upload");
+          // $("#submit").prop('disabled', false);
+        });
+      });
+    })
   })
 </script>
 {% endblock %}

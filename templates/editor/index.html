@@ -153,11 +153,18 @@
           <h6>Toggle To Share With Friends</h6>
           {%for friend in friends_list%}
           <div class="custom-control custom-switch">
-            <input type="checkbox" class="custom-control-input" id="customSwitch{{friend.username}}">
-            <label class="custom-control-label" for="customSwitch{{friend.username}}">{{friend.username}}</label>
+            <input type="checkbox" class="custom-control-input friends" id="{{friend.username}}">
+            <label class="custom-control-label" for="{{friend.username}}">{{friend.username}}</label>
           </div>
           {%endfor%}
-          <button type="submit" class="btn btn-sm my-2" style="color: white; background-color: orange;">Share</button>
+
+          <div class="form-group mt-3">
+            <label for="message_text">Enter Your Message</label>
+            <textarea class="form-control" id="message_text" rows="3" required="required"></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-sm my-2" style="color: white; background-color: orange;"
+            id="friendShare">Share</button>
         </form>
         {%endif%}
 
@@ -217,6 +224,51 @@
     </div>
   </div>
 </div>
+
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#nofriendmodal" id="nofriend"
+  style="display: none;">
+  Launch demo modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="nofriendmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-danger" id="exampleModalLabel">Error</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h4>Please Select Some Friends</h4>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sharedAnswermodal" id="sharedAnswer"
+  style="display: none;">
+  Launch demo modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="sharedAnswermodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-success" id="exampleModalLabel">Success</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h4>Your Code Has Been </h4>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
 
 {% block script %}
@@ -245,6 +297,74 @@
     editor.session.setMode(nmode);
     editor.session.setMode(nmode);
 
+    //sharing code with particular friends
+    $("#friendShare").click(function (event) {
+
+      message_text = $("#message_text").val()
+
+      if (message_text != "") {
+        event.preventDefault()
+        friend_list = []
+
+        $.each($(".friends"), function (index, value) {
+          if (value["checked"] === true) {
+            friend_list.push(value["id"])
+          }
+        });
+
+        if (friend_list.length) {
+          // got csrf token
+          var token = '{{csrf_token}}';
+
+          $(this).html(`<div class="spinner-border text-light" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>`)
+
+          $(this).prop('disabled', true);
+
+          // for editing the code
+          request = $.ajax({
+            headers: {
+              "X-CSRFToken": token
+            },
+            url: "/code_editor/send_message/",
+            type: "post",
+            data: {
+              "message_text": message_text,
+              "friend_list": JSON.stringify(friend_list),
+              // "file_name": localStorage.getItem("id"),
+            },
+          });
+
+          // Callback handler that will be called on success
+          request.done(function (response, textStatus, jqXHR) {
+            // localStorage.setItem("id", JSON.parse(response)['file_name'])
+            // localStorage.setItem("uploaded_once", 1)
+            // // rendering another page
+            // $("#successupload").click();
+          });
+
+          // Callback handler that will be called on failure
+          request.fail(function (jqXHR, textStatus, errorThrown) {
+            // Log the error to the console
+            console.error(
+              "The following error occurred: " +
+              textStatus, errorThrown
+            );
+          });
+
+          request.always(function () {
+            // Reenable the inputs
+            $("#friendShare").html("Share");
+            $("#friendShare").prop('disabled', false);
+            // $('.url_generator').css("display", "flex")
+            // $("#url").val(document.location.host + "/shared/?id=" + localStorage.getItem("id"))
+          });
+        }
+      } else {
+        $("#nofriend").click()
+      }
+    })
 
     // submission of code to the server using ajax request
     $('#share').click(function (event) {
@@ -484,7 +604,7 @@
         });
         $("#solutions").html(str)
         $("#solutions").css('display', 'block')
-        
+
         console.log(response['public_codes'])
 
         load_math();

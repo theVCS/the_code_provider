@@ -4,8 +4,9 @@ from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django.http import HttpResponse
 
-from .models import Profile, FriendRequest
+from .models import Profile, FriendRequest, Message
 from .decorators import user_can_accept_friend_request
 
 Code = apps.get_model('editor', 'Code')
@@ -21,11 +22,12 @@ def profile_view(request, username):
     public_codes = Code.objects.filter(user=user, sharing_option='public').order_by('-date')
     private_codes = Code.objects.filter(user=user, sharing_option='private').order_by('-date')
     me_codes = Code.objects.filter(user=user, sharing_option='me').order_by('-date')
+    messages = Message.objects.filter(recieved_by=user)
     pending_friend_requests = FriendRequest.objects.filter(status='pending', request_to=user)
     context = {'profile': profile, 'profile_user': user, 'title': 'Profile', 'friends_list': friends_list,
                'pending_friend_requests': pending_friend_requests, 'friends_count': friends_list.count(),
                'followers_list': followers_list, 'public_codes': public_codes, 'private_codes': private_codes,
-               'me_codes': me_codes}
+               'me_codes': me_codes, 'messages': messages}
     return render(request, 'profiles/profile.html', context)
 
 

@@ -44,5 +44,5 @@ class Message(models.Model):
         return self.message_text
 
     @classmethod
-    def create(cls, message_text, send_by, recieved_by, send_time):
-        return cls(message_text=message_text, send_by=send_by, recieved_by=recieved_by, send_time=send_time)
+    def create(cls, message_text, send_by, recieved_by, link):
+        return cls(message_text=message_text, send_by=send_by, recieved_by=recieved_by, link=link).save()
