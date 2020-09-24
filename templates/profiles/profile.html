@@ -15,7 +15,7 @@
     background-color: #f1f1f1;
   }
 
-  .people-nearby .google-maps{
+  .people-nearby .google-maps {
     background: #f8f8f8;
     border-radius: 4px;
     border: 1px solid #f1f2f2;
@@ -23,24 +23,25 @@
     margin-bottom: 20px;
   }
 
-  .people-nearby .google-maps .map{
+  .people-nearby .google-maps .map {
     height: 300px;
     width: 100%;
     border: none;
   }
 
-  .people-nearby .nearby-user{
+  .people-nearby .nearby-user {
     padding: 20px 0;
     border-top: 1px solid #f1f2f2;
     border-bottom: 1px solid #f1f2f2;
     margin-bottom: 20px;
   }
 
-  img.profile-photo-lg{
+  img.profile-photo-lg {
     height: 80px;
     width: 80px;
     border-radius: 50%;
   }
+
   .border {
     border-bottom: 1px solid #F1F1F1;
     margin-bottom: 10px;
@@ -273,154 +274,238 @@
               <div class="row">
                 <div class="col-md-12  profile-tag-section text-center">
                   <div class="row">
-                     <div class="col-md-2 col-sm-2 profile-tag">
-                    <a id="#userinfo" class="info_shower">
+
+                    <!-- user info button -->
+                    <div class="col-md-2 col-sm-2 profile-tag">
+                      <a id="#userinfo" class="info_shower">
                         <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
                         <p>Info</p>
-                    </a>
-                  </div>
-                    <div class="col-md-2 col-sm-2 profile-tag">
-                  <a id="#friendlist" class="info_shower">
+                      </a>
+                    </div>
 
-                      <i class="fa fa-address-book" aria-hidden="true"></i>
-                      <p>Friends List</p>
-                  </a>
-                </div>
-                <div class="col-md-2 col-sm-2 profile-tag">
-                  <a id="#codes" class="info_shower">
-                    <i class="fa fa-paperclip" aria-hidden="true"></i>
-                    <p>Codes</p>
-                  </a>
-                </div>
-                <div class="col-md-2 col-sm-2 profile-tag" class="info_shower">
-                  <a id="#inbox" class="info_shower"><i class="fa fa-paperclip" aria-hidden="true"></i>
-                  <p>Inbox</p>
-                </a>
-                </div>
-                <div class="col-md-2 col-sm-2 profile-tag" class="info_shower">
-                  <a id="#friendrequest" class="info_shower"><i class="fa fa-paperclip" aria-hidden="true"></i>
-                  <p>Pending Friend Request</p>
-                </a>
-                </div>
-              </div>
-              <div class="row" id="display_info">
-                <div class="show" id="userinfo">
-                  <ul>
-                    <li>{{profile.email_id}}</li>
-                  </ul>
-                </div>
-                <div class="collapse" id="friendlist">
-                  <div class="people-nearby">
-                    {%for friend in friends_list%}
-                    <div class="nearby-user">
+                    <!-- friendlist button -->
+                    <div class="col-md-2 col-sm-2 profile-tag">
+                      <a id="#friendlist" class="info_shower">
+                        <i class="fa fa-address-book" aria-hidden="true"></i>
+                        <p>Friends List</p>
+                      </a>
+                    </div>
+
+                    <!-- codes button -->
+                    <div class="col-md-2 col-sm-2 profile-tag">
+                      <a id="#codes" class="info_shower">
+                        <i class="fa fa-code" aria-hidden="true"></i>
+                        <p>Codes</p>
+                      </a>
+                    </div>
+
+                    <!-- inbox button -->
+                    <div class="col-md-2 col-sm-2 profile-tag" class="info_shower">
+                      <a id="#inbox" class="info_shower"><i class="fa fa-inbox" aria-hidden="true"></i>
+                        <p>Inbox</p>
+                      </a>
+                    </div>
+
+                    <!-- friend button -->
+                    <div class="col-md-2 col-sm-2 profile-tag" class="info_shower">
+                      <a id="#friendrequest" class="info_shower"><i class="fa fa-address-card-o" aria-hidden="true"></i>
+                        <p>Friend Request</p>
+                      </a>
+                    </div>
+
+                    <!-- resume button -->
+                    <div class="col-md-2 col-sm-2 profile-tag" class="info_shower">
+                      <a id="#resume" class="info_shower"><i class="fa fa-book" aria-hidden="true"></i>
+                        <p>Resume</p>
+                      </a>
+                    </div>
+                  </div>
+
+
+                  <div class="row" id="display_info">
+
+                    <!-- user info -->
+                    <div class="show" id="userinfo">
+                      <ul>
+                        <li>{{profile.email_id}}</li>
+                      </ul>
+                    </div>
+
+                    <!-- friend list -->
+                    <div class="collapse col-md-12" id="friendlist" style="height: 10rem; overflow-y: scroll;">
                       <div class="row">
-                        <div class="col-md-2 col-sm-2">
+                        {%for friend in friends_list%}
+                        <div class="col-md-4 col-sm-3">
                           <img src="{% static 'images/male_avatar.png' %}" class="profile-photo-lg">
+                          <h5 class="text-center text-truncate"><a href="{%url 'profiles:profile' friend.username%}"
+                              class="profile-link">{{friend.username}}</a></h5>
                         </div>
-                        <div class="col-md-7 col-sm-7">
-                          <h5><a href="#" class="profile-link">{{friend.username}}</a></h5>
-                        </div>
-                        <div class="col-md-3 col-sm-3">
-                          <a href="{%url 'profiles:profile' friend.username%}" class="btn btn-sm btn-primary pull-right">
-                            Profile
-                          </a>
-                        </div>
+                        {%endfor%}
                       </div>
                     </div>
-                    {%endfor%}
-                  </div>
-                </div>
-                <div class="collapse" id="codes">
-                  <div class="row">
-                    <div class="col-3"></div>
-                    <div class="col-auto">
-                      <ul>
-                        <div>
-                          {%if profile_user == user%}
-                            <div class="profile-header-section1"><p> Only Me codes </p> </div>
+
+                    <!-- codes -->
+                    <div class="collapse col-md-12" id="codes">
+
+                      <div class="row">
+
+                        <!-- me code -->
+                        <div class="col-md-4">
+                          <div>
+                            {%if profile_user == user%}
+                            <div class="profile-header-section1">
+                              <p> Only Me codes </p>
+                            </div>
                             {%if me_codes.count == 0 %}
                             <div>
                               No Code Available
                             </div>
                             {%else%}
+
+                            <ul style="list-style-type: none; overflow-y: scroll; height: 10rem;">
                               {%for code in me_codes%}
                               <li>
                                 <a
                                   href="/userCodes/?id={{code.unique_code_id}}&language={{code.language}}&website={{code.website}}">
-                                  <span style="color: black;">Code Date</span>:{{code.date}} <span style="color: black;">Sharing
-                                    Code: </span>{{code.unique_code_id}}
+                                  {{code.date}}
                                 </a>
                               </li>
                               {%endfor%}
+                            </ul>
                             {%endif%}
                           </div>
+                        </div>
+
+                        <!-- private code -->
+                        <div class="col-md-4">
                           <div>
-                            <div class="profile-header-section1"><p>Private Codes</p></div>
+                            <div class="profile-header-section1">
+                              <p>Private Codes</p>
+                            </div>
                             {%if private_codes.count == 0 %}
-                              <div>
-                                No Code Available
-                              </div>
+                            <div>
+                              No Code Available
+                            </div>
                             {%else%}
+                            <ul style="list-style-type: none; overflow-y: scroll; height: 10rem;">
                               {%for code in private_codes%}
                               <li>
                                 <a
                                   href="/userCodes/?id={{code.unique_code_id}}&language={{code.language}}&website={{code.website}}">
-                                  <span style="color: black;">Code Date</span>:{{code.date}} <span style="color: black;">Sharing
-                                    Code: </span>{{code.unique_code_id}}
+                                  {{code.date}}
                                 </a>
                               </li>
                               {%endfor%}
+                            </ul>
                             {%endif%}
                           </div>
-                        {%endif%}
-                        <div>
-                          <div class="profile-header-section1 pd-2"><p>Public Codes</p></div>
-                          {%if public_codes.count == 0 %}
+                        </div>
+
+                        <!-- public code -->
+                        <div class="col-md-4">
+                          <div>
+                            <div class="profile-header-section1 pd-2">
+                              <p>Public Codes</p>
+                            </div>
+                            {%if public_codes.count == 0 %}
                             <div>
                               No Code Available
                             </div>
-                          {%else%}
-                            {%for code in public_codes%}
-                            <li>
-                              <a
-                                href="/userCodes/?id={{code.unique_code_id}}&language={{code.language}}&website={{code.website}}">
-                                <span style="color: black;">Code Date</span>:{{code.date}} <span style="color: black;">Sharing
-                                  Code: </span>{{code.unique_code_id}}
-                              </a>
-                            </li>
-                            {%endfor%}
-                          {%endif%}
-                        </div>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-                <div class="collapse" id="inbox">
-                  Inbox
-                </div>
-                <div class="collapse" id="friendrequest">
-                  <div class="col-md-12 image-right-detail-section2">
-                    {% if user.username == profile_user.username %}
-                      {%if pending_friend_requests.count == 0 %}
-                        <div class="container">
-                          <div class="row my-4 mr-2">
-                            <div class="col"></div>
-                            <div class="col-auto">
-                              No Pending Friend Request
-                            </div>
+                            {%else%}
+
+                            <ul style="list-style-type: none; overflow-y: scroll; height: 10rem;">
+                              {%for code in public_codes%}
+                              <li>
+                                <a
+                                  href="/userCodes/?id={{code.unique_code_id}}&language={{code.language}}&website={{code.website}}">
+                                  {{code.date}}
+                                </a>
+                              </li>
+                              {%endfor%}
+                            </ul>
+                            {%endif%}
                           </div>
                         </div>
+                        {%endif%}
+
+                      </div>
+                    </div>
+
+                    <!-- inbox section -->
+                    <div class="collapse" id="inbox">
+                      Inbox
+                    </div>
+
+                    <!-- friend request seection -->
+                    <div class="col-md-12 collapse" id="friendrequest" style="overflow-y: scroll; height: 10rem;">
+
+                      {% if user.username == profile_user.username %}
+                      {%if pending_friend_requests.count == 0 %}
+                      <div class="container">
+                        <div class="row my-4 mr-2">
+                          <div class="col"></div>
+                          <div class="col-auto">
+                            No Pending Friend Request
+                          </div>
+                        </div>
+                      </div>
+
                       {%else%}
-                        {%for pending_friend_request in pending_friend_requests%}
-                        <a href="{% url 'profiles:accept_friend_request' pending_friend_request.pk %}">
-                          {{pending_friend_request.request_by.username}}
-                        </a>
-                        {% endfor %}
+
+                      <table class="table table-dark">
+                        <thead style="display: none;">
+                          <tr>
+                            <th scope="col">Image</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Accept</th>
+                          </tr>
+                        </thead>
+
+                        <tbody>
+
+                          {%for pending_friend_request in pending_friend_requests%}
+
+                          <tr>
+                            <th scope="row"><img src="{% static 'images/male_avatar.png' %}" alt="..."
+                                class="rounded-circle" style="height: 3rem;"></th>
+                            <td>{{pending_friend_request.request_by.username}}</td>
+                            <td>
+                              <!-- accept button -->
+                              <button type="submit" class="btn btn-info req-btn"><a
+                                  href="{% url 'profiles:accept_friend_request' pending_friend_request.pk %}"
+                                  class="text-white text-decoration-none">
+                                  Accept
+                                </a></button>
+                              
+                              <!-- reject button -->
+                              <button type="submit" class="btn btn-danger req-btn"><a
+                                href="{% url 'profiles:accept_friend_request' pending_friend_request.pk %}"
+                                class="text-white text-decoration-none">
+                                Reject
+                              </a></button>
+                              </td>
+                          </tr>
+                          {% endfor %}
+
+                        </tbody>
+
+                      </table>
+
+
                       {%endif%}
-                    {% else %}
-                    <p>Nothing</p>
-                    {%endif%}
-                    <span></span>
+                      {% else %}
+                      <p>Nothing</p>
+                      {%endif%}
+
+
+
+                    </div>
+
+                    <!-- resume section -->
+                    <div class="collapse" id="resume">
+                      Resume
+                    </div>
+
                   </div>
                 </div>
               </div>
@@ -429,8 +514,6 @@
         </div>
       </div>
     </div>
-  </div>
-  </div>
   </div>
 </body>
 {% endblock %}
