@@ -16,6 +16,17 @@ Code = apps.get_model('editor', 'Code')
 # Create your views here.
 @login_required
 def profile_view(request, username):
+
+    user = User.objects.get(username=username)
+    profile = Profile.objects.get(user=user)
+    followers_list = profile.followers.all()
+    friends_list = profile.friends.all()
+    public_codes = Code.objects.filter(user=user, sharing_option='public').order_by('-date')
+    private_codes = Code.objects.filter(user=user, sharing_option='private').order_by('-date')
+    me_codes = Code.objects.filter(user=user, sharing_option='me').order_by('-date')
+    messages = Message.objects.filter(recieved_by=user)
+    pending_friend_requests = FriendRequest.objects.filter(status='pending', request_to=user)
+
     if request.method == 'POST':
         user_search_form = UserSearchForm(request.POST)
         if user_search_form.is_valid():
@@ -25,37 +36,14 @@ def profile_view(request, username):
                 return HttpResponseRedirect(reverse('profiles:profile', kwargs=context))
             except User.DoesNotExist:
                 user_search_form.add_error('username', ValidationError("User Doesn't Exist"))
-        user = User.objects.get(username=username)
-        profile = Profile.objects.get(user=user)
-        followers_list = profile.followers.all()
-        friends_list = profile.friends.all()
-        user_search_form = UserSearchForm()
-        public_codes = Code.objects.filter(user=user, sharing_option='public').order_by('-date')
-        private_codes = Code.objects.filter(user=user, sharing_option='private').order_by('-date')
-        me_codes = Code.objects.filter(user=user, sharing_option='me').order_by('-date')
-        messages = Message.objects.filter(recieved_by=user)
-        pending_friend_requests = FriendRequest.objects.filter(status='pending', request_to=user)
-        context = {'profile': profile, 'profile_user': user, 'title': 'Profile', 'friends_list': friends_list,
-                   'pending_friend_requests': pending_friend_requests, 'friends_count': friends_list.count(),
-                   'followers_list': followers_list, 'public_codes': public_codes, 'private_codes': private_codes,
-                   'me_codes': me_codes, 'messages': messages, "user_search_form": user_search_form}
-        return render(request, 'profiles/profile.html', context)
     else:
-        user = User.objects.get(username=username)
-        profile = Profile.objects.get(user=user)
-        followers_list = profile.followers.all()
-        friends_list = profile.friends.all()
         user_search_form = UserSearchForm()
-        public_codes = Code.objects.filter(user=user, sharing_option='public').order_by('-date')
-        private_codes = Code.objects.filter(user=user, sharing_option='private').order_by('-date')
-        me_codes = Code.objects.filter(user=user, sharing_option='me').order_by('-date')
-        messages = Message.objects.filter(recieved_by=user)
-        pending_friend_requests = FriendRequest.objects.filter(status='pending', request_to=user)
-        context = {'profile': profile, 'profile_user': user, 'title': 'Profile', 'friends_list': friends_list,
-                   'pending_friend_requests': pending_friend_requests, 'friends_count': friends_list.count(),
-                   'followers_list': followers_list, 'public_codes': public_codes, 'private_codes': private_codes,
-                   'me_codes': me_codes, 'messages': messages, "user_search_form": user_search_form}
-        return render(request, 'profiles/profile.html', context)
+
+    context = {'profile': profile, 'profile_user': user, 'title': 'Profile', 'friends_list': friends_list,
+               'pending_friend_requests': pending_friend_requests, 'friends_count': friends_list.count(),
+               'followers_list': followers_list, 'public_codes': public_codes, 'private_codes': private_codes,
+               'me_codes': me_codes, 'messages': messages, "user_search_form": user_search_form}
+    return render(request, 'profiles/profile.html', context)
 
 
 @login_required
