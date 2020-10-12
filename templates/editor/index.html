@@ -154,11 +154,11 @@
 
           <div class="form-group mt-3">
             <label for="message_text">Enter Your Message</label>
-            <textarea class="form-control" id="message_text" rows="3" required="required"></textarea>
+            <textarea class="form-control" id="message_text" rows="5" required="required"></textarea>
           </div>
 
           <button type="submit" class="btn btn-sm my-2" style="color: white; background-color: orange;"
-            id="friendShare">Share</button>
+            id="friendShare" disabled>Share</button>
         </form>
         {%endif%}
 
@@ -326,6 +326,7 @@
             data: {
               "message_text": message_text,
               "friend_list": JSON.stringify(friend_list),
+              "url": localStorage.getItem("solution_url"),
               // "file_name": localStorage.getItem("id"),
             },
           });
@@ -486,6 +487,9 @@
       // Callback handler that will be called on success
       request.done(function (response, textStatus, jqXHR) {
         // rendering another page
+        $("#friendShare").prop("disabled", false)
+        response = JSON.parse(response)
+        localStorage.setItem("solution_url", document.location.host + "/shared/answer/?id=" + response["file_name"] + "&website=" + response["website"] + "&language=" + response["language"])
         $("#successupload").click();
       });
 
@@ -501,9 +505,10 @@
       // Callback handler that will be called regardless
       // if the request failed or succeeded
       request.always(function () {
-        // Reenable the inputs
+        // Re-enable the inputs
         $("#submit").html("Upload");
         $("#submit").prop('disabled', false);
+        $("#friendShare").prop('disabled', false);
       });
     }
   })

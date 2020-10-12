@@ -55,7 +55,16 @@ def submit(request):
                        sharing_option=sharing_option, problem_title=problem_title)
 
     file_name = drive.upload(unique_code_id, code_text, website, language)
-    return HttpResponseRedirect(reverse('editor:get_code_view', kwargs={'unique_code_id': unique_code_id}))
+
+    data = json.dumps(
+        {
+            "file_name": file_name,
+            "website": website,
+            "language": language,
+
+        }
+    )
+    return HttpResponse(data)
 
 
 def fetch_question(request):
@@ -106,17 +115,18 @@ def edit_temp(request):
     return HttpResponse(json.dumps({'file_name': file_name}))
 
 
-def get_code_view(request, unique_code_id):
+def get_code_view(request, **kwargs):
     # get code file with id : unique_code_id
-    return HttpResponse("Will be available soon")
+    return HttpResponse(json.dumps({"file_name": kwargs["file_name"]}))
 
 
 def send_message(request):
     message_text = request.POST.get("message_text")
     friend_list = json.loads(request.POST.get("friend_list"))
+    url = request.POST.get("url")
 
     for user in friend_list:
-        message = Message.create(message_text=message_text,  send_by=request.user, recieved_by=User.objects.get(username=user), link="https://localhost:8000")
+        message = Message.create(message_text=message_text,  send_by=request.user, recieved_by=User.objects.get(username=user), link=url)
 
     return HttpResponse({"name": "prince"})
 

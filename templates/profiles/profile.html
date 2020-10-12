@@ -1,4 +1,4 @@
-{% extends 'accounts/basic.html' %}
+{% extends 'profiles/basic.html' %}
 
 <!-- loaded static -->
 {% load static %}
@@ -199,13 +199,6 @@
 {% block body%}
 
 <body>
-  <div class="col-3">
-    <form action="{%url 'profiles:profile' user.username %}" method="post">
-      {%csrf_token%}
-      {{user_search_form|crispy}}
-      <input type="button" value="Search">
-    </form>
-  </div>
   <div class="container main-section">
     <div class="row">
       <div class="row user-left-part">

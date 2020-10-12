@@ -96,8 +96,14 @@ body {
 
 .form-control-dark {
   color: #fff;
-  background-color: rgba(255, 255, 255, .1);
-  border-color: rgba(255, 255, 255, .1);
+  background-color: rgba(138, 7, 7, 0.1);
+  border-color: rgba(226, 20, 20, 0.1);
+}
+
+.form-control-search {
+  color: #fff;
+  background-color: rgb(255, 240, 200);
+  border-color: rgba(230, 193, 72, 0.829);
 }
 
 .form-control-dark:focus {
@@ -105,6 +111,10 @@ body {
   box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
 }
 
+.form-control-search:focus {
+  border-color: transparent;
+  box-shadow: 0 0 0 3px rgba(206, 177, 16, 0.877);
+}
 
 .bd-placeholder-img {
   font-size: 1.125rem;
