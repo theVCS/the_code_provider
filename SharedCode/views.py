@@ -8,10 +8,13 @@ import json
 
 def home(request):
     unique_id = request.GET.get("id")
+    language = request.GET.get("lang")
+
     code = drive.show_shared(unique_id)
     context = {
         "title": "sharedCode",
         'code': code,
+        'language': language,
     }
     return render(request, 'sharedcode/index.html', context)
 
@@ -25,6 +28,7 @@ def show_answer(request):
     context = {
         "title": "sharedCode",
         'code': code,
+        'language': language,
     }
 
     return render(request, 'sharedcode/index.html', context)

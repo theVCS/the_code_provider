@@ -143,6 +143,7 @@
 
         <!-- friend list -->
         {%if user.is_authenticated%}
+        {%if friends_list.count%}
         <form class="form-group">
           <h6>Toggle To Share With Friends</h6>
           {%for friend in friends_list%}
@@ -160,6 +161,7 @@
           <button type="submit" class="btn btn-sm my-2" style="color: white; background-color: orange;"
             id="friendShare" disabled>Share</button>
         </form>
+        {%endif%}
         {%endif%}
 
       </div>
@@ -274,6 +276,7 @@
   if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
     localStorage.clear("id")
     localStorage.clear("uploaded_once")
+    localStorage.clear("language")
   }
 
   new ClipboardJS('.copy');
@@ -351,7 +354,7 @@
           request.always(function () {
             // Reenable the inputs
             $("#friendShare").html("Share");
-            $("#friendShare").prop('disabled', false);
+            // $("#friendShare").prop('disabled', false);
             // $('.url_generator').css("display", "flex")
             // $("#url").val(document.location.host + "/shared/?id=" + localStorage.getItem("id"))
           });
@@ -417,8 +420,10 @@
 
         // Callback handler that will be called on success
         request.done(function (response, textStatus, jqXHR) {
-          localStorage.setItem("id", JSON.parse(response)['file_name'])
+          response = JSON.parse(response)
+          localStorage.setItem("id", response['file_name'])
           localStorage.setItem("uploaded_once", 1)
+          localStorage.setItem("language", response['language'].trim())
           // rendering another page
           $("#successupload").click();
         });
@@ -439,7 +444,7 @@
           $("#share").html("Edit");
           $("#share").prop('disabled', false);
           $('.url_generator').css("display", "flex")
-          $("#url").val(document.location.host + "/shared/?id=" + localStorage.getItem("id"))
+          $("#url").val(document.location.host + "/shared/?id=" + localStorage.getItem("id") + "&lang=" + localStorage.getItem("language"))
         });
       }
     })
@@ -507,7 +512,7 @@
       request.always(function () {
         // Re-enable the inputs
         $("#submit").html("Upload");
-        $("#submit").prop('disabled', false);
+        // $("#submit").prop('disabled', false);
         $("#friendShare").prop('disabled', false);
       });
     }

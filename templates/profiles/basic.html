@@ -41,7 +41,7 @@
         <div class="col-3">
             <form action="{%url 'profiles:profile' user.username %}" method="post">
               {%csrf_token%}
-              <input type="text" name="username" maxlength="50" class="textinput textInput form-control form-control-search w-100" required="" id="id_username" placeholder="Enter Username" aria-label="Search">
+              <input type="text" name="username" maxlength="50" class="textinput textInput form-control form-control-search w-100" required="" id="id_username" placeholder="Find User By Username" aria-label="Search">
             </form>
           </div>
         <!-- <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search"

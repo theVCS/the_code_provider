@@ -303,7 +303,7 @@
                     {% if user.username == profile_user.username %}
                     <div class="col-md-2 col-sm-2 profile-tag" class="info_shower">
                       <a id="#inbox" class="info_shower"><i class="fa fa-inbox"
-                          aria-hidden="true"><sup><b>{{ messages.count }}</b></sup></i>
+                          aria-hidden="true"><sup><b id="message_count">{{ messages.count }}</b></sup></i>
                         <p>Inbox</p>
                       </a>
                     </div>
@@ -590,6 +590,7 @@
 {% block script %}
 <script>
   $(document).ready(function () {
+    let message_count = $("#message_count").html()
 
     $(".info_shower").click(function (event) {
       const id = $(this).attr("id").slice(1, );
@@ -631,7 +632,8 @@
         // Callback handler that will be called on success
         request.done(function (response, textStatus, jqXHR) {
           // rendering another page
-          $("#successupload").click();
+          message_count -= 1;
+          $("#message_count").html(message_count)
         });
 
         // Callback handler that will be called on failure

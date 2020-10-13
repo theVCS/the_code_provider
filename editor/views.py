@@ -97,7 +97,11 @@ def share(request):
     file_name = uuid.uuid1().hex
     language = request.POST.get("language")
     drive.sharing_code(data, language, file_name)
-    return HttpResponse(json.dumps({'file_name': file_name}))
+    data = json.dumps({
+        'file_name': file_name,
+        'language': language,
+                       })
+    return HttpResponse(data)
 
 
 def show(request):
