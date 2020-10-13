@@ -199,6 +199,11 @@
 {% block body%}
 
 <body>
+{%if messages%}
+    {%for message in messages%}
+        <div class="alert alert-danger" role="alert">{{message}}</div>
+    {%endfor%}
+{%endif%}
   <div class="container main-section">
     <div class="row">
       <div class="row user-left-part">
@@ -303,7 +308,7 @@
                     {% if user.username == profile_user.username %}
                     <div class="col-md-2 col-sm-2 profile-tag" class="info_shower">
                       <a id="#inbox" class="info_shower"><i class="fa fa-inbox"
-                          aria-hidden="true"><sup><b id="message_count">{{ messages.count }}</b></sup></i>
+                          aria-hidden="true"><sup><b id="message_count">{{ messages1.count }}</b></sup></i>
                         <p>Inbox</p>
                       </a>
                     </div>
@@ -446,7 +451,7 @@
 
                         <!-- inbox section -->
                         <div class="collapse col-md-12" id="inbox" style="height: 10rem; overflow-y: scroll;">
-                          {%if messages.count == 0 %}
+                          {%if messages1.count == 0 %}
                           <div class="container">
                             <img src="{% static 'icons/empty.svg' %}" alt="" style="height: 8rem;">
                           </div>
@@ -463,7 +468,7 @@
 
                             <tbody>
 
-                              {% for message in messages %}
+                              {% for message in messages1 %}
                               <tr>
                                 <th scope="row">{{ message.send_by }}</th>
                                 <td>{{ message.send_time }}</td>
@@ -484,7 +489,7 @@
                           {% endif %}
                         </div>
 
-                        {% for message in messages %}
+                        {% for message in messages1 %}
 
                         <div class="modal fade" id="modal{{ message.id }}" data-backdrop="static" data-keyboard="false"
                           tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
