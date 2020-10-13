@@ -35,7 +35,7 @@ def profile_view(request, username):
                 context = {'username': user.username}
                 return HttpResponseRedirect(reverse('profiles:profile', kwargs=context))
             except User.DoesNotExist:
-                messages.add_message(request, messages.INFO, 'User not found')
+                user_search_form.add_error('username', ValidationError("User Doesn't Exist"))
     else:
         user_search_form = UserSearchForm()
 

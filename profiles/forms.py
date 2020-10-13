@@ -5,7 +5,6 @@ from .models import Profile
 
 
 class ProfileForm(forms.ModelForm):
-
     name = forms.CharField(max_length=20, widget=forms.TextInput(attrs={'placeholder': 'Name'}))
     email_id = forms.EmailField(widget=forms.TextInput(attrs={'placeholder': 'Email Id'}))
 
@@ -15,4 +14,5 @@ class ProfileForm(forms.ModelForm):
 
 
 class UserSearchForm(forms.Form):
-    username = forms.CharField(label="User Name", max_length=50)
+    username = forms.CharField(label="", max_length=50, widget=forms.TextInput
+    (attrs={'placeholder': 'Search Username'}))
